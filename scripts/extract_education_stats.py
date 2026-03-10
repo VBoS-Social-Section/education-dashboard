@@ -245,6 +245,10 @@ def main():
 
     all_records = deduplicate(all_records)
 
+    if not all_records:
+        print("No records extracted (pdftotext may be missing in CI). Keeping existing data.")
+        return
+
     # Write education_metrics.csv (Court -> Institution for compatibility)
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     metrics_path = DATA_DIR / "education_metrics.csv"
