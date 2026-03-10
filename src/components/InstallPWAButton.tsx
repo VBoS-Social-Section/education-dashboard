@@ -45,7 +45,7 @@ export function InstallPWAButton() {
       variant="outline"
       size="sm"
       onClick={handleInstall}
-      className="gap-2 border-[#7551ff]/40 text-[#422AFB] hover:bg-[#7551ff]/10"
+      className="gap-2 border-teal-500/40 text-teal-700 hover:bg-teal-500/10"
     >
       <Download className="size-4" />
       Install app

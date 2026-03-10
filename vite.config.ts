@@ -16,7 +16,7 @@ export default defineConfig({
         name: 'Vanuatu Education Dashboard',
         short_name: 'Education',
         description: 'Enrolment, schools and teachers from MoET annual reports',
-        theme_color: '#422AFB',
+        theme_color: '#0d9488',
         background_color: '#ffffff',
         display: 'standalone',
         start_url: './',

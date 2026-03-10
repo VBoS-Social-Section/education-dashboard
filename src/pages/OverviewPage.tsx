@@ -18,9 +18,9 @@ interface Props {
 }
 
 const CARD_COLORS = {
-  enrolment: '#422AFB',
-  schools: '#7551ff',
-  teachers: '#6B7FFF',
+  enrolment: '#0d9488',
+  schools: '#059669',
+  teachers: '#0ea5e9',
   primary: '#047857',
   secondary: '#0284c7',
 } as const

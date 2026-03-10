@@ -1,13 +1,11 @@
 import {
   BarChart2,
-  Users,
-  PieChart,
   FileText,
-  TrendingUp,
-  Scale,
   Layers,
   ClipboardList,
+  GraduationCap,
 } from 'lucide-react'
+import { THEME, GRADIENT, GRADIENT_SHADOW } from '@/lib/theme'
 import { cn } from '@/lib/utils'
 import { CourtsFilterDropdown } from '@/components/CourtsFilterDropdown'
 import { Slider } from '@/components/ui/slider'
@@ -19,9 +17,6 @@ const DATA_ROUTES = [
   { name: 'Overview', icon: BarChart2 },
   { name: 'Enrolment', icon: FileText },
   { name: 'Schools & Teachers', icon: Layers },
-  { name: 'Performance', icon: TrendingUp },
-  { name: 'Trends', icon: PieChart },
-  { name: 'Other Metrics', icon: Users },
 ] as const
 
 const METHODOLOGY_ROUTE = { name: 'Methodology', icon: ClipboardList } as const
@@ -74,13 +69,13 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 z-40 hidden h-screen w-[260px] flex-col border-r border-border/60 bg-white transition-transform duration-200',
+        'fixed left-0 top-0 z-40 hidden h-screen w-[260px] flex-col border-r border-border/60 bg-teal-50/30 transition-transform duration-200',
         'lg:flex',
         !open && '-translate-x-full'
       )}
     >
       <div className="flex h-[70px] items-center border-b border-border/60 px-5">
-        <span className="text-xl font-bold tracking-tight" style={{ color: '#422AFB' }}>
+        <span className="text-xl font-bold tracking-tight" style={{ color: THEME.primary }}>
           Education Dashboard
         </span>
       </div>
@@ -92,7 +87,7 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
             className={cn(
               'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
               activeTab === i
-                ? 'bg-[#7551ff]/10 text-[#422AFB]'
+                ? 'bg-teal-500/10 text-teal-700'
                 : 'text-foreground/70 hover:bg-muted/80 hover:text-foreground'
             )}
           >
@@ -106,7 +101,7 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
           className={cn(
             'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
             activeTab === DATA_ROUTES.length
-              ? 'bg-[#7551ff]/10 text-[#422AFB]'
+              ? 'bg-teal-500/10 text-teal-700'
               : 'text-foreground/70 hover:bg-muted/80 hover:text-foreground'
           )}
         >
@@ -211,12 +206,12 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
         <div
           className="flex flex-col gap-2 rounded-2xl p-4 text-white"
           style={{
-            background: 'linear-gradient(135deg, #7551ff 0%, #a78bfa 50%, #60a5fa 100%)',
-            boxShadow: '0 4px 14px 0 rgba(117, 81, 255, 0.4)',
+            background: GRADIENT,
+            boxShadow: GRADIENT_SHADOW,
           }}
         >
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 shrink-0">
-            <Scale className="size-6" />
+            <GraduationCap className="size-6" />
           </div>
           <div className="min-w-0">
             <p className="text-sm font-semibold opacity-95">Data from MoET Annual Reports</p>

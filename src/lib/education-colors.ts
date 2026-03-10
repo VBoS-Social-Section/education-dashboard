@@ -1,9 +1,9 @@
-/** Education institution colors for consistent visualization */
+/** Education institution colors - teal/emerald/sky palette */
 export const INSTITUTION_COLORS: Record<string, string> = {
-  ECCE: '#7c3aed',
-  Primary: '#1e40af',
-  Secondary: '#0f766e',
-  'Senior Secondary': '#15803d',
+  ECCE: '#0d9488',
+  Primary: '#059669',
+  Secondary: '#0ea5e9',
+  'Senior Secondary': '#0f766e',
   Total: '#64748b',
 }
 

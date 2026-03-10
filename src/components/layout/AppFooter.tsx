@@ -12,8 +12,8 @@ export function AppFooter({ compact }: AppFooterProps) {
           : 'mt-auto border-t border-border/60 px-4 py-4 lg:px-6 text-center text-sm text-muted-foreground'
       }
     >
-      <p>© {new Date().getFullYear()} Vanuatu Bureau of Statistics</p>
-      <p className="mt-1 text-xs opacity-80">What&apos;s new: Feb 2026 — 2025 Annual Statistics, DV trends, comparison mode, trend lines</p>
+      <p>© {new Date().getFullYear()} Vanuatu Education Dashboard</p>
+      <p className="mt-1 text-xs opacity-80">Data from MoET Annual Reports — Enrolment, Schools & Teachers</p>
     </footer>
   )
 }

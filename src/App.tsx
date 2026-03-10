@@ -11,9 +11,6 @@ import { PageIndicators } from './components/PageIndicators'
 import { OverviewPage } from './pages/OverviewPage'
 import { EnrolmentPage } from './pages/EnrolmentPage'
 import { SchoolsTeachersPage } from './pages/SchoolsTeachersPage'
-import { PerformancePage } from './pages/PerformancePage'
-import { OutcomesPage } from './pages/OutcomesPage'
-import { OtherMetricsPage } from './pages/OtherMetricsPage'
 import { DataSourcesMethodologyPage } from './pages/DataSourcesMethodologyPage'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -23,9 +20,6 @@ const SECTION_NAMES = [
   'Overview',
   'Enrolment',
   'Schools & Teachers',
-  'Performance',
-  'Trends',
-  'Other Metrics',
   'Methodology',
 ] as const
 
@@ -199,11 +193,11 @@ export default function App() {
 
           {loading && (
             <div className="flex justify-center py-16">
-              <div className="size-10 animate-spin rounded-full border-2 border-[#7551ff] border-t-transparent" />
+              <div className="size-10 animate-spin rounded-full border-2 border-teal-500 border-t-transparent" />
             </div>
           )}
 
-          {!loading && activeTab < 6 && selectedYears.length === 0 && (
+          {!loading && activeTab < 3 && selectedYears.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">Select at least one year to view data.</p>
@@ -211,15 +205,15 @@ export default function App() {
             </Card>
           )}
 
-          {!loading && activeTab < 6 && selectedYears.length > 0 && selectedCourts.length === 0 && (
+          {!loading && activeTab < 3 && selectedYears.length > 0 && selectedCourts.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
-                <p className="text-muted-foreground">Select at least one court to view data.</p>
+                <p className="text-muted-foreground">Select at least one education level to view data.</p>
               </CardContent>
             </Card>
           )}
 
-          {!loading && activeTab < 6 && selectedYears.length > 0 && selectedCourts.length > 0 && filteredData.length === 0 && (
+          {!loading && activeTab < 3 && selectedYears.length > 0 && selectedCourts.length > 0 && filteredData.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">No data available for the selected filters.</p>
@@ -227,20 +221,17 @@ export default function App() {
             </Card>
           )}
 
-          {!loading && data.length > 0 && activeTab < 6 && (
+          {!loading && data.length > 0 && activeTab < 3 && (
             <>
               {activeTab !== 0 && <PageIndicators data={filteredData} activeTab={activeTab} compareMode={compareMode} selectedYears={selectedYears} />}
               <div className="grid gap-6 xl:grid-cols-1">
-                {activeTab === 0 && <OverviewPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} onNavigateToMethodology={() => setActiveTab(6)} />}
+                {activeTab === 0 && <OverviewPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} onNavigateToMethodology={() => setActiveTab(3)} />}
                 {activeTab === 1 && <EnrolmentPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
                 {activeTab === 2 && <SchoolsTeachersPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
-                {activeTab === 3 && <PerformancePage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
-                {activeTab === 4 && <OutcomesPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} getRowsByMetric={getRowsByMetric} />}
-                {activeTab === 5 && <OtherMetricsPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
               </div>
             </>
           )}
-          {activeTab === 6 && (
+          {activeTab === 3 && (
             <div className="grid gap-6 xl:grid-cols-1">
               <DataSourcesMethodologyPage embedded />
             </div>

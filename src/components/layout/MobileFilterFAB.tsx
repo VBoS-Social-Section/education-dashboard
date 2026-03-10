@@ -5,7 +5,7 @@ import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
-import { getCourtColor, sortCourtsByOrder } from '@/lib/court-colors'
+import { getInstitutionColor, sortInstitutionsByOrder } from '@/lib/education-colors'
 import { cn } from '@/lib/utils'
 
 interface MobileFilterFABProps {
@@ -54,7 +54,7 @@ export function MobileFilterFAB({
     onCourtsChange(next.length > 0 ? next : [])
   }
 
-  const sortedCourts = sortCourtsByOrder([...courts])
+  const sortedCourts = sortInstitutionsByOrder([...courts])
 
   return (
     <>
@@ -63,7 +63,7 @@ export function MobileFilterFAB({
         onClick={() => setOpen(true)}
         className={cn(
           'fixed right-6 z-40 flex size-14 items-center justify-center rounded-full shadow-lg transition-all',
-          'bg-[#422AFB] text-white hover:bg-[#5a3cff] active:scale-95 lg:hidden'
+          'bg-teal-600 text-white hover:bg-teal-700 active:scale-95 lg:hidden'
         )}
         style={{ bottom: 'max(1.5rem, env(safe-area-inset-bottom, 0px))' }}
         aria-label="Open filters"
@@ -79,11 +79,11 @@ export function MobileFilterFAB({
         >
           <SheetHeader className="border-b border-border/60 pb-4">
             <SheetTitle>Filters</SheetTitle>
-            <SheetDescription>Filter data by courts and year range.</SheetDescription>
+            <SheetDescription>Filter data by education levels and year range.</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-6 overflow-y-auto py-4">
             <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Courts</p>
+              <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education Levels</p>
               <div className="flex flex-col gap-2">
                 {sortedCourts.map((court) => (
                   <label
@@ -96,7 +96,7 @@ export function MobileFilterFAB({
                     />
                     <span
                       className="size-3 shrink-0 rounded-full"
-                      style={{ backgroundColor: getCourtColor(court) }}
+                      style={{ backgroundColor: getInstitutionColor(court) }}
                       aria-hidden
                     />
                     <span className="text-sm font-medium">{court}</span>

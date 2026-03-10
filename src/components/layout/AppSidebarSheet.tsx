@@ -6,11 +6,8 @@ import { Separator } from '@/components/ui/separator'
 
 const DATA_ROUTES = [
   'Overview',
-  'Pending Cases',
-  'Workload',
-  'Performance',
-  'Outcomes',
-  'Other Metrics',
+  'Enrolment',
+  'Schools & Teachers',
 ] as const
 
 const METHODOLOGY_ROUTE = 'Methodology' as const
@@ -66,11 +63,11 @@ export function AppSidebarSheet({
       </SheetTrigger>
       <SheetContent side="left" className="w-[260px] p-0">
         <SheetTitle className="sr-only">Navigation menu</SheetTitle>
-        <SheetDescription className="sr-only">Choose a page to view. Use the filter button to change courts and years.</SheetDescription>
+        <SheetDescription className="sr-only">Choose a page to view. Use the filter button to change education levels and years.</SheetDescription>
         <div className="flex h-full flex-col bg-white">
           <div className="flex h-[70px] items-center border-b border-border/60 px-5">
-            <span className="text-xl font-bold tracking-tight" style={{ color: '#422AFB' }}>
-              Vanuatu Courts
+            <span className="text-xl font-bold tracking-tight text-teal-700">
+              Education Dashboard
             </span>
           </div>
           <nav className="flex-1 space-y-0.5 overflow-y-auto p-4">
@@ -79,7 +76,7 @@ export function AppSidebarSheet({
                 key={name}
                 onClick={() => handleSelect(i)}
                 className={`block w-full rounded-xl px-3 py-3 text-left text-sm font-medium transition-all ${
-                  activeTab === i ? 'bg-[#7551ff]/10 text-[#422AFB]' : 'hover:bg-muted/80'
+                  activeTab === i ? 'bg-teal-500/10 text-teal-700' : 'hover:bg-muted/80'
                 }`}
               >
                 {name}
@@ -89,24 +86,24 @@ export function AppSidebarSheet({
             <button
               onClick={() => handleSelect(DATA_ROUTES.length)}
               className={`block w-full rounded-xl px-3 py-3 text-left text-sm font-medium transition-all ${
-                activeTab === DATA_ROUTES.length ? 'bg-[#7551ff]/10 text-[#422AFB]' : 'hover:bg-muted/80'
+                activeTab === DATA_ROUTES.length ? 'bg-teal-500/10 text-teal-700' : 'hover:bg-muted/80'
               }`}
             >
               {METHODOLOGY_ROUTE}
             </button>
             <p className="mt-4 px-2 text-xs text-muted-foreground">
-              Use the filter button below to change courts and years.
+              Use the filter button below to change education levels and years.
             </p>
           </nav>
           <div className="p-4">
             <div
               className="flex flex-col gap-2 rounded-2xl p-4 text-white"
               style={{
-                background: 'linear-gradient(135deg, #7551ff 0%, #a78bfa 50%, #60a5fa 100%)',
-                boxShadow: '0 4px 14px 0 rgba(117, 81, 255, 0.4)',
+                background: 'linear-gradient(135deg, #0d9488 0%, #059669 50%, #0ea5e9 100%)',
+                boxShadow: '0 4px 14px 0 rgba(13, 148, 136, 0.35)',
               }}
             >
-              <p className="text-sm font-semibold opacity-95">Data extracted from Vanuatu Courts Annual Reports</p>
+              <p className="text-sm font-semibold opacity-95">Data from MoET Annual Reports</p>
               {lastUpdated && (
                 <p className="text-xs opacity-80">Last updated: {formatLastUpdated(lastUpdated)}</p>
               )}

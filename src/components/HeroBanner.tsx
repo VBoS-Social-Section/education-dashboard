@@ -8,11 +8,11 @@ import {
 } from '@/components/ui/popover'
 import { cn } from '@/lib/utils'
 
-const STORAGE_KEY = 'vanuatu-dashboard-hero-dismissed'
+const STORAGE_KEY = 'education-dashboard-hero-dismissed'
 const AUTO_HIDE_MS = 60_000 // 1 minute
 
 const MESSAGE =
-  'This dashboard visualises key workload, backlog, timeliness and gender metrics from Vanuatu Judiciary annual reports (2017–2025).'
+  'This dashboard visualises enrolment, schools and teachers from MoET annual reports (2019–2024).'
 
 interface HeroBannerProps {
   lastUpdated?: string | null
@@ -97,9 +97,9 @@ export function HeroBanner({ lastUpdated, className, placement = 'banner' }: Her
   if (placement === 'banner') {
     return (
       <div className={cn('mb-6', className)}>
-        <div className="rounded-xl border border-[#7551ff]/30 bg-[#7551ff]/5 px-4 py-3">
+        <div className="rounded-xl border border-teal-500/30 bg-teal-500/5 px-4 py-3">
           <div className="flex items-start gap-3">
-            <Info className="mt-0.5 size-4 shrink-0 text-[#422AFB]" strokeWidth={2} />
+            <Info className="mt-0.5 size-4 shrink-0 text-teal-600" strokeWidth={2} />
             <div className="min-w-0 flex-1">
               <p className="text-sm text-muted-foreground">{message}</p>
               <p className="mt-1 text-xs text-muted-foreground/80">
