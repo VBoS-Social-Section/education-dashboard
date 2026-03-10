@@ -1,0 +1,172 @@
+Court,Year,Metric,Value,Unit
+Court of Appeal,2017,Filings,72,
+Court of Appeal,2017,Disposals,70,
+Court of Appeal,2017,ClearanceRate,97,%
+Court of Appeal,2017,Pending,28,
+Court of Appeal,2017,PDR,0.4,
+Court of Appeal,2017,PendingAge,0,%
+Court of Appeal,2017,TimelinessCriminal,100,days
+Court of Appeal,2017,TimelinessCivil,150,days
+Court of Appeal,2017,ReservedJudgments,0,
+Supreme Court,2017,Filings,689,
+Supreme Court,2017,Disposals,693,
+Supreme Court,2017,ClearanceRate,97,%
+Supreme Court,2017,Pending,1175,
+Supreme Court,2017,PDR,1.7,
+Supreme Court,2017,PendingAge,20,%
+Supreme Court,2017,TimelinessCriminal,180,days
+Supreme Court,2017,TimelinessCivil,800,days
+Supreme Court,2017,AttendanceCriminal,4,%
+Supreme Court,2017,AttendanceCivil,5.5,%
+Supreme Court,2017,AttendanceEnforcement,8,%
+Supreme Court,2017,Productivity,90,
+Supreme Court,2017,ReservedJudgments,60,
+Magistrates Court,2017,Filings,2065,
+Magistrates Court,2017,Disposals,2478,
+Magistrates Court,2017,ClearanceRate,120,%
+Magistrates Court,2017,Pending,910,
+Magistrates Court,2017,PDR,0.4,
+Magistrates Court,2017,PendingAge,19,%
+Magistrates Court,2017,TimelinessCriminal,346,days
+Magistrates Court,2017,TimelinessCivil,300,days
+Magistrates Court,2017,AttendanceCriminal,3.1,%
+Magistrates Court,2017,AttendanceCivil,5.7,%
+Magistrates Court,2017,AttendanceEnforcement,9,%
+Magistrates Court,2017,Productivity,300,
+Magistrates Court,2017,ReservedJudgments,22,
+Island Court,2017,Filings,500,
+Island Court,2017,Disposals,447,
+Island Court,2017,ClearanceRate,89,%
+Island Court,2017,Pending,600,
+Island Court,2017,PDR,1.2,
+Island Court,2017,PendingAge,60,%
+Island Court,2017,TimelinessCriminal,350,days
+Island Court,2017,TimelinessCivil,400,days
+Supreme Court,2017,Gender_Male,65,%
+Supreme Court,2017,Gender_Female,35,%
+Magistrates Court,2017,Gender_Male,69,%
+Magistrates Court,2017,Gender_Female,31,%
+Court of Appeal,2017,Civil_Guilty,24,%
+Court of Appeal,2017,Civil_NotGuilty,0,%
+Court of Appeal,2017,Civil_Withdrawn,16,%
+Court of Appeal,2017,Civil_Committed,0,%
+Court of Appeal,2017,Civil_Dismissed,60,%
+Supreme Court,2017,Criminal_Guilty,83,%
+Supreme Court,2017,Criminal_NotGuilty,8,%
+Supreme Court,2017,Criminal_Withdrawn,9,%
+Supreme Court,2017,Criminal_Committed,0,%
+Supreme Court,2017,Criminal_Dismissed,0,%
+Magistrates Court,2017,Criminal_Guilty,65,%
+Magistrates Court,2017,Criminal_NotGuilty,1,%
+Magistrates Court,2017,Criminal_Withdrawn,27,%
+Magistrates Court,2017,Criminal_Committed,0,%
+Magistrates Court,2017,Criminal_Dismissed,7,%
+Magistrates Court,2017,PI_Guilty,0,%
+Magistrates Court,2017,PI_NotGuilty,0,%
+Magistrates Court,2017,PI_Withdrawn,21,%
+Magistrates Court,2017,PI_Committed,75,%
+Magistrates Court,2017,PI_Dismissed,4,%
+Supreme Court,2017,Workload_Total_Filings,689,
+Supreme Court,2017,Workload_Total_Disposals,693,
+Supreme Court,2017,Workload_Total_ClearanceRate,97,%
+Supreme Court,2017,Workload_Criminal_Filings,261,
+Supreme Court,2017,Workload_Criminal_Disposals,268,
+Supreme Court,2017,Workload_Criminal_ClearanceRate,99,%
+Magistrates Court,2017,Workload_Total_Filings,2065,
+Magistrates Court,2017,Workload_Total_Disposals,2478,
+Magistrates Court,2017,Workload_Total_ClearanceRate,120,%
+Magistrates Court,2017,Workload_Criminal_Filings,750,
+Magistrates Court,2017,Workload_Criminal_Disposals,900,
+Magistrates Court,2017,Workload_Criminal_ClearanceRate,120,%
+Magistrates Court,2017,Workload_PI_Filings,290,
+Magistrates Court,2017,Workload_PI_Disposals,350,
+Magistrates Court,2017,Workload_PI_ClearanceRate,121,%
+Magistrates Court,2017,Workload_Violence_Filings,1025,
+Magistrates Court,2017,Workload_Violence_Disposals,1228,
+Magistrates Court,2017,Workload_Violence_ClearanceRate,120,%
+Island Court,2017,Workload_Total_Filings,500,
+Island Court,2017,Workload_Total_Disposals,447,
+Island Court,2017,Workload_Total_ClearanceRate,89,%
+Island Court,2017,Workload_Criminal_Filings,250,
+Island Court,2017,Workload_Criminal_Disposals,225,
+Island Court,2017,Workload_Criminal_ClearanceRate,90,%
+Island Court,2017,Workload_Maintenance_Filings,250,
+Island Court,2017,Workload_Maintenance_Disposals,222,
+Island Court,2017,Workload_Maintenance_ClearanceRate,89,%
+Court of Appeal,2017,Workload_Total_Filings,72,
+Court of Appeal,2017,Workload_Total_Disposals,70,
+Court of Appeal,2017,Workload_Total_ClearanceRate,97,%
+Court of Appeal,2017,Workload_Civil_Filings,40,
+Court of Appeal,2017,Workload_Civil_Disposals,39,
+Court of Appeal,2017,Workload_Civil_ClearanceRate,98,%
+Court of Appeal,2017,Workload_Criminal_Filings,32,
+Court of Appeal,2017,Workload_Criminal_Disposals,31,
+Court of Appeal,2017,Workload_Criminal_ClearanceRate,97,%
+Supreme Court,2017,Pending_Civil,646,
+Supreme Court,2017,Pending_Civil_Pct,55,%
+Supreme Court,2017,Pending_Criminal,411,
+Supreme Court,2017,Pending_Criminal_Pct,35,%
+Supreme Court,2017,Pending_Other,118,
+Supreme Court,2017,Pending_Other_Pct,10,%
+Magistrates Court,2017,Pending_Criminal,319,
+Magistrates Court,2017,Pending_Criminal_Pct,35,%
+Magistrates Court,2017,Pending_Violence,273,
+Magistrates Court,2017,Pending_Violence_Pct,30,%
+Magistrates Court,2017,Pending_PI,182,
+Magistrates Court,2017,Pending_PI_Pct,20,%
+Magistrates Court,2017,Pending_Other,136,
+Magistrates Court,2017,Pending_Other_Pct,15,%
+Island Court,2017,Pending_Criminal,210,
+Island Court,2017,Pending_Criminal_Pct,35,%
+Island Court,2017,Pending_Maintenance,210,
+Island Court,2017,Pending_Maintenance_Pct,35,%
+Island Court,2017,Pending_Other,180,
+Island Court,2017,Pending_Other_Pct,30,%
+Court of Appeal,2017,Pending_Civil,14,
+Court of Appeal,2017,Pending_Civil_Pct,50,%
+Court of Appeal,2017,Pending_Criminal,14,
+Court of Appeal,2017,Pending_Criminal_Pct,50,%
+Supreme Court,2017,Pending_WithFutureListing,17,%
+Supreme Court,2017,Pending_UnderCaseMgmt,50,%
+Supreme Court,2017,Pending_NoFutureDate,33,%
+Magistrates Court,2017,Pending_WithFutureListing,55,%
+Magistrates Court,2017,Pending_UnderCaseMgmt,40,%
+Magistrates Court,2017,Pending_NoFutureDate,5,%
+Island Court,2017,Pending_WithFutureListing,9,%
+Island Court,2017,Pending_UnderCaseMgmt,76,%
+Island Court,2017,Pending_NoFutureDate,15,%
+Magistrates Court,2017,DV_Filings,700,
+Magistrates Court,2017,DV_Disposals,720,
+Magistrates Court,2017,DV_ClearanceRate,103,%
+Magistrates Court,2017,Location_Sanma_Filings,537,
+Magistrates Court,2017,Location_Sanma_Pct,26,%
+Magistrates Court,2017,Location_Shefa_Filings,516,
+Magistrates Court,2017,Location_Shefa_Pct,25,%
+Magistrates Court,2017,Location_Malampa_Filings,351,
+Magistrates Court,2017,Location_Malampa_Pct,17,%
+Magistrates Court,2017,Location_Tafea_Filings,331,
+Magistrates Court,2017,Location_Tafea_Pct,16,%
+Magistrates Court,2017,Location_Penama_Filings,207,
+Magistrates Court,2017,Location_Penama_Pct,10,%
+Magistrates Court,2017,Location_Torba_Filings,124,
+Magistrates Court,2017,Location_Torba_Pct,6,%
+Island Court,2017,Location_Sanma_Filings,140,
+Island Court,2017,Location_Sanma_Pct,28,%
+Island Court,2017,Location_Shefa_Filings,125,
+Island Court,2017,Location_Shefa_Pct,25,%
+Island Court,2017,Location_Malampa_Filings,85,
+Island Court,2017,Location_Malampa_Pct,17,%
+Island Court,2017,Location_Tafea_Filings,80,
+Island Court,2017,Location_Tafea_Pct,16,%
+Island Court,2017,Location_Penama_Filings,50,
+Island Court,2017,Location_Penama_Pct,10,%
+Island Court,2017,Location_Torba_Filings,20,
+Island Court,2017,Location_Torba_Pct,4,%
+Supreme Court,2017,ChargeOrders,1000,
+Magistrates Court,2017,ChargeOrders,150,
+Court of Appeal,2017,CoA_Civil_Dismissed,55,%
+Court of Appeal,2017,CoA_Civil_Allowed,31,%
+Court of Appeal,2017,CoA_Civil_Withdrawn,9,%
+Court of Appeal,2017,CoA_Criminal_Dismissed,51,%
+Court of Appeal,2017,CoA_Criminal_Allowed,34,%
+Court of Appeal,2017,CoA_Criminal_Withdrawn,10,%

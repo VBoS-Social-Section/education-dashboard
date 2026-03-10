@@ -1,0 +1,37 @@
+Court,Year,CaseType,Guilty,NotGuilty,Withdrawn,Committed,Dismissed
+Court of Appeal,2025,Civil,31,0,9,0,60
+Court of Appeal,2024,Civil,30,0,10,0,60
+Court of Appeal,2023,Civil,28,0,12,0,60
+Court of Appeal,2022,Civil,29,0,11,0,60
+Court of Appeal,2021,Civil,27,0,13,0,60
+Court of Appeal,2020,Civil,26,0,14,0,60
+Court of Appeal,2019,Civil,26,0,14,0,60
+Court of Appeal,2018,Civil,25,0,15,0,60
+Court of Appeal,2017,Civil,24,0,16,0,60
+Supreme Court,2025,Criminal,91,5,4,0,0
+Supreme Court,2024,Criminal,90,5,5,0,0
+Supreme Court,2023,Criminal,88,6,6,0,0
+Supreme Court,2022,Criminal,87,6,7,0,0
+Supreme Court,2021,Criminal,86,7,7,0,0
+Supreme Court,2020,Criminal,85,7,8,0,0
+Supreme Court,2019,Criminal,85,7,8,0,0
+Supreme Court,2018,Criminal,84,8,8,0,0
+Supreme Court,2017,Criminal,83,8,9,0,0
+Magistrates Court,2025,Criminal,72,1,19,0,8
+Magistrates Court,2025,PI,0,0,14,82,4
+Magistrates Court,2024,Criminal,71,1,20,0,8
+Magistrates Court,2024,PI,0,0,15,81,4
+Magistrates Court,2023,Criminal,70,1,22,0,7
+Magistrates Court,2023,PI,0,0,16,80,4
+Magistrates Court,2022,Criminal,69,1,23,0,7
+Magistrates Court,2022,PI,0,0,17,79,4
+Magistrates Court,2021,Criminal,68,1,24,0,7
+Magistrates Court,2021,PI,0,0,18,78,4
+Magistrates Court,2020,Criminal,67,1,25,0,7
+Magistrates Court,2020,PI,0,0,19,77,4
+Magistrates Court,2019,Criminal,67,1,25,0,7
+Magistrates Court,2019,PI,0,0,19,77,4
+Magistrates Court,2018,Criminal,66,1,26,0,7
+Magistrates Court,2018,PI,0,0,20,76,4
+Magistrates Court,2017,Criminal,65,1,27,0,7
+Magistrates Court,2017,PI,0,0,21,75,4

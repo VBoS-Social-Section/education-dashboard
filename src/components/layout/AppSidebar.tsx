@@ -1,0 +1,231 @@
+import {
+  BarChart2,
+  Users,
+  PieChart,
+  FileText,
+  TrendingUp,
+  Scale,
+  Layers,
+  ClipboardList,
+} from 'lucide-react'
+import { cn } from '@/lib/utils'
+import { CourtsFilterDropdown } from '@/components/CourtsFilterDropdown'
+import { Slider } from '@/components/ui/slider'
+import { Switch } from '@/components/ui/switch'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Separator } from '@/components/ui/separator'
+
+const DATA_ROUTES = [
+  { name: 'Overview', icon: BarChart2 },
+  { name: 'Enrolment', icon: FileText },
+  { name: 'Schools & Teachers', icon: Layers },
+  { name: 'Performance', icon: TrendingUp },
+  { name: 'Trends', icon: PieChart },
+  { name: 'Other Metrics', icon: Users },
+] as const
+
+const METHODOLOGY_ROUTE = { name: 'Methodology', icon: ClipboardList } as const
+
+function formatLastUpdated(iso: string | null): string {
+  if (!iso) return ''
+  try {
+    const d = new Date(iso)
+    return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
+  } catch {
+    return iso
+  }
+}
+
+interface AppSidebarProps {
+  activeTab: number
+  onTabChange: (tab: number) => void
+  years: number[]
+  selectedYears: number[]
+  onYearsChange: (years: number[]) => void
+  compareMode: boolean
+  onCompareModeChange: (v: boolean) => void
+  courts: readonly string[]
+  selectedCourts: string[]
+  onCourtsChange: (courts: string[]) => void
+  open: boolean
+  lastUpdated?: string | null
+}
+
+export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYearsChange, compareMode, onCompareModeChange, courts, selectedCourts, onCourtsChange, open, lastUpdated }: AppSidebarProps) {
+  const rawMin = years.indexOf(selectedYears[0] ?? years[0] ?? 0)
+  const rawMax = years.indexOf(selectedYears[selectedYears.length - 1] ?? years[years.length - 1] ?? 0)
+  const yearMinIdx = years.length > 0 ? Math.max(0, rawMin >= 0 ? rawMin : 0) : 0
+  const yearMaxIdx = years.length > 0 ? Math.min(years.length - 1, rawMax >= 0 ? rawMax : years.length - 1) : 0
+  const sliderValue: [number, number] = [yearMinIdx, Math.max(yearMinIdx, yearMaxIdx)]
+  const onSliderChange = (v: number[]) => {
+    const [lo, hi] = [Math.min(v[0], v[1]), Math.max(v[0], v[1])]
+    onYearsChange(years.slice(lo, hi + 1))
+  }
+  const handleCompareModeChange = (checked: boolean) => {
+    onCompareModeChange(checked)
+    if (checked) {
+      const sorted = [...selectedYears].sort((a, b) => a - b)
+      const lastTwo = years.length >= 2 ? years.slice(-2) : sorted.slice(-2)
+      onYearsChange(lastTwo.length === 2 ? lastTwo : (sorted.length >= 2 ? sorted.slice(-2) : years.slice(0, 2)))
+    }
+  }
+  const compareYearA = selectedYears[0] ?? years[0]
+  const compareYearB = selectedYears[1] ?? years[1] ?? years[0]
+  return (
+    <aside
+      className={cn(
+        'fixed left-0 top-0 z-40 hidden h-screen w-[260px] flex-col border-r border-border/60 bg-white transition-transform duration-200',
+        'lg:flex',
+        !open && '-translate-x-full'
+      )}
+    >
+      <div className="flex h-[70px] items-center border-b border-border/60 px-5">
+        <span className="text-xl font-bold tracking-tight" style={{ color: '#422AFB' }}>
+          Education Dashboard
+        </span>
+      </div>
+      <nav className="flex-1 space-y-0.5 overflow-y-auto p-4">
+        {DATA_ROUTES.map((route, i) => (
+          <button
+            key={route.name}
+            onClick={() => onTabChange(i)}
+            className={cn(
+              'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
+              activeTab === i
+                ? 'bg-[#7551ff]/10 text-[#422AFB]'
+                : 'text-foreground/70 hover:bg-muted/80 hover:text-foreground'
+            )}
+          >
+            <route.icon className="size-5 shrink-0" strokeWidth={1.5} />
+            {route.name}
+          </button>
+        ))}
+        <Separator className="my-5" />
+        <button
+          onClick={() => onTabChange(DATA_ROUTES.length)}
+          className={cn(
+            'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
+            activeTab === DATA_ROUTES.length
+              ? 'bg-[#7551ff]/10 text-[#422AFB]'
+              : 'text-foreground/70 hover:bg-muted/80 hover:text-foreground'
+          )}
+        >
+          <METHODOLOGY_ROUTE.icon className="size-5 shrink-0" strokeWidth={1.5} />
+          {METHODOLOGY_ROUTE.name}
+        </button>
+        <Separator className="my-5" />
+        <div className="space-y-3">
+          <p className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Education Levels</p>
+          <CourtsFilterDropdown
+            courts={courts}
+            selectedCourts={selectedCourts}
+            onCourtsChange={onCourtsChange}
+          />
+          <p className="px-2 pt-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Years</p>
+          <div className="space-y-3 px-2">
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-sm font-medium">Compare years</span>
+              <Switch
+                checked={compareMode}
+                onCheckedChange={handleCompareModeChange}
+                aria-label="Compare two years side by side"
+              />
+            </div>
+            {compareMode ? (
+              years.length >= 2 ? (
+                <div className="space-y-2">
+                  <div>
+                    <p className="mb-1 text-xs text-muted-foreground">Year A</p>
+                    <Select
+                      value={String(compareYearA)}
+                      onValueChange={(v) => {
+                        const a = Number(v)
+                        const b = a === compareYearB ? years.find((y) => y !== a) ?? years[0] : compareYearB
+                        onYearsChange(a <= b ? [a, b] : [b, a])
+                      }}
+                    >
+                      <SelectTrigger className="w-full" size="sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {years.map((y) => (
+                          <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  <div>
+                    <p className="mb-1 text-xs text-muted-foreground">Year B</p>
+                    <Select
+                      value={String(compareYearB)}
+                      onValueChange={(v) => {
+                        const b = Number(v)
+                        const a = b === compareYearA ? years.find((y) => y !== b) ?? years[0] : compareYearA
+                        onYearsChange(a <= b ? [a, b] : [b, a])
+                      }}
+                    >
+                      <SelectTrigger className="w-full" size="sm">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {years.map((y) => (
+                          <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+              ) : (
+                <p className="text-xs text-muted-foreground">Need 2+ years to compare.</p>
+              )
+            ) : (
+              <>
+                <p className="text-sm font-medium">
+                  {selectedYears.length ? selectedYears.sort((a, b) => a - b).join(' – ') : 'Select years'}
+                </p>
+                {years.length > 1 && (
+                  <>
+                    <Slider
+                      min={0}
+                      max={years.length - 1}
+                      step={1}
+                      value={sliderValue}
+                      onValueChange={onSliderChange}
+                      className="w-full"
+                    />
+                    <div className="flex justify-between text-xs text-muted-foreground">
+                      <span>{years[0]}</span>
+                      <span>{years[years.length - 1]}</span>
+                    </div>
+                  </>
+                )}
+                {years.length <= 1 && (
+                  <p className="text-xs text-muted-foreground">Loading years…</p>
+                )}
+              </>
+            )}
+          </div>
+        </div>
+      </nav>
+      <div className="p-4">
+        <div
+          className="flex flex-col gap-2 rounded-2xl p-4 text-white"
+          style={{
+            background: 'linear-gradient(135deg, #7551ff 0%, #a78bfa 50%, #60a5fa 100%)',
+            boxShadow: '0 4px 14px 0 rgba(117, 81, 255, 0.4)',
+          }}
+        >
+          <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 shrink-0">
+            <Scale className="size-6" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold opacity-95">Data from MoET Annual Reports</p>
+            {lastUpdated && (
+              <p className="mt-0.5 text-xs opacity-80">Last updated: {formatLastUpdated(lastUpdated)}</p>
+            )}
+          </div>
+        </div>
+      </div>
+    </aside>
+  )
+}

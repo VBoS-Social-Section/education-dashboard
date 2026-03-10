@@ -1,0 +1,797 @@
+{
+  "summary": {
+    "source": "annual_reports/",
+    "years_processed": [
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ],
+    "total_records": 55
+  },
+  "by_category": {
+    "court_metrics": [
+      {
+        "Court": "Supreme Court",
+        "Year": 2017,
+        "Metric": "Filings",
+        "Value": 689,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2017,
+        "Metric": "Filings",
+        "Value": 2065,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2017,
+        "Metric": "Disposals",
+        "Value": 693,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2017,
+        "Metric": "Disposals",
+        "Value": 2478,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2017,
+        "Metric": "Pending",
+        "Value": 910,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2017,
+        "Metric": "ClearanceRate",
+        "Value": 120,
+        "Unit": "%"
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2017,
+        "Metric": "PDR",
+        "Value": 1.7,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2017,
+        "Metric": "PDR",
+        "Value": 0.4,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2018,
+        "Metric": "Filings",
+        "Value": 712,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2018,
+        "Metric": "Disposals",
+        "Value": 717,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2018,
+        "Metric": "PDR",
+        "Value": 1.7,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2019,
+        "Metric": "Filings",
+        "Value": 766,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2019,
+        "Metric": "Disposals",
+        "Value": 710,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2019,
+        "Metric": "ClearanceRate",
+        "Value": 97,
+        "Unit": "%"
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2019,
+        "Metric": "PDR",
+        "Value": 1.7,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2019,
+        "Metric": "TimelinessCivil",
+        "Value": 767,
+        "Unit": "days"
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2019,
+        "Metric": "Productivity",
+        "Value": 90,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2020,
+        "Metric": "Filings",
+        "Value": 866,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2020,
+        "Metric": "PDR",
+        "Value": 0.7,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2020,
+        "Metric": "TimelinessCivil",
+        "Value": 822,
+        "Unit": "days"
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2020,
+        "Metric": "Productivity",
+        "Value": 279,
+        "Unit": ""
+      },
+      {
+        "Court": "All Courts",
+        "Year": 2021,
+        "Metric": "Pending",
+        "Value": 2387,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2021,
+        "Metric": "Productivity",
+        "Value": 273,
+        "Unit": ""
+      },
+      {
+        "Court": "Island Court",
+        "Year": 2022,
+        "Metric": "Filings",
+        "Value": 345,
+        "Unit": ""
+      },
+      {
+        "Court": "All Courts",
+        "Year": 2022,
+        "Metric": "Pending",
+        "Value": 2465,
+        "Unit": ""
+      },
+      {
+        "Court": "All Courts",
+        "Year": 2023,
+        "Metric": "Pending",
+        "Value": 2949,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2023,
+        "Metric": "PDR",
+        "Value": 0.7,
+        "Unit": ""
+      },
+      {
+        "Court": "All Courts",
+        "Year": 2024,
+        "Metric": "Pending",
+        "Value": 3113,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2024,
+        "Metric": "PDR",
+        "Value": 0.7,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2025,
+        "Metric": "Filings",
+        "Value": 958,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "Filings",
+        "Value": 2492,
+        "Unit": ""
+      },
+      {
+        "Court": "Island Court",
+        "Year": 2025,
+        "Metric": "Filings",
+        "Value": 399,
+        "Unit": ""
+      },
+      {
+        "Court": "All Courts",
+        "Year": 2025,
+        "Metric": "Filings",
+        "Value": 3932,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2025,
+        "Metric": "Disposals",
+        "Value": 933,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "Disposals",
+        "Value": 2215,
+        "Unit": ""
+      },
+      {
+        "Court": "Island Court",
+        "Year": 2025,
+        "Metric": "Disposals",
+        "Value": 418,
+        "Unit": ""
+      },
+      {
+        "Court": "All Courts",
+        "Year": 2025,
+        "Metric": "Pending",
+        "Value": 3227,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "Pending",
+        "Value": 1536,
+        "Unit": ""
+      },
+      {
+        "Court": "Court of Appeal",
+        "Year": 2025,
+        "Metric": "Pending",
+        "Value": 26,
+        "Unit": ""
+      },
+      {
+        "Court": "Island Court",
+        "Year": 2025,
+        "Metric": "Pending",
+        "Value": 622,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2025,
+        "Metric": "ClearanceRate",
+        "Value": 97,
+        "Unit": "%"
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "ClearanceRate",
+        "Value": 89,
+        "Unit": "%"
+      },
+      {
+        "Court": "Court of Appeal",
+        "Year": 2025,
+        "Metric": "ClearanceRate",
+        "Value": 93,
+        "Unit": "%"
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "PDR",
+        "Value": 0.7,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "TimelinessCriminal",
+        "Value": 197,
+        "Unit": "days"
+      },
+      {
+        "Court": "Island Court",
+        "Year": 2025,
+        "Metric": "TimelinessCivil",
+        "Value": 524,
+        "Unit": "days"
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2025,
+        "Metric": "Productivity",
+        "Value": 109,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "Productivity",
+        "Value": 269,
+        "Unit": ""
+      },
+      {
+        "Court": "Supreme Court",
+        "Year": 2025,
+        "Metric": "ReservedJudgments",
+        "Value": 51,
+        "Unit": ""
+      }
+    ],
+    "dv_filings": [
+      {
+        "Court": "Magistrates Court",
+        "Year": 2023,
+        "Metric": "DVFilings",
+        "Value": 292,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2024,
+        "Metric": "DVFilings",
+        "Value": 320,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "DVFilings",
+        "Value": 1167,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "DVDisposals",
+        "Value": 1135,
+        "Unit": ""
+      }
+    ],
+    "workload_by_type": [
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "PIFilings",
+        "Value": 400,
+        "Unit": ""
+      },
+      {
+        "Court": "Magistrates Court",
+        "Year": 2025,
+        "Metric": "PIDisposals",
+        "Value": 320,
+        "Unit": ""
+      }
+    ]
+  },
+  "flat": [
+    {
+      "Court": "Supreme Court",
+      "Year": 2017,
+      "Metric": "Filings",
+      "Value": 689,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2017,
+      "Metric": "Filings",
+      "Value": 2065,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2017,
+      "Metric": "Disposals",
+      "Value": 693,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2017,
+      "Metric": "Disposals",
+      "Value": 2478,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2017,
+      "Metric": "Pending",
+      "Value": 910,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2017,
+      "Metric": "ClearanceRate",
+      "Value": 120,
+      "Unit": "%"
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2017,
+      "Metric": "PDR",
+      "Value": 1.7,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2017,
+      "Metric": "PDR",
+      "Value": 0.4,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2018,
+      "Metric": "Filings",
+      "Value": 712,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2018,
+      "Metric": "Disposals",
+      "Value": 717,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2018,
+      "Metric": "PDR",
+      "Value": 1.7,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2019,
+      "Metric": "Filings",
+      "Value": 766,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2019,
+      "Metric": "Disposals",
+      "Value": 710,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2019,
+      "Metric": "ClearanceRate",
+      "Value": 97,
+      "Unit": "%"
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2019,
+      "Metric": "PDR",
+      "Value": 1.7,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2019,
+      "Metric": "TimelinessCivil",
+      "Value": 767,
+      "Unit": "days"
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2019,
+      "Metric": "Productivity",
+      "Value": 90,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2020,
+      "Metric": "Filings",
+      "Value": 866,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2020,
+      "Metric": "PDR",
+      "Value": 0.7,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2020,
+      "Metric": "TimelinessCivil",
+      "Value": 822,
+      "Unit": "days"
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2020,
+      "Metric": "Productivity",
+      "Value": 279,
+      "Unit": ""
+    },
+    {
+      "Court": "All Courts",
+      "Year": 2021,
+      "Metric": "Pending",
+      "Value": 2387,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2021,
+      "Metric": "Productivity",
+      "Value": 273,
+      "Unit": ""
+    },
+    {
+      "Court": "Island Court",
+      "Year": 2022,
+      "Metric": "Filings",
+      "Value": 345,
+      "Unit": ""
+    },
+    {
+      "Court": "All Courts",
+      "Year": 2022,
+      "Metric": "Pending",
+      "Value": 2465,
+      "Unit": ""
+    },
+    {
+      "Court": "All Courts",
+      "Year": 2023,
+      "Metric": "Pending",
+      "Value": 2949,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2023,
+      "Metric": "PDR",
+      "Value": 0.7,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2023,
+      "Metric": "DVFilings",
+      "Value": 292,
+      "Unit": ""
+    },
+    {
+      "Court": "All Courts",
+      "Year": 2024,
+      "Metric": "Pending",
+      "Value": 3113,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2024,
+      "Metric": "PDR",
+      "Value": 0.7,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2024,
+      "Metric": "DVFilings",
+      "Value": 320,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2025,
+      "Metric": "Filings",
+      "Value": 958,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "Filings",
+      "Value": 2492,
+      "Unit": ""
+    },
+    {
+      "Court": "Island Court",
+      "Year": 2025,
+      "Metric": "Filings",
+      "Value": 399,
+      "Unit": ""
+    },
+    {
+      "Court": "All Courts",
+      "Year": 2025,
+      "Metric": "Filings",
+      "Value": 3932,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2025,
+      "Metric": "Disposals",
+      "Value": 933,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "Disposals",
+      "Value": 2215,
+      "Unit": ""
+    },
+    {
+      "Court": "Island Court",
+      "Year": 2025,
+      "Metric": "Disposals",
+      "Value": 418,
+      "Unit": ""
+    },
+    {
+      "Court": "All Courts",
+      "Year": 2025,
+      "Metric": "Pending",
+      "Value": 3227,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "Pending",
+      "Value": 1536,
+      "Unit": ""
+    },
+    {
+      "Court": "Court of Appeal",
+      "Year": 2025,
+      "Metric": "Pending",
+      "Value": 26,
+      "Unit": ""
+    },
+    {
+      "Court": "Island Court",
+      "Year": 2025,
+      "Metric": "Pending",
+      "Value": 622,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2025,
+      "Metric": "ClearanceRate",
+      "Value": 97,
+      "Unit": "%"
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "ClearanceRate",
+      "Value": 89,
+      "Unit": "%"
+    },
+    {
+      "Court": "Court of Appeal",
+      "Year": 2025,
+      "Metric": "ClearanceRate",
+      "Value": 93,
+      "Unit": "%"
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "PDR",
+      "Value": 0.7,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "TimelinessCriminal",
+      "Value": 197,
+      "Unit": "days"
+    },
+    {
+      "Court": "Island Court",
+      "Year": 2025,
+      "Metric": "TimelinessCivil",
+      "Value": 524,
+      "Unit": "days"
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2025,
+      "Metric": "Productivity",
+      "Value": 109,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "Productivity",
+      "Value": 269,
+      "Unit": ""
+    },
+    {
+      "Court": "Supreme Court",
+      "Year": 2025,
+      "Metric": "ReservedJudgments",
+      "Value": 51,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "DVFilings",
+      "Value": 1167,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "DVDisposals",
+      "Value": 1135,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "PIFilings",
+      "Value": 400,
+      "Unit": ""
+    },
+    {
+      "Court": "Magistrates Court",
+      "Year": 2025,
+      "Metric": "PIDisposals",
+      "Value": 320,
+      "Unit": ""
+    }
+  ]
+}

@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/vanuatu_courts_dashboard/sw.js', { scope: '/vanuatu_courts_dashboard/' })})}

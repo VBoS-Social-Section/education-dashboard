@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+:root {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Horizon UI-inspired palette: purple & light blue */
+@theme {
+  --color-background: oklch(0.98 0.005 270);
+  --color-foreground: oklch(0.2 0.02 270);
+  --color-card: oklch(1 0 0);
+  --color-card-foreground: oklch(0.2 0.02 270);
+  --color-primary: oklch(0.45 0.2 280);
+  --color-primary-foreground: oklch(0.99 0 0);
+  --color-muted: oklch(0.96 0.01 270);
+  --color-muted-foreground: oklch(0.5 0.02 270);
+  --color-border: oklch(0.92 0.01 270);
+  --color-input: oklch(0.92 0.01 270);
+  --color-ring: oklch(0.45 0.2 280);
+  --color-accent: oklch(0.96 0.03 270);
+  --color-accent-foreground: oklch(0.25 0.05 270);
+  --color-popover: oklch(1 0 0);
+  --color-popover-foreground: oklch(0.2 0.02 270);
+  --color-sidebar: oklch(1 0 0);
+  --color-sidebar-foreground: oklch(0.25 0.02 270);
+  --color-brand: #7551ff;
+  --color-brand-light: #e9e3ff;
+  --radius-card: 1rem;
+  --radius-sidebar: 0.5rem;
+}

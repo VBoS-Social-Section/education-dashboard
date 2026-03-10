@@ -1,0 +1,109 @@
+Court,Year,CaseType,Filings,Disposals,ClearanceRate
+Supreme Court,2025,Total,958,933,97
+Supreme Court,2025,Criminal,245,248,101
+Supreme Court,2024,Total,879,821,93
+Supreme Court,2024,Criminal,237,240,101
+Supreme Court,2023,Total,850,830,98
+Supreme Court,2023,Criminal,246,243,99
+Supreme Court,2022,Total,820,810,99
+Supreme Court,2022,Criminal,250,248,99
+Supreme Court,2021,Total,800,790,99
+Supreme Court,2021,Criminal,255,252,99
+Supreme Court,2020,Total,866,1181,136
+Supreme Court,2020,Criminal,280,252,90
+Supreme Court,2019,Total,733,710,97
+Supreme Court,2019,Criminal,240,235,98
+Supreme Court,2018,Total,712,717,93
+Supreme Court,2018,Criminal,245,262,99
+Supreme Court,2017,Total,689,693,97
+Supreme Court,2017,Criminal,261,268,99
+Magistrates Court,2025,Total,2492,2215,89
+Magistrates Court,2025,Criminal,725,700,97
+Magistrates Court,2025,PI,400,320,80
+Magistrates Court,2025,Violence,1167,1135,97
+Magistrates Court,2024,Total,2383,2105,88
+Magistrates Court,2024,Criminal,800,760,95
+Magistrates Court,2024,PI,350,385,110
+Magistrates Court,2024,Violence,1228,1250,102
+Magistrates Court,2023,Total,2227,2039,92
+Magistrates Court,2023,Criminal,850,800,94
+Magistrates Court,2023,PI,340,250,74
+Magistrates Court,2023,Violence,1038,1050,101
+Magistrates Court,2022,Total,2100,1950,93
+Magistrates Court,2022,Criminal,820,780,95
+Magistrates Court,2022,PI,330,300,91
+Magistrates Court,2022,Violence,950,960,101
+Magistrates Court,2021,Total,2000,1900,95
+Magistrates Court,2021,Criminal,800,760,95
+Magistrates Court,2021,PI,320,310,97
+Magistrates Court,2021,Violence,880,830,94
+Magistrates Court,2020,Total,2231,2278,102
+Magistrates Court,2020,Criminal,750,760,101
+Magistrates Court,2020,PI,320,310,97
+Magistrates Court,2020,Violence,1161,1208,104
+Magistrates Court,2019,Total,2217,2003,90
+Magistrates Court,2019,Criminal,850,800,94
+Magistrates Court,2019,PI,330,310,94
+Magistrates Court,2019,Violence,1037,893,86
+Magistrates Court,2018,Total,2094,2109,101
+Magistrates Court,2018,Criminal,800,785,98
+Magistrates Court,2018,PI,310,320,103
+Magistrates Court,2018,Violence,984,1004,102
+Magistrates Court,2017,Total,2065,2478,120
+Magistrates Court,2017,Criminal,750,900,120
+Magistrates Court,2017,PI,290,350,121
+Magistrates Court,2017,Violence,1025,1228,120
+Island Court,2025,Total,395,400,101
+Island Court,2025,Criminal,185,205,111
+Island Court,2025,Maintenance,210,275,131
+Island Court,2024,Total,388,390,101
+Island Court,2024,Criminal,180,200,111
+Island Court,2024,Maintenance,208,270,130
+Island Court,2023,Total,407,420,103
+Island Court,2023,Criminal,200,175,88
+Island Court,2023,Maintenance,207,180,87
+Island Court,2022,Total,420,430,102
+Island Court,2022,Criminal,210,200,95
+Island Court,2022,Maintenance,210,220,105
+Island Court,2021,Total,430,440,102
+Island Court,2021,Criminal,215,210,98
+Island Court,2021,Maintenance,215,235,109
+Island Court,2020,Total,383,372,97
+Island Court,2020,Criminal,192,186,97
+Island Court,2020,Maintenance,191,186,97
+Island Court,2019,Total,286,245,85
+Island Court,2019,Criminal,143,120,84
+Island Court,2019,Maintenance,143,125,87
+Island Court,2018,Total,395,350,88
+Island Court,2018,Criminal,198,175,88
+Island Court,2018,Maintenance,197,175,89
+Island Court,2017,Total,500,447,89
+Island Court,2017,Criminal,250,225,90
+Island Court,2017,Maintenance,250,222,89
+Court of Appeal,2025,Total,82,84,102
+Court of Appeal,2025,Civil,46,49,107
+Court of Appeal,2025,Criminal,36,35,97
+Court of Appeal,2024,Total,80,82,102
+Court of Appeal,2024,Civil,45,48,107
+Court of Appeal,2024,Criminal,35,34,97
+Court of Appeal,2023,Total,78,76,97
+Court of Appeal,2023,Civil,44,42,95
+Court of Appeal,2023,Criminal,34,34,100
+Court of Appeal,2022,Total,75,74,99
+Court of Appeal,2022,Civil,42,41,98
+Court of Appeal,2022,Criminal,33,33,100
+Court of Appeal,2021,Total,77,75,97
+Court of Appeal,2021,Civil,43,41,95
+Court of Appeal,2021,Criminal,34,34,100
+Court of Appeal,2020,Total,76,73,96
+Court of Appeal,2020,Civil,42,40,95
+Court of Appeal,2020,Criminal,34,33,97
+Court of Appeal,2019,Total,78,76,97
+Court of Appeal,2019,Civil,43,42,98
+Court of Appeal,2019,Criminal,35,34,97
+Court of Appeal,2018,Total,76,74,97
+Court of Appeal,2018,Civil,42,41,98
+Court of Appeal,2018,Criminal,34,33,97
+Court of Appeal,2017,Total,72,70,97
+Court of Appeal,2017,Civil,40,39,98
+Court of Appeal,2017,Criminal,32,31,97
