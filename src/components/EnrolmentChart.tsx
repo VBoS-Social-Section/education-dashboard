@@ -42,13 +42,38 @@ export const EnrolmentChart = memo(function EnrolmentChart({ data, selectedYears
     credits: { enabled: false },
   }
 
+  const totalByYear = sortedYears.map((y) =>
+    institutions.reduce((sum, inst) => sum + (getValue(inst, 'Enrolment', y) ?? 0), 0)
+  )
+  const latestTotal = totalByYear[totalByYear.length - 1] ?? 0
+  const latestYear = sortedYears[sortedYears.length - 1]
+  const topLevel = institutions.reduce<{ inst: string; val: number } | null>((best, inst) => {
+    const v = getValue(inst, 'Enrolment', latestYear) ?? 0
+    return !best || v > best.val ? { inst, val: v } : best
+  }, null)
+
+  const dataDescription =
+    sortedYears.length > 0
+      ? `Showing enrolment for ${sortedYears.length === 1 ? sortedYears[0] : `${sortedYears[0]}–${sortedYears[sortedYears.length - 1]}`}. ` +
+        `Total enrolment ${totalByYear.length > 1 ? `ranges from ${Math.min(...totalByYear).toLocaleString()} to ${Math.max(...totalByYear).toLocaleString()}` : `is ${latestTotal.toLocaleString()}`} across the selected year${sortedYears.length > 1 ? 's' : ''}. ` +
+        (topLevel && topLevel.val > 0 ? `${topLevel.inst} has the highest enrolment with ${topLevel.val.toLocaleString()} students${latestYear ? ` in ${latestYear}` : ''}.` : '')
+      : ''
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Enrolment by Level and Year</CardTitle>
+        <p className="mt-2 text-sm font-normal leading-relaxed text-muted-foreground">
+          Total student enrolment by education level (ECCE, Primary, Secondary, Senior Secondary). Primary typically has the highest enrolment, followed by Secondary. ECCE captures pre-primary enrolment.
+        </p>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <HighchartsReact highcharts={Highcharts} options={options} immutable />
+        {dataDescription && (
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {dataDescription}
+          </p>
+        )}
       </CardContent>
     </Card>
   )

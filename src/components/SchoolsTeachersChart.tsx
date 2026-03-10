@@ -51,13 +51,40 @@ export const SchoolsTeachersChart = memo(function SchoolsTeachersChart({ data, s
     credits: { enabled: false },
   }
 
+  const totalSchoolsByYear = sortedYears.map((y) =>
+    institutions.reduce((sum, inst) => sum + (getValue(inst, 'Schools', y) ?? 0), 0)
+  )
+  const totalTeachersByYear = sortedYears.map((y) =>
+    institutions.reduce((sum, inst) => sum + (getValue(inst, 'Teachers', y) ?? 0), 0)
+  )
+  const latestYear = sortedYears[sortedYears.length - 1]
+  const latestSchools = totalSchoolsByYear[totalSchoolsByYear.length - 1] ?? 0
+  const latestTeachers = totalTeachersByYear[totalTeachersByYear.length - 1] ?? 0
+
+  const dataDescription =
+    sortedYears.length > 0
+      ? `Data for ${sortedYears.length === 1 ? `year ${sortedYears[0]}` : `years ${sortedYears[0]}–${sortedYears[sortedYears.length - 1]}`}. ` +
+        (totalSchoolsByYear.length > 1
+          ? `Schools range from ${Math.min(...totalSchoolsByYear).toLocaleString()} to ${Math.max(...totalSchoolsByYear).toLocaleString()}; teachers from ${Math.min(...totalTeachersByYear).toLocaleString()} to ${Math.max(...totalTeachersByYear).toLocaleString()}. `
+          : '') +
+        (latestYear ? `In ${latestYear}, there are ${latestSchools.toLocaleString()} schools and ${latestTeachers.toLocaleString()} teachers across the levels shown.` : '')
+      : ''
+
   return (
     <Card>
       <CardHeader>
         <CardTitle>Schools & Teachers by Level and Year</CardTitle>
+        <p className="mt-2 text-sm font-normal leading-relaxed text-muted-foreground">
+          Number of schools and teachers across ECCE, Primary, and Secondary. Each level shows grouped bars. The student-teacher ratio can be inferred by comparing enrolment with teacher counts.
+        </p>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-4">
         <HighchartsReact highcharts={Highcharts} options={options} immutable />
+        {dataDescription && (
+          <p className="text-sm leading-relaxed text-muted-foreground">
+            {dataDescription}
+          </p>
+        )}
       </CardContent>
     </Card>
   )

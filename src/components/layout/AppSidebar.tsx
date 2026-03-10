@@ -4,6 +4,8 @@ import {
   Layers,
   ClipboardList,
   GraduationCap,
+  TrendingUp,
+  Users,
 } from 'lucide-react'
 import { THEME, GRADIENT, GRADIENT_SHADOW } from '@/lib/theme'
 import { cn } from '@/lib/utils'
@@ -17,6 +19,8 @@ const DATA_ROUTES = [
   { name: 'Overview', icon: BarChart2 },
   { name: 'Enrolment', icon: FileText },
   { name: 'Schools & Teachers', icon: Layers },
+  { name: 'Performance', icon: TrendingUp },
+  { name: 'Teachers by Sex', icon: Users },
 ] as const
 
 const METHODOLOGY_ROUTE = { name: 'Methodology', icon: ClipboardList } as const

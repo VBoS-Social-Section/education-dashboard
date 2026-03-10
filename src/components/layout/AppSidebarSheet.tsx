@@ -8,6 +8,8 @@ const DATA_ROUTES = [
   'Overview',
   'Enrolment',
   'Schools & Teachers',
+  'Performance',
+  'Teachers by Sex',
 ] as const
 
 const METHODOLOGY_ROUTE = 'Methodology' as const

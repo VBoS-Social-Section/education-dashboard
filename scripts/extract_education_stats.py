@@ -84,7 +84,7 @@ def find_pdfs() -> list[tuple[Path, int]]:
 
 
 def parse_number(s: str) -> str | int | float:
-    s = str(s).strip().replace(",", "").replace(" ", "")
+    s = str(s).strip().replace(",", "").replace(" ", "").replace("%", "")
     if not s:
         return ""
     try:
@@ -190,6 +190,118 @@ def extract_tables_simple(text: str, year: int) -> list[dict]:
             ("Secondary", [r"Secondary(?:\s*\([^)]+\))?\s+([\d,\s]+)", r"Secondary School(?:\s*\([^)]+\))?\s+([\d,\s]+)"]),
             ("Total", [r"^\s*Total\s+([\d,\s]+)"]),
         ])
+
+    # Gross Enrolment Rate (GER) by school type - find block with actual data (has year row with %)
+    table27 = None
+    for m in re.finditer(r"Table \d+:.*?Gross Enrolment Rate \(GER\).*?school type and sex.*?(?=Table \d+:|Source:|\n\n\n)", t, re.DOTALL | re.IGNORECASE):
+        if re.search(r"20\d{2}\s+[\d.]+%", m.group(0)):  # Has data row
+            table27 = m
+            break
+    if table27:
+        block = table27.group(0)
+        # Match rows: 2022  88.6%  89.5%  89.0%  1.01  119.1%  116.9%  118.0%  0.98  49.9%  57.1%  53.4%  1.14
+        for row in re.finditer(r"(20\d{2})\s+([\d.%]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.]+)", block):
+            yr = int(row.group(1))
+            if yr != year:
+                continue
+            e_total, e_gpi = parse_number(row.group(4)), parse_number(row.group(5))
+            p_total, p_gpi = parse_number(row.group(8)), parse_number(row.group(9))
+            s_total, s_gpi = parse_number(row.group(12)), parse_number(row.group(13))
+            if isinstance(e_total, (int, float)):
+                add("ECCE", "GER", e_total, "%")
+            if isinstance(e_gpi, (int, float)) and 0.5 < e_gpi < 2:
+                add("ECCE", "GPI", e_gpi)
+            if isinstance(p_total, (int, float)):
+                add("Primary", "GER", p_total, "%")
+            if isinstance(p_gpi, (int, float)) and 0.5 < p_gpi < 2:
+                add("Primary", "GPI", p_gpi)
+            if isinstance(s_total, (int, float)):
+                add("Secondary", "GER", s_total, "%")
+            if isinstance(s_gpi, (int, float)) and 0.5 < s_gpi < 2:
+                add("Secondary", "GPI", s_gpi)
+
+    # Net Enrolment Rate (NER) by school type - must match "by school type in" (not "for each province in")
+    table28 = None
+    for m in re.finditer(r"Table \d+: Net Enrolment Rate \(NER\) and Gender Parity Index \(GPI\) by school type in \d{4} - \d{4}.*?(?=Table \d+:|Source:|\n\n\n)", t, re.DOTALL | re.IGNORECASE):
+        if re.search(r"20\d{2}\s+[\d.]+%", m.group(0)):
+            table28 = m
+            break
+    if table28:
+        block = table28.group(0)
+        for row in re.finditer(r"(20\d{2})\s+([\d.%]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.%]+)\s+([\d.]+)", block):
+            yr = int(row.group(1))
+            if yr != year:
+                continue
+            e_total, e_gpi = parse_number(row.group(4)), parse_number(row.group(5))
+            p_total, p_gpi = parse_number(row.group(8)), parse_number(row.group(9))
+            s_total, s_gpi = parse_number(row.group(12)), parse_number(row.group(13))
+            if isinstance(e_total, (int, float)):
+                add("ECCE", "NER", e_total, "%")
+            if isinstance(e_gpi, (int, float)) and 0.5 < e_gpi < 2:
+                add("ECCE", "NER_GPI", e_gpi)
+            if isinstance(p_total, (int, float)):
+                add("Primary", "NER", p_total, "%")
+            if isinstance(p_gpi, (int, float)) and 0.5 < p_gpi < 2:
+                add("Primary", "NER_GPI", p_gpi)
+            if isinstance(s_total, (int, float)):
+                add("Secondary", "NER", s_total, "%")
+            if isinstance(s_gpi, (int, float)) and 0.5 < s_gpi < 2:
+                add("Secondary", "NER_GPI", s_gpi)
+
+    # Teachers by sex/gender - find block with Male/Female ECCE data
+    teachers_sex = None
+    for m in re.finditer(r"Table \d+:.*?teachers by (?:sex|gender).*?in each school type.*?(?=Table \d+:|Source:|\n\n\n)", t, re.DOTALL | re.IGNORECASE):
+        if re.search(r"Male\s+ECCE\s+[\d,]+", m.group(0)):
+            teachers_sex = m
+            break
+    if teachers_sex:
+        block = teachers_sex.group(0)
+        years_list = _parse_year_range(block)
+        year_idx = years_list.index(year) if year in years_list else (len(years_list) - 1 if years_list else -1)
+        if year_idx >= 0:
+            # Split at Female to get Male block only
+            parts = re.split(r"\bFemale\b", block, maxsplit=1, flags=re.IGNORECASE)
+            male_block = parts[0] if parts else block
+            female_block = parts[1] if len(parts) > 1 else ""
+            # Male ECCE, Primary, Secondary
+            m_ecce = re.search(r"Male\s+ECCE\s+([\d,\s]+)", male_block, re.IGNORECASE)
+            if m_ecce:
+                nums = [parse_number(x) for x in re.findall(r"[\d,]+", m_ecce.group(1))]
+                nums = [n for n in nums if isinstance(n, (int, float))]
+                if year_idx < len(nums):
+                    add("ECCE", "Teachers_Male", nums[year_idx])
+            m_primary = re.search(r"Primary\s+school\s+(?:\([^)]+\)\s+)?([\d,\s]+)", male_block, re.IGNORECASE)
+            if m_primary:
+                nums = [parse_number(x) for x in re.findall(r"[\d,]+", m_primary.group(1))]
+                nums = [n for n in nums if isinstance(n, (int, float))]
+                if year_idx < len(nums):
+                    add("Primary", "Teachers_Male", nums[year_idx])
+            m_sec = re.search(r"Secondary\s+school\s+(?:\([^)]+\)\s+)?([\d,\s]+)", male_block, re.IGNORECASE)
+            if m_sec:
+                nums = [parse_number(x) for x in re.findall(r"[\d,]+", m_sec.group(1))]
+                nums = [n for n in nums if isinstance(n, (int, float))]
+                if year_idx < len(nums):
+                    add("Secondary", "Teachers_Male", nums[year_idx])
+            # Female ECCE, Primary, Secondary
+            if female_block:
+                f_ecce = re.search(r"ECCE\s+([\d,\s]+)", female_block, re.IGNORECASE)
+                if f_ecce:
+                    nums = [parse_number(x) for x in re.findall(r"[\d,]+", f_ecce.group(1))]
+                    nums = [n for n in nums if isinstance(n, (int, float))]
+                    if year_idx < len(nums):
+                        add("ECCE", "Teachers_Female", nums[year_idx])
+                f_primary = re.search(r"Primary\s+school\s+(?:\([^)]+\)\s+)?([\d,\s]+)", female_block, re.IGNORECASE)
+                if f_primary:
+                    nums = [parse_number(x) for x in re.findall(r"[\d,]+", f_primary.group(1))]
+                    nums = [n for n in nums if isinstance(n, (int, float))]
+                    if year_idx < len(nums):
+                        add("Primary", "Teachers_Female", nums[year_idx])
+                f_sec = re.search(r"Secondary\s+school\s+(?:\([^)]+\)\s+)?([\d,\s]+)", female_block, re.IGNORECASE)
+                if f_sec:
+                    nums = [parse_number(x) for x in re.findall(r"[\d,]+", f_sec.group(1))]
+                    nums = [n for n in nums if isinstance(n, (int, float))]
+                    if year_idx < len(nums):
+                        add("Secondary", "Teachers_Female", nums[year_idx])
 
     # Student-Teacher Ratio - Table 69 (2024) or 61 (2022)
     str_section = re.search(

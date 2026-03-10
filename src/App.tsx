@@ -11,6 +11,8 @@ import { PageIndicators } from './components/PageIndicators'
 import { OverviewPage } from './pages/OverviewPage'
 import { EnrolmentPage } from './pages/EnrolmentPage'
 import { SchoolsTeachersPage } from './pages/SchoolsTeachersPage'
+import { PerformancePage } from './pages/PerformancePage'
+import { TeachersDetailPage } from './pages/TeachersDetailPage'
 import { DataSourcesMethodologyPage } from './pages/DataSourcesMethodologyPage'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -20,6 +22,8 @@ const SECTION_NAMES = [
   'Overview',
   'Enrolment',
   'Schools & Teachers',
+  'Performance',
+  'Teachers by Sex',
   'Methodology',
 ] as const
 
@@ -120,6 +124,11 @@ export default function App() {
     return row ? parseValue(row.Value) : null
   }, [filteredData])
 
+  const getValueAll = useCallback((court: string, metric: string, year?: number): number | null => {
+    const row = data.find((r) => r.Court === court && r.Metric === metric && (year == null || r.Year === String(year)))
+    return row ? parseValue(row.Value) : null
+  }, [data])
+
   const getRowsByMetric = useCallback(
     (metric: string) =>
       filteredData.filter((r) => r.Metric === metric).map((r) => ({ ...r, valueNum: parseValue(r.Value) })),
@@ -197,7 +206,7 @@ export default function App() {
             </div>
           )}
 
-          {!loading && activeTab < 3 && selectedYears.length === 0 && (
+          {!loading && activeTab < 5 && selectedYears.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">Select at least one year to view data.</p>
@@ -213,7 +222,7 @@ export default function App() {
             </Card>
           )}
 
-          {!loading && activeTab < 3 && selectedYears.length > 0 && selectedCourts.length > 0 && filteredData.length === 0 && (
+          {!loading && selectedYears.length > 0 && (activeTab >= 3 || selectedCourts.length > 0) && filteredData.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">No data available for the selected filters.</p>
@@ -221,17 +230,19 @@ export default function App() {
             </Card>
           )}
 
-          {!loading && data.length > 0 && activeTab < 3 && (
+          {!loading && data.length > 0 && activeTab < 5 && (
             <>
-              {activeTab !== 0 && <PageIndicators data={filteredData} activeTab={activeTab} compareMode={compareMode} selectedYears={selectedYears} />}
+              {activeTab !== 0 && activeTab < 3 && <PageIndicators data={filteredData} activeTab={activeTab} compareMode={compareMode} selectedYears={selectedYears} />}
               <div className="grid gap-6 xl:grid-cols-1">
-                {activeTab === 0 && <OverviewPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} onNavigateToMethodology={() => setActiveTab(3)} />}
+                {activeTab === 0 && <OverviewPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} onNavigateToMethodology={() => setActiveTab(5)} />}
                 {activeTab === 1 && <EnrolmentPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
                 {activeTab === 2 && <SchoolsTeachersPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
+                {activeTab === 3 && <PerformancePage data={data} selectedYears={selectedYears} compareMode={compareMode} getValue={getValueAll} />}
+                {activeTab === 4 && <TeachersDetailPage data={data} selectedYears={selectedYears} getValue={getValueAll} />}
               </div>
             </>
           )}
-          {activeTab === 3 && (
+          {activeTab === 5 && (
             <div className="grid gap-6 xl:grid-cols-1">
               <DataSourcesMethodologyPage embedded />
             </div>
