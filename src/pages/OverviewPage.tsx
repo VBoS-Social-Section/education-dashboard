@@ -45,6 +45,9 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
   const totalEnrolment = enrolmentByYear.length > 0 ? enrolmentByYear[enrolmentByYear.length - 1] : 0
 
   // Total Schools
+  const schoolsByYear = useMemo(() => sortedYears.map(
+    (y) => data.filter((r) => r.Metric === 'Schools' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0)
+  ), [sortedYears, data])
   const totalSchools = useMemo(() => {
     return data
       .filter((r) => r.Court === 'Total')
