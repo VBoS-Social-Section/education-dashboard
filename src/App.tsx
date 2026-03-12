@@ -12,13 +12,14 @@ import { EnrolmentPage } from './pages/EnrolmentPage'
 import { SchoolsTeachersPage } from './pages/SchoolsTeachersPage'
 import { PerformancePage } from './pages/PerformancePage'
 import { TeachersDetailPage } from './pages/TeachersDetailPage'
+import { StatisticsOverview } from './pages/StatisticsOverviewPage'
 import { DataSourcesMethodologyPage } from './pages/DataSourcesMethodologyPage'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { MENU_LEVELS } from '@/lib/education-colors'
 
-const DATA_ROUTES = ['Overview', 'Enrolment', 'Schools & Teachers', 'Performance', 'Teachers by Sex'] as const
+const DATA_ROUTES = ['Overview', 'Enrolment', 'Schools & Teachers', 'Performance', 'Teachers by Sex', 'Statistics'] as const
 
 export const INSTITUTIONS = [
   'ECCE',
@@ -220,6 +221,13 @@ export default function App() {
               )}
               {activeTab === 4 && (
                 <TeachersDetailPage data={filteredData} selectedYears={selectedYears} getValue={getValue} />
+              )}
+              {activeTab === 5 && (
+                <StatisticsOverview 
+                  data={filteredData} 
+                  selectedYear={selectedYears[selectedYears.length - 1] || 2024}
+                  selectedLevels={selectedLevels}
+                />
               )}
             </>
           )}

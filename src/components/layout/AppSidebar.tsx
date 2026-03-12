@@ -1,4 +1,14 @@
-import { LayoutDashboard, GraduationCap, School, TrendingUp, UserCircle, ClipboardList, Baby, BookOpen } from 'lucide-react'
+import { 
+  LayoutDashboard, 
+  GraduationCap, 
+  School, 
+  TrendingUp, 
+  UserCircle, 
+  BarChart3 as BarChart,
+  ClipboardList, 
+  Baby, 
+  BookOpen 
+} from 'lucide-react'
 import { THEME, GRADIENT, GRADIENT_SHADOW } from '@/lib/theme'
 import { cn } from '@/lib/utils'
 import { MENU_LEVELS, getInstitutionColor, sortInstitutionsByOrder } from '@/lib/education-colors'
@@ -14,6 +24,7 @@ const DATA_ROUTES = [
   { name: 'Schools & Teachers', icon: School },
   { name: 'Performance', icon: TrendingUp },
   { name: 'Teachers by Sex', icon: UserCircle },
+  { name: 'Statistics', icon: BarChart },
 ] as const
 
 const METHODOLOGY_ROUTE = { name: 'Methodology', icon: ClipboardList } as const
