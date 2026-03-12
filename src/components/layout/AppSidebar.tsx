@@ -148,7 +148,7 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
           <p className="px-2 text-xs font-semibold uppercase tracking-wider text-muted-foreground">Years</p>
           <div className="space-y-3 px-2">
           <p className="text-sm font-medium">
-            Showing data for all available years: {years.sort((a, b) => b - a).join(', ')}
+            Showing data for selected years
           </p>
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium">Compare years</span>

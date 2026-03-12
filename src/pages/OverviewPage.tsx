@@ -45,16 +45,25 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
   const totalEnrolment = enrolmentByYear.length > 0 ? enrolmentByYear[enrolmentByYear.length - 1] : 0
 
   // Total Schools
-  const schoolsByYear = useMemo(() => sortedYears.map(
-    (y) => data.filter((r) => r.Metric === 'Schools' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0)
-  ), [sortedYears, data])
-  const totalSchools = schoolsByYear.length > 0 ? schoolsByYear[schoolsByYear.length - 1] : 0
+  const totalSchools = useMemo(() => {
+    return data
+      .filter((r) => r.Court === 'Total')
+      .filter((r) => r.Metric === 'Schools')
+      .reduce((sum, r) => sum + parseVal(r.Value), 0)
+  }, [data])
 
   // Total Teachers
+  const totalTeachers = useMemo(() => {
+    return data
+      .filter((r) => r.Court === 'Total')
+      .filter((r) => r.Metric === 'Teachers')
+      .reduce((sum, r) => sum + parseVal(r.Value), 0)
+  }, [data])
+
   const teachersByYear = useMemo(() => sortedYears.map(
     (y) => data.filter((r) => r.Metric === 'Teachers' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0)
   ), [sortedYears, data])
-  const totalTeachers = teachersByYear.length > 0 ? teachersByYear[teachersByYear.length - 1] : 0
+  const latestYearTeachers = teachersByYear.length > 0 ? teachersByYear[teachersByYear.length - 1] : 0
 
   // Enrolment by level (latest year) - use institutions from filtered data
   const latestYear = sortedYears[sortedYears.length - 1] ?? sortedYears[0]
@@ -78,9 +87,9 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
       : null
 
   const getValForYear = (y: number) => ({
-    enrolment: filteredData.filter((r) => r.Metric === 'Enrolment' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
-    schools: filteredData.filter((r) => r.Metric === 'Schools' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
-    teachers: filteredData.filter((r) => r.Metric === 'Teachers' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
+    enrolment: data.filter((r) => r.Metric === 'Enrolment' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
+    schools: data.filter((r) => r.Metric === 'Schools' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
+    teachers: data.filter((r) => r.Metric === 'Teachers' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
   })
 
   const cards: Array<{
@@ -123,7 +132,7 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
     },
     {
       label: 'Total Teachers',
-      value: totalTeachers.toLocaleString(),
+      value: latestYearTeachers.toLocaleString(),
       valueCompare: yearA != null && yearB != null ? (() => {
         const a = getValForYear(yearA).teachers
         const b = getValForYear(yearB).teachers
@@ -228,7 +237,7 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
       {/* Detailed Charts - Collapsible by Default */}
       <div className="space-y-6">
         <CollapsibleChart
-          title="Enrolment Trends"
+          title="Enrolment Trends Over Time"
           description="Track student enrollment patterns across education levels over time"
         >
           <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>

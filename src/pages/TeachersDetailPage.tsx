@@ -64,7 +64,7 @@ export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
           selectedYears={selectedYears}
           getValue={getValue}
           metric="Teachers_Male"
-          title="Male Teachers by Level"
+          title="Male Teachers by Level Trends"
           description="Number of male teachers by education level across selected years. Track gender representation in the teaching workforce."
         />
       </LazyChart>
@@ -75,7 +75,7 @@ export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
           selectedYears={selectedYears}
           getValue={getValue}
           metric="Teachers_Female"
-          title="Female Teachers by Level"
+          title="Female Teachers by Level Trends"
           description="Number of female teachers by education level. Female teachers typically dominate ECCE and Primary levels in Vanuatu."
         />
       </LazyChart>
