@@ -1,6 +1,14 @@
 import { useMemo } from 'react'
-import { GraduationCap, School, Users, TrendingUp, BookOpen, Info, ArrowUp, ArrowDown } from 'lucide-react'
-import { Sparkline } from '../components/Sparkline'
+import { GraduationCap, School, Users, BookOpen, Info } from 'lucide-react'
+import { LazyChart } from '../components/LazyChart'
+import { EnrolmentChart } from '../components/EnrolmentChart'
+import { AnimatedKPICard } from '../components/AnimatedChart'
+import { CollapsibleChart, MasonryGrid, CollapsibleKPICard } from '../components/CollapsibleChart'
+import { TrendChart } from '../components/TrendChart'
+import { GenderHeatmapChart } from '../components/GenderHeatmapChart'
+import { LevelPieChart } from '../components/LevelCharts'
+import { MANY_YEARS_THRESHOLD } from '@/lib/constants'
+import { getInstitutionColor, sortInstitutionsByOrder } from '@/lib/education-colors'
 import type { StatRow } from '../types'
 
 function parseVal(v: string): number {
@@ -18,11 +26,11 @@ interface Props {
 }
 
 const CARD_COLORS = {
-  enrolment: '#0d9488',
-  schools: '#059669',
-  teachers: '#0ea5e9',
-  primary: '#047857',
-  secondary: '#0284c7',
+  enrolment: '#FF6B35',  // Vanuatu red-orange
+  schools: '#0047AB',    // Deep blue
+  teachers: '#FFD700',   // Golden yellow
+  primary: '#228B22',    // Rich green
+  secondary: '#2C3E50', // Deep charcoal
 } as const
 
 export function OverviewPage({ data, selectedYears, compareMode = false, getValue, onNavigateToMethodology }: Props) {
@@ -48,10 +56,10 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
   ), [sortedYears, data])
   const totalTeachers = teachersByYear.length > 0 ? teachersByYear[teachersByYear.length - 1] : 0
 
-  // Enrolment by level (latest year)
+  // Enrolment by level (latest year) - use institutions from filtered data
   const latestYear = sortedYears[sortedYears.length - 1] ?? sortedYears[0]
   const enrolmentByLevel = useMemo(() => {
-    const levels = ['ECCE', 'Primary', 'Secondary', 'Senior Secondary']
+    const levels = institutions.filter((c) => c !== 'Total')
     return levels.map((inst) => ({
       inst,
       value: getValue(inst, 'Enrolment', latestYear) ?? 0,
@@ -70,9 +78,9 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
       : null
 
   const getValForYear = (y: number) => ({
-    enrolment: data.filter((r) => r.Metric === 'Enrolment' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
-    schools: data.filter((r) => r.Metric === 'Schools' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
-    teachers: data.filter((r) => r.Metric === 'Teachers' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
+    enrolment: filteredData.filter((r) => r.Metric === 'Enrolment' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
+    schools: filteredData.filter((r) => r.Metric === 'Schools' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
+    teachers: filteredData.filter((r) => r.Metric === 'Teachers' && r.Court === 'Total' && r.Year === String(y)).reduce((s, r) => s + parseVal(r.Value), 0),
   })
 
   const cards: Array<{
@@ -156,52 +164,106 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
           </button>
         )}
       </div>
-      <div className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {cards.map((card) => (
-          <div
-            key={card.label}
-            className="flex flex-col rounded-2xl border border-border/60 bg-white p-5 shadow-sm transition-shadow hover:shadow-md"
-          >
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex min-w-0 flex-1 items-start gap-3">
-                <div
-                  className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl"
-                  style={{ backgroundColor: `${card.color}18` }}
-                >
-                  <card.icon className="size-6" style={{ color: card.color }} strokeWidth={1.5} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-xs font-medium text-muted-foreground">{card.label}</p>
-                  {compareMode && card.valueCompare ? (
-                    <p className="mt-0.5 text-sm font-bold leading-tight text-foreground">{card.valueCompare}</p>
-                  ) : (
-                    <p className="mt-0.5 truncate text-xl font-bold text-foreground">{card.value}</p>
-                  )}
-                  {card.subtitle && (
-                    <p className="mt-1 line-clamp-2 text-[11px] leading-tight text-muted-foreground" title={card.subtitle}>
-                      {card.subtitle}
-                    </p>
-                  )}
-                </div>
-              </div>
-              {(card.sparklineData?.length >= 2 || card.yoy) && (
-                <div className="flex shrink-0 items-center gap-1">
-                  {card.yoy && (
-                    <span
-                      title={`YoY: ${card.yoy.pct >= 0 ? '+' : ''}${card.yoy.pct.toFixed(1)}%`}
-                      className="text-muted-foreground"
-                    >
-                      {card.yoy.dir === 'up' ? <ArrowUp className="size-3.5" strokeWidth={2.5} /> : <ArrowDown className="size-3.5" strokeWidth={2.5} />}
-                    </span>
-                  )}
-                  {card.sparklineData && card.sparklineData.length >= 2 && (
-                    <Sparkline data={card.sparklineData} width={80} height={36} color={card.color} strokeWidth={2} />
-                  )}
-                </div>
-              )}
-            </div>
+      
+      {/* Responsive KPI Masonry Grid */}
+      <MasonryGrid columns={{ xs: 1, sm: 2, lg: 3, xl: 4 }}>
+        <CollapsibleKPICard 
+          title="Total Enrolment" 
+          value={totalEnrolment.toLocaleString()} 
+          description="All education levels combined"
+          color={CARD_COLORS.enrolment}
+        >
+          <div className="text-xs text-muted-foreground space-y-1">
+            <div>• ECCE: {getValue('ECCE', 'Enrolment', latestYear)?.toLocaleString() || 0}</div>
+            <div>• Primary: {getValue('Primary', 'Enrolment', latestYear)?.toLocaleString() || 0}</div>
+            <div>• Secondary: {getValue('Secondary', 'Enrolment', latestYear)?.toLocaleString() || 0}</div>
+            <div>• Senior Secondary: {getValue('Senior Secondary', 'Enrolment', latestYear)?.toLocaleString() || 0}</div>
           </div>
-        ))}
+        </CollapsibleKPICard>
+        
+        <CollapsibleKPICard 
+          title="Total Schools" 
+          value={totalSchools.toLocaleString()} 
+          description="Educational institutions nationwide"
+          color={CARD_COLORS.schools}
+        >
+          <div className="text-xs text-muted-foreground space-y-1">
+            <div>• ECCE: {getValue('ECCE', 'Schools', latestYear)?.toLocaleString() || 0}</div>
+            <div>• Primary: {getValue('Primary', 'Schools', latestYear)?.toLocaleString() || 0}</div>
+            <div>• Secondary: {getValue('Secondary', 'Schools', latestYear)?.toLocaleString() || 0}</div>
+            <div>• Senior Secondary: {getValue('Senior Secondary', 'Schools', latestYear)?.toLocaleString() || 0}</div>
+          </div>
+        </CollapsibleKPICard>
+        
+        <CollapsibleKPICard 
+          title="Total Teachers" 
+          value={totalTeachers.toLocaleString()} 
+          description="Teaching workforce across all levels"
+          color={CARD_COLORS.teachers}
+        >
+          <div className="text-xs text-muted-foreground space-y-1">
+            <div>• ECCE: {getValue('ECCE', 'Teachers', latestYear)?.toLocaleString() || 0}</div>
+            <div>• Primary: {getValue('Primary', 'Teachers', latestYear)?.toLocaleString() || 0}</div>
+            <div>• Secondary: {getValue('Secondary', 'Teachers', latestYear)?.toLocaleString() || 0}</div>
+            <div>• Senior Secondary: {getValue('Senior Secondary', 'Teachers', latestYear)?.toLocaleString() || 0}</div>
+          </div>
+        </CollapsibleKPICard>
+        
+        <CollapsibleKPICard 
+          title="Enrolment by Level" 
+          value={enrolmentByLevel.length > 0 ? enrolmentByLevel.length : 0}
+          description="Education levels with data"
+          color={CARD_COLORS.primary}
+        >
+          <div className="text-xs text-muted-foreground space-y-1">
+            {enrolmentByLevel.map((level, index) => (
+              <div key={index}>
+                • {level.inst}: {level.value.toLocaleString()}
+              </div>
+            ))}
+          </div>
+        </CollapsibleKPICard>
+      </MasonryGrid>
+      
+      {/* Detailed Charts - Collapsible by Default */}
+      <div className="space-y-6">
+        <CollapsibleChart
+          title="Enrolment Trends"
+          description="Track student enrollment patterns across education levels over time"
+        >
+          <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
+            <TrendChart
+              data={data}
+              selectedYears={selectedYears}
+              getValue={getValue}
+              metric="Enrolment"
+              title="Enrolment Trends Over Time"
+              description="Line chart showing enrollment trends by education level across multiple years. Track growth patterns and identify changes in educational participation."
+            />
+          </LazyChart>
+        </CollapsibleChart>
+        
+        <CollapsibleChart
+          title="Gender Distribution Analysis"
+          description="Visualize gender balance across education levels and years"
+        >
+          <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
+            <GenderHeatmapChart
+              data={data}
+              selectedYears={selectedYears}
+              getValue={getValue}
+            />
+          </LazyChart>
+        </CollapsibleChart>
+        
+        <CollapsibleChart
+          title="Detailed Enrollment Breakdown"
+          description="Comprehensive view of enrollment by education level and year"
+        >
+          <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
+            <EnrolmentChart data={data} selectedYears={selectedYears} getValue={getValue} />
+          </LazyChart>
+        </CollapsibleChart>
       </div>
     </div>
   )

@@ -14,9 +14,9 @@ interface MobileFilterFABProps {
   onYearsChange: (years: number[]) => void
   compareMode: boolean
   onCompareModeChange: (v: boolean) => void
-  courts: readonly string[]
-  selectedCourts: string[]
-  onCourtsChange: (courts: string[]) => void
+  courts?: readonly string[]
+  selectedCourts?: string[]
+  onCourtsChange?: (courts: string[]) => void
 }
 
 export function MobileFilterFAB({
@@ -25,8 +25,8 @@ export function MobileFilterFAB({
   onYearsChange,
   compareMode,
   onCompareModeChange,
-  courts,
-  selectedCourts,
+  courts = [],
+  selectedCourts = [],
   onCourtsChange,
 }: MobileFilterFABProps) {
   const [open, setOpen] = useState(false)
@@ -51,7 +51,7 @@ export function MobileFilterFAB({
     if (set.has(court)) set.delete(court)
     else set.add(court)
     const next = [...set].filter((c) => courts.includes(c))
-    onCourtsChange(next.length > 0 ? next : [])
+    onCourtsChange?.(next.length > 0 ? next : [...courts])
   }
 
   const sortedCourts = sortInstitutionsByOrder([...courts])
@@ -82,28 +82,30 @@ export function MobileFilterFAB({
             <SheetDescription>Filter data by education levels and year range.</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-6 overflow-y-auto py-4">
-            <div className="space-y-3">
-              <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education Levels</p>
-              <div className="flex flex-col gap-2">
-                {sortedCourts.map((court) => (
-                  <label
-                    key={court}
-                    className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/60 bg-muted/30 px-4 py-3 active:bg-muted/50"
-                  >
-                    <Checkbox
-                      checked={selectedCourts.includes(court)}
-                      onCheckedChange={() => toggleCourt(court)}
-                    />
-                    <span
-                      className="size-3 shrink-0 rounded-full"
-                      style={{ backgroundColor: getInstitutionColor(court) }}
-                      aria-hidden
-                    />
-                    <span className="text-sm font-medium">{court}</span>
-                  </label>
-                ))}
+            {sortedCourts.length > 0 && onCourtsChange && (
+              <div className="space-y-3">
+                <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education Levels</p>
+                <div className="flex flex-col gap-2">
+                  {sortedCourts.map((court) => (
+                    <label
+                      key={court}
+                      className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/60 bg-muted/30 px-4 py-3 active:bg-muted/50"
+                    >
+                      <Checkbox
+                        checked={selectedCourts.includes(court)}
+                        onCheckedChange={() => toggleCourt(court)}
+                      />
+                      <span
+                        className="size-3 shrink-0 rounded-full"
+                        style={{ backgroundColor: getInstitutionColor(court) }}
+                        aria-hidden
+                      />
+                      <span className="text-sm font-medium">{court}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
             <div className="space-y-3">
               <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Years</p>
               <div className="space-y-3 rounded-xl border border-border/60 bg-muted/30 px-4 py-3">

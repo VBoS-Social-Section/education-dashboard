@@ -1,13 +1,15 @@
-/** Education institution colors - teal/emerald/sky palette */
+/** Vanuatu-inspired vibrant color palette with cultural relevance */
 export const INSTITUTION_COLORS: Record<string, string> = {
-  ECCE: '#0d9488',
-  Primary: '#059669',
-  Secondary: '#0ea5e9',
-  'Senior Secondary': '#0f766e',
-  Total: '#64748b',
+  ECCE: '#FF6B35',      // Vibrant orange-red (inspired by Vanuatu red)
+  Primary: '#0047AB',    // Deep blue (ocean/trust)
+  Secondary: '#FFD700',  // Golden yellow (sunshine/prosperity)
+  'Senior Secondary': '#228B22', // Rich green (growth/nature)
+  Total: '#8B4513',      // Warm brown (earth/heritage)
 }
 
 export const INSTITUTION_ORDER = ['ECCE', 'Primary', 'Secondary', 'Senior Secondary', 'Total'] as const
+
+export const MENU_LEVELS = ['ECCE', 'Primary', 'Secondary', 'Senior Secondary'] as const
 
 const INSTITUTION_SHORT: Record<string, string> = {
   ECCE: 'ECCE',

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import Papa from 'papaparse'
 import type { StatRow } from './types'
 import { AppSidebar } from './components/layout/AppSidebar'
@@ -7,7 +7,6 @@ import { MobileFilterFAB } from './components/layout/MobileFilterFAB'
 import { HeroBanner } from './components/HeroBanner'
 import { InstallPWAButton } from './components/InstallPWAButton'
 import { AppFooter } from './components/layout/AppFooter'
-import { PageIndicators } from './components/PageIndicators'
 import { OverviewPage } from './pages/OverviewPage'
 import { EnrolmentPage } from './pages/EnrolmentPage'
 import { SchoolsTeachersPage } from './pages/SchoolsTeachersPage'
@@ -17,21 +16,16 @@ import { DataSourcesMethodologyPage } from './pages/DataSourcesMethodologyPage'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import { MENU_LEVELS } from '@/lib/education-colors'
 
-const SECTION_NAMES = [
-  'Overview',
-  'Enrolment',
-  'Schools & Teachers',
-  'Performance',
-  'Teachers by Sex',
-  'Methodology',
-] as const
+const DATA_ROUTES = ['Overview', 'Enrolment', 'Schools & Teachers', 'Performance', 'Teachers by Sex'] as const
 
 export const INSTITUTIONS = [
   'ECCE',
   'Primary',
   'Secondary',
   'Senior Secondary',
+  'Tertiary',
   'Total',
 ] as const
 
@@ -68,15 +62,13 @@ export default function App() {
   const [years, setYears] = useState<number[]>([])
   const [lastUpdated, setLastUpdated] = useState<string | null>(null)
   const [selectedYears, setSelectedYears] = useState<number[]>([])
-  const [selectedCourts, setSelectedCourts] = useState<string[]>(() => [...INSTITUTIONS])
   const [compareMode, setCompareMode] = useState(false)
   const [data, setData] = useState<StatRow[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [activeTab, setActiveTab] = useState(0)
   const [sidebarOpen, setSidebarOpen] = useState(true)
-
-  const filteredData = data.filter((r) => selectedCourts.includes(r.Court))
+  const [selectedLevels, setSelectedLevels] = useState<string[]>(['ECCE', 'Primary', 'Secondary', 'Senior Secondary'])
 
   const loadYears = useCallback(async () => {
     try {
@@ -84,7 +76,7 @@ export default function App() {
       const y = res.years
       setYears(y)
       setLastUpdated(res.lastUpdated ?? null)
-      setSelectedYears((prev) => (prev.length === 0 && y.length > 0 ? (y.length >= 3 ? y.slice(-3) : y) : prev))
+      setSelectedYears((prev) => (prev.length === 0 && y.length > 0 ? y : prev))
     } catch (e) {
       setError((e as Error).message)
     }
@@ -119,21 +111,14 @@ export default function App() {
     }
   }, [selectedYears])
 
+  const filteredData = useMemo(() => {
+    return data.filter((r) => selectedLevels.includes(r.Court) || r.Court === 'Total')
+  }, [data, selectedLevels])
+
   const getValue = useCallback((court: string, metric: string, year?: number): number | null => {
     const row = filteredData.find((r) => r.Court === court && r.Metric === metric && (year == null || r.Year === String(year)))
     return row ? parseValue(row.Value) : null
   }, [filteredData])
-
-  const getValueAll = useCallback((court: string, metric: string, year?: number): number | null => {
-    const row = data.find((r) => r.Court === court && r.Metric === metric && (year == null || r.Year === String(year)))
-    return row ? parseValue(row.Value) : null
-  }, [data])
-
-  const getRowsByMetric = useCallback(
-    (metric: string) =>
-      filteredData.filter((r) => r.Metric === metric).map((r) => ({ ...r, valueNum: parseValue(r.Value) })),
-    [filteredData]
-  )
 
   return (
     <div className="flex min-h-screen bg-background">
@@ -143,11 +128,10 @@ export default function App() {
         years={years}
         selectedYears={selectedYears}
         onYearsChange={setSelectedYears}
+        selectedLevels={selectedLevels}
+        onLevelsChange={setSelectedLevels}
         compareMode={compareMode}
         onCompareModeChange={setCompareMode}
-        courts={INSTITUTIONS}
-        selectedCourts={selectedCourts}
-        onCourtsChange={setSelectedCourts}
         open={sidebarOpen}
         lastUpdated={lastUpdated}
       />
@@ -180,9 +164,9 @@ export default function App() {
                 <div className="flex items-center gap-1 text-sm text-muted-foreground">
                   <span>Pages</span>
                   <ChevronRight className="size-4" />
-                  <span>{SECTION_NAMES[activeTab]}</span>
+                  <span>{activeTab < DATA_ROUTES.length ? DATA_ROUTES[activeTab] : 'Methodology'}</span>
                 </div>
-                <h1 className="text-2xl font-bold text-foreground">{SECTION_NAMES[activeTab]}</h1>
+                <h1 className="text-2xl font-bold text-foreground">{activeTab < DATA_ROUTES.length ? DATA_ROUTES[activeTab] : 'Methodology'}</h1>
               </div>
               <div className="flex items-center gap-2">
                 <InstallPWAButton />
@@ -206,7 +190,7 @@ export default function App() {
             </div>
           )}
 
-          {!loading && activeTab < 5 && selectedYears.length === 0 && (
+          {!loading && activeTab < DATA_ROUTES.length && selectedYears.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">Select at least one year to view data.</p>
@@ -214,35 +198,32 @@ export default function App() {
             </Card>
           )}
 
-          {!loading && activeTab < 3 && selectedYears.length > 0 && selectedCourts.length === 0 && (
-            <Card className="shadow-sm">
-              <CardContent className="pt-6">
-                <p className="text-muted-foreground">Select at least one education level to view data.</p>
-              </CardContent>
-            </Card>
-          )}
-
-          {!loading && selectedYears.length > 0 && (activeTab >= 3 || selectedCourts.length > 0) && filteredData.length === 0 && (
-            <Card className="shadow-sm">
-              <CardContent className="pt-6">
-                <p className="text-muted-foreground">No data available for the selected filters.</p>
-              </CardContent>
-            </Card>
-          )}
-
-          {!loading && data.length > 0 && activeTab < 5 && (
+          {!loading && filteredData.length > 0 && activeTab < DATA_ROUTES.length && selectedYears.length > 0 && (
             <>
-              {activeTab !== 0 && activeTab < 3 && <PageIndicators data={filteredData} activeTab={activeTab} compareMode={compareMode} selectedYears={selectedYears} />}
-              <div className="grid gap-6 xl:grid-cols-1">
-                {activeTab === 0 && <OverviewPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} onNavigateToMethodology={() => setActiveTab(5)} />}
-                {activeTab === 1 && <EnrolmentPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
-                {activeTab === 2 && <SchoolsTeachersPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />}
-                {activeTab === 3 && <PerformancePage data={data} selectedYears={selectedYears} compareMode={compareMode} getValue={getValueAll} />}
-                {activeTab === 4 && <TeachersDetailPage data={data} selectedYears={selectedYears} getValue={getValueAll} />}
-              </div>
+              {activeTab === 0 && (
+                <OverviewPage
+                  data={filteredData}
+                  selectedYears={selectedYears}
+                  compareMode={compareMode}
+                  getValue={getValue}
+                  onNavigateToMethodology={() => setActiveTab(DATA_ROUTES.length)}
+                />
+              )}
+              {activeTab === 1 && (
+                <EnrolmentPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />
+              )}
+              {activeTab === 2 && (
+                <SchoolsTeachersPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />
+              )}
+              {activeTab === 3 && (
+                <PerformancePage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />
+              )}
+              {activeTab === 4 && (
+                <TeachersDetailPage data={filteredData} selectedYears={selectedYears} getValue={getValue} />
+              )}
             </>
           )}
-          {activeTab === 5 && (
+          {activeTab === DATA_ROUTES.length && (
             <div className="grid gap-6 xl:grid-cols-1">
               <DataSourcesMethodologyPage embedded />
             </div>
@@ -257,9 +238,9 @@ export default function App() {
         onYearsChange={setSelectedYears}
         compareMode={compareMode}
         onCompareModeChange={setCompareMode}
-        courts={INSTITUTIONS}
-        selectedCourts={selectedCourts}
-        onCourtsChange={setSelectedCourts}
+        courts={[...MENU_LEVELS]}
+        selectedCourts={selectedLevels}
+        onCourtsChange={setSelectedLevels}
       />
     </div>
   )

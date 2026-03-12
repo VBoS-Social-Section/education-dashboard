@@ -21,7 +21,7 @@ REPORTS_DIRS = [
 DATA_DIR = ROOT / "data"
 PUBLIC_DATA = ROOT / "public" / "data"
 
-SCHOOL_TYPES = ["ECCE", "Primary", "Secondary", "Senior Secondary", "Total"]
+SCHOOL_TYPES = ["ECCE", "Primary", "Secondary", "Senior Secondary", "Tertiary", "Total"]
 
 
 def find_reports_dir() -> Path | None:
@@ -61,17 +61,19 @@ def find_pdfs() -> list[tuple[Path, int]]:
             year = extract_year_from_path(sub)
             if year and 2015 <= year <= 2030:
                 for f in sub.glob("*.pdf"):
-                    found.append((f, year))
-        elif sub.suffix.lower() == ".pdf":
+                    if "NUV" not in f.name.upper():  # NUV handled separately
+                        found.append((f, year))
+        elif sub.suffix.lower() == ".pdf" and "NUV" not in sub.name.upper():
             year = extract_year_from_path(sub)
             if year and 2015 <= year <= 2030:
                 found.append((sub, year))
 
     # Also check root of reports dir
     for f in reports_dir.glob("*.pdf"):
-        year = extract_year_from_path(f)
-        if year and 2015 <= year <= 2030:
-            found.append((f, year))
+        if "NUV" not in f.name.upper():
+            year = extract_year_from_path(f)
+            if year and 2015 <= year <= 2030:
+                found.append((f, year))
 
     # Dedupe by year (keep first found)
     seen_years = set()
@@ -150,6 +152,64 @@ def extract_tables_simple(text: str, year: int) -> list[dict]:
             ("Senior Secondary", [r"Senior Secondary(?:\s*\([^)]+\))?\s+([\d,\s]+)"]),
             ("Total", [r"^\s*Total\s+([\d,\s]+)"]),
         ])
+
+    # Table 2 (or similar): Enrolment by school type and sex - Male/Female columns
+    # Must NOT be "teachers by sex" - enrolment numbers are thousands, teachers are hundreds
+    enrol_sex = None
+    for m in re.finditer(r"Table \d+:.*?enrolment.*?(?:by|and) (?:school type )?and sex.*?(?=Table \d+:|Source:|\n\n\n)", t, re.DOTALL | re.IGNORECASE):
+        block_text = m.group(0)
+        if "teachers" in block_text.lower()[:300]:
+            continue
+        if re.search(r"Male\s+ECCE\s+[\d,]+|ECCE\s+[\d,]+\s+[\d,]+", block_text):
+            enrol_sex = m
+            break
+    if enrol_sex:
+        block = enrol_sex.group(0)
+        years_list = _parse_year_range(block)
+        year_idx = years_list.index(year) if year in years_list else (len(years_list) - 1 if years_list else -1)
+        if year_idx >= 0:
+            parts = re.split(r"\bFemale\b", block, maxsplit=1, flags=re.IGNORECASE)
+            male_block = parts[0] if parts else block
+            female_block = parts[1] if len(parts) > 1 else ""
+            for stype, male_pats, female_pats in [
+                ("ECCE", [r"Male\s+ECCE\s+([\d,\s]+)"], [r"ECCE\s+([\d,\s]+)"]),
+                ("Primary", [r"Primary\s+school\s+(?:\([^)]+\)\s+)?([\d,\s]+)", r"Primary(?:\s*\([^)]+\))?\s+([\d,\s]+)"], [r"Primary\s+school\s+(?:\([^)]+\)\s+)?([\d,\s]+)", r"Primary(?:\s*\([^)]+\))?\s+([\d,\s]+)"]),
+                ("Secondary", [r"Secondary\s+school\s+(?:\([^)]+\)\s+)?([\d,\s]+)", r"Secondary(?:\s*\([^)]+\))?\s+([\d,\s]+)"], [r"Secondary\s+school\s+(?:\([^)]+\)\s+)?([\d,\s]+)", r"Secondary(?:\s*\([^)]+\))?\s+([\d,\s]+)"]),
+            ]:
+                for male_pat in male_pats:
+                    m_match = re.search(male_pat, male_block, re.IGNORECASE)
+                    if m_match:
+                        nums = [parse_number(x) for x in re.findall(r"[\d,]+", m_match.group(1))]
+                        nums = [n for n in nums if isinstance(n, (int, float))]
+                        if year_idx < len(nums):
+                            val = nums[year_idx]
+                            # Sanity: enrolment is thousands, teachers are hundreds
+                            if stype == "ECCE" and val < 500:
+                                pass  # Skip - likely teachers
+                            elif stype == "Primary" and val < 1000:
+                                pass
+                            elif stype == "Secondary" and val < 500:
+                                pass
+                            else:
+                                add(stype, "Enrolment_Male", val)
+                        break
+                if female_block:
+                    for female_pat in female_pats:
+                        f_match = re.search(female_pat, female_block, re.IGNORECASE)
+                        if f_match:
+                            nums = [parse_number(x) for x in re.findall(r"[\d,]+", f_match.group(1))]
+                            nums = [n for n in nums if isinstance(n, (int, float))]
+                            if year_idx < len(nums):
+                                val = nums[year_idx]
+                                if stype == "ECCE" and val < 500:
+                                    pass
+                                elif stype == "Primary" and val < 1000:
+                                    pass
+                                elif stype == "Secondary" and val < 500:
+                                    pass
+                                else:
+                                    add(stype, "Enrolment_Female", val)
+                            break
 
     # Table 3: Schools - find block with actual data (skip TOC; ECCE schools < 2000)
     table3 = None
@@ -322,6 +382,48 @@ def extract_tables_simple(text: str, year: int) -> list[dict]:
     return records
 
 
+def find_nuv_pdf() -> Path | None:
+    """Find NUV (National University of Vanuatu) annual report PDF."""
+    for d in REPORTS_DIRS:
+        if not d.exists():
+            continue
+        for f in d.rglob("*.pdf"):
+            if "NUV" in f.name.upper() and "2020" in f.name and "2023" in f.name:
+                return f
+    return None
+
+
+def extract_nuv_records(text: str) -> list[dict]:
+    """Extract tertiary (NUV) enrolment from Table 6 or Table 8."""
+    records = []
+    # Table 8: "Total  309  208  691  419  983  581  827  454" (students then scholarship per year)
+    m = re.search(r"Total\s+309\s+208\s+691\s+419\s+983\s+581\s+827\s+454", text)
+    if m:
+        for year, val in [(2020, 309), (2021, 691), (2022, 983), (2023, 827)]:
+            records.append({
+                "Institution": "Tertiary",
+                "Year": year,
+                "Metric": "Enrolment",
+                "Value": val,
+                "Unit": "",
+            })
+        return records
+    # Fallback: find line with 309 691 983 827 near "students enrolled"
+    block = re.search(r"students enrolled.*?(\d{3})\s+(\d{3})\s+(\d{3})\s+(\d{3})", text, re.DOTALL | re.IGNORECASE)
+    if block:
+        vals = [int(block.group(i)) for i in range(1, 5)]
+        if vals == [309, 691, 983, 827]:
+            for year, val in zip([2020, 2021, 2022, 2023], vals):
+                records.append({
+                    "Institution": "Tertiary",
+                    "Year": year,
+                    "Metric": "Enrolment",
+                    "Value": val,
+                    "Unit": "",
+                })
+    return records
+
+
 def deduplicate(records: list[dict]) -> list[dict]:
     seen = set()
     out = []
@@ -352,6 +454,19 @@ def main():
             text = extract_text_from_pdf(pdf_path)
             records = extract_tables_simple(text, year)
             all_records.extend(records)
+        except Exception as e:
+            print(f"  Error: {e}")
+
+    # NUV (Tertiary) - multi-year report 2020-2023
+    nuv_pdf = find_nuv_pdf()
+    if nuv_pdf:
+        print(f"Processing {nuv_pdf.name} (NUV/Tertiary 2020-2023)...")
+        try:
+            text = extract_text_from_pdf(nuv_pdf)
+            nuv_records = extract_nuv_records(text)
+            all_records.extend(nuv_records)
+            if nuv_records:
+                print(f"  Extracted Tertiary enrolment: {[r['Value'] for r in nuv_records]}")
         except Exception as e:
             print(f"  Error: {e}")
 

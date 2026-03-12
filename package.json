@@ -9,10 +9,12 @@
     "generate-data": "python3 scripts/extract_education_stats.py"
   },
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.12",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "framer-motion": "^12.35.2",
     "highcharts": "^12.5.0",
     "highcharts-react-official": "^3.2.3",
     "lucide-react": "^0.574.0",

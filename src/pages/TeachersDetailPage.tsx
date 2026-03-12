@@ -1,5 +1,10 @@
 import { useMemo } from 'react'
 import { Users, User, UserCheck } from 'lucide-react'
+import { LazyChart } from '../components/LazyChart'
+import { TrendChart } from '../components/TrendChart'
+import { GenderHeatmapChart } from '../components/GenderHeatmapChart'
+import { EnhancedBarChart } from '../components/EnhancedBarChart'
+import { MANY_YEARS_THRESHOLD } from '@/lib/constants'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -8,7 +13,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-const LEVELS = ['ECCE', 'Primary', 'Secondary'] as const
+const LEVELS = ['ECCE', 'Primary', 'Secondary', 'Senior Secondary'] as const
 
 export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
   const hasSexData = useMemo(() => {
@@ -51,9 +56,61 @@ export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
           Number of teachers by sex (Male/Female) in each school type. In Vanuatu, female teachers typically outnumber male, especially in ECCE and Primary. Source: MoET Annual Reports, Table 43.
         </p>
       </div>
+      
+      {/* Enhanced bar charts for teacher gender breakdown */}
+      <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
+        <EnhancedBarChart
+          data={data}
+          selectedYears={selectedYears}
+          getValue={getValue}
+          metric="Teachers_Male"
+          title="Male Teachers by Level"
+          description="Number of male teachers by education level across selected years. Track gender representation in the teaching workforce."
+        />
+      </LazyChart>
+      
+      <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
+        <EnhancedBarChart
+          data={data}
+          selectedYears={selectedYears}
+          getValue={getValue}
+          metric="Teachers_Female"
+          title="Female Teachers by Level"
+          description="Number of female teachers by education level. Female teachers typically dominate ECCE and Primary levels in Vanuatu."
+        />
+      </LazyChart>
+      
+      {/* Trend analysis for multi-year data */}
+      {selectedYears.length > 1 && (
+        <>
+          <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
+            <TrendChart
+              data={data}
+              selectedYears={selectedYears}
+              getValue={getValue}
+              metric="Teachers_Male"
+              title="Male Teacher Trends Over Time"
+              description="Line chart showing male teacher workforce trends. Monitor changes in gender representation over time."
+            />
+          </LazyChart>
+          
+          <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
+            <TrendChart
+              data={data}
+              selectedYears={selectedYears}
+              getValue={getValue}
+              metric="Teachers_Female"
+              title="Female Teacher Trends Over Time"
+              description="Line chart showing female teacher workforce trends. Track growth patterns in female participation."
+            />
+          </LazyChart>
+        </>
+      )}
+      
+      {/* Summary cards */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {levelStats.map(({ inst, maleTotal, femaleTotal, total }) => (
-          <div key={inst} className="rounded-2xl border border-border/60 bg-white p-5 shadow-sm">
+          <div key={inst} className="rounded-2xl border border-border/60 bg-white p-5 shadow-sm hover:shadow-lg transition-shadow duration-300">
             <h3 className="mb-4 text-sm font-semibold">{inst}</h3>
             <div className="space-y-3">
               <div className="flex items-center justify-between">
@@ -77,10 +134,18 @@ export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
                 </span>
                 <span className="font-medium">{total.toLocaleString()}</span>
               </div>
+              <div className="text-xs text-muted-foreground mt-2">
+                {femaleTotal > maleTotal ? (
+                  <span className="text-green-600">⚖️ Female majority ({((femaleTotal / total) * 100).toFixed(1)}%)</span>
+                ) : (
+                  <span className="text-blue-600">⚖️ Male majority ({((maleTotal / total) * 100).toFixed(1)}%)</span>
+                )}
+              </div>
             </div>
           </div>
         ))}
       </div>
+      
       {dataDescription && (
         <p className="text-sm leading-relaxed text-muted-foreground">
           {dataDescription}
