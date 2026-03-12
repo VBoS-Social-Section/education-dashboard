@@ -51,7 +51,7 @@ You only need to upload the file. The rest is automatic.
 1. Click the **"Add file"** button (top right).
 2. Select **"Create new file"** from the dropdown.
 
-![Screenshot: Add file dropdown menu. Add a screenshot here.](images/step3-add-file-menu.png){width=80%}
+![Add file dropdown menu.](images/step3-add-file-menu.png){width=80%}
 
 3. In the file name box at the top, type: **`2025/placeholder.txt`**  
    (Replace `2025` with the year of your report, e.g. `2026` for the 2026 report. The `/` creates the folder.)
@@ -65,7 +65,7 @@ You only need to upload the file. The rest is automatic.
 If a folder for your year already exists (e.g. `2025`), skip this step and go to Step 4. You can upload directly into that folder.
 :::
 
-![Screenshot: Creating a new file to make the year folder. Add a screenshot here.](images/step3-create-year-folder.png){width=80%}
+![Creating a new file to make the year folder](images/step3-create-year-folder.png){width=80%}
 
 ---
 
@@ -79,7 +79,8 @@ If a folder for your year already exists (e.g. `2025`), skip this step and go to
 6. Add a short note in the commit message box, e.g. **"Add 2025 annual report"**.
 7. Click **"Commit changes"** (green button).
 
-![Screenshot: Upload files screen with drag-and-drop area. Add a screenshot here.](images/step4-upload-pdf.png){width=80%}
+![Upload files button](images/step4-upload-button.png){width=80%}
+![Upload files screen with drag-and-drop area](images/step4-upload-pdf.png){width=80%}
 
 ---
 
@@ -90,7 +91,7 @@ If a folder for your year already exists (e.g. `2025`), skip this step and go to
 3. You should see a workflow run. A yellow circle means it is running; a green tick means it finished successfully.
 4. The build usually takes 2–5 minutes.
 
-![Screenshot: GitHub Actions tab showing a successful workflow run. Add a screenshot here.](images/step5-actions.png){width=80%}
+![GitHub Actions tab showing a successful workflow run](images/step5-actions.png){width=80%}
 
 ---
 
@@ -101,8 +102,6 @@ Once the build completes successfully:
 1. If the dashboard is hosted on GitHub Pages, it will update automatically.
 2. Open the dashboard URL (e.g. `https://vbos-social-section.github.io/education-dashboard/` — check with your team for the exact URL).
 3. Use the year filter to select the new year and confirm the new data appears.
-
-![Screenshot: Dashboard with the new year selected in the filter. Add a screenshot here.](images/step6-dashboard-updated.png){width=80%}
 
 ---
 

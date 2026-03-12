@@ -40,7 +40,11 @@ export function MobileFilterFAB({
   }
   const handleCompareModeChange = (checked: boolean) => {
     onCompareModeChange(checked)
-    if (checked) onYearsChange(years.length >= 2 ? years.slice(-2) : selectedYears.slice(-2))
+    if (checked) {
+      onYearsChange(years.length >= 2 ? years.slice(-2) : selectedYears.slice(-2))
+    } else {
+      onYearsChange(years.length > 0 ? [...years] : selectedYears)
+    }
   }
   const yearA = selectedYears[0] ?? years[0]
   const yearB = selectedYears[1] ?? years[1] ?? years[0]

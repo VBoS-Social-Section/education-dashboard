@@ -84,6 +84,8 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
       const sorted = [...selectedYears].sort((a, b) => a - b)
       const lastTwo = years.length >= 2 ? years.slice(-2) : sorted.slice(-2)
       onYearsChange(lastTwo.length === 2 ? lastTwo : (sorted.length >= 2 ? sorted.slice(-2) : years.slice(0, 2)))
+    } else {
+      onYearsChange(years.length > 0 ? [...years] : selectedYears)
     }
   }
   const compareYearA = selectedYears[0] ?? years[0]

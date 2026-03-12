@@ -12,7 +12,15 @@ Highcharts.setOptions({
     backgroundColor: 'transparent',
     style: {
       fontFamily: 'Inter, system-ui, sans-serif'
-    }
+    },
+    events: {
+      fullscreenOpen: function (this: Highcharts.Chart) {
+        this.update({ chart: { backgroundColor: '#ffffff' } }, true)
+      },
+      fullscreenClose: function (this: Highcharts.Chart) {
+        this.update({ chart: { backgroundColor: 'transparent' } }, true)
+      },
+    },
   },
   colors: [
     '#4B6DEB', // vibrant blue

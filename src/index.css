@@ -59,3 +59,10 @@
 .font-bold { font-weight: 700; }
 .font-extrabold { font-weight: 800; }
 .font-black { font-weight: 900; }
+
+/* Highcharts fullscreen: white background instead of black */
+.highcharts-fullscreen,
+.highcharts-fullscreen-container,
+body:has(.highcharts-fullscreen) {
+  background: #ffffff !important;
+}
