@@ -34,3 +34,17 @@ export const COURT_METRICS = [
 
 /** Case outcome metric prefixes */
 export const OUTCOME_PREFIXES = ['Criminal_', 'Civil_', 'PI_'] as const
+
+/** SDG 4 seed data from MoET/VEMIS (2022–2024) */
+export interface Sdg4Seed {
+  provinces: string[]
+  authorities: string[]
+  locations: string[]
+  enrolmentByProvince2024?: Record<string, Record<string, number>>
+  enrolmentByAuthority2024?: Record<string, Record<string, number>>
+  enrolmentByLocation2024?: Record<string, Record<string, number>>
+  enrolmentBySex?: Record<string, Record<string, { Male: number; Female: number }>>
+  strByLevel?: Record<string, Record<string, number>>
+  gerByProvince2024?: Record<string, Record<string, number>>
+  nerByProvince2024?: Record<string, Record<string, number>>
+}

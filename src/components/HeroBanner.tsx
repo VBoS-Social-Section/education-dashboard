@@ -97,9 +97,9 @@ export function HeroBanner({ lastUpdated, className, placement = 'banner' }: Her
   if (placement === 'banner') {
     return (
       <div className={cn('mb-6', className)}>
-        <div className="rounded-xl border border-teal-500/30 bg-teal-500/5 px-4 py-3">
+        <div className="rounded-xl border border-[#4B6DEB]/30 bg-[#4B6DEB]/5 px-4 py-3">
           <div className="flex items-start gap-3">
-            <Info className="mt-0.5 size-4 shrink-0 text-teal-600" strokeWidth={2} />
+            <Info className="mt-0.5 size-4 shrink-0 text-[#4B6DEB]" strokeWidth={2} />
             <div className="min-w-0 flex-1">
               <p className="text-sm text-muted-foreground">{message}</p>
               <p className="mt-1 text-xs text-muted-foreground/80">

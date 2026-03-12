@@ -21,7 +21,7 @@ export function SchoolsTeachersPage({ data, selectedYears, compareMode = false, 
       <CollapsibleChart
         title="Schools & Teachers Overview"
         description="Educational institutions and teaching workforce by education level"
-        icon={<School className="size-5 text-teal-600" />}
+        icon={<School className="size-5 text-[#4B6DEB]" />}
         defaultOpen={true}
       >
         <LazyChart enabled={lazy}>
@@ -35,7 +35,7 @@ export function SchoolsTeachersPage({ data, selectedYears, compareMode = false, 
           <CollapsibleChart
             title="Infrastructure Trends"
             description="Track school infrastructure development over time"
-            icon={<TrendingUp className="size-5 text-teal-600" />}
+            icon={<TrendingUp className="size-5 text-[#4B6DEB]" />}
           >
             <LazyChart enabled={lazy}>
               <TrendChart
@@ -52,7 +52,7 @@ export function SchoolsTeachersPage({ data, selectedYears, compareMode = false, 
           <CollapsibleChart
             title="Workforce Trends"
             description="Monitor teaching workforce growth and changes"
-            icon={<Users className="size-5 text-teal-600" />}
+            icon={<Users className="size-5 text-[#4B6DEB]" />}
           >
             <LazyChart enabled={lazy}>
               <TrendChart

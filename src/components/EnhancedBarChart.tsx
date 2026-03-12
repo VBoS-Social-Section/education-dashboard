@@ -14,6 +14,8 @@ interface Props {
   description: string
   showStacked?: boolean
   showPercentages?: boolean
+  /** When true, omit Card header (use when parent provides the title) */
+  hideHeader?: boolean
 }
 
 export const EnhancedBarChart = memo(function EnhancedBarChart({ 
@@ -24,7 +26,8 @@ export const EnhancedBarChart = memo(function EnhancedBarChart({
   title, 
   description,
   showStacked = false,
-  showPercentages = false
+  showPercentages = false,
+  hideHeader = false
 }: Props) {
   const institutions = sortInstitutionsByOrder([
     ...new Set(data.filter((r) => r.Metric === metric).map((r) => r.Court)),
@@ -195,13 +198,15 @@ export const EnhancedBarChart = memo(function EnhancedBarChart({
 
   return (
     <Card className="hover:shadow-lg transition-shadow duration-300">
-      <CardHeader>
-        <CardTitle className="font-display text-lg">{title}</CardTitle>
-        <p className="mt-2 text-sm font-normal leading-relaxed text-muted-foreground">
-          {description}
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-4">
+      {!hideHeader && (
+        <CardHeader>
+          <CardTitle className="font-display text-lg">{title}</CardTitle>
+          <p className="mt-2 text-sm font-normal leading-relaxed text-muted-foreground">
+            {description}
+          </p>
+        </CardHeader>
+      )}
+      <CardContent className={hideHeader ? 'pt-6' : 'space-y-4'}>
         <HighchartsReact highcharts={Highcharts} options={options} immutable />
       </CardContent>
     </Card>

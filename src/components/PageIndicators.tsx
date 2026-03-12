@@ -119,13 +119,13 @@ export function PageIndicators({ data, activeTab, compareMode = false, selectedY
 
   const indicatorsByPage: Record<number, Indicator[]> = {
     0: [
-      { label: 'Total Enrolment', value: totalEnrolment.toLocaleString(), icon: FileText, color: '#0d9488' },
-      { label: 'Total Schools', value: totalSchools.toLocaleString(), icon: TrendingUp, color: '#059669' },
+      { label: 'Total Enrolment', value: totalEnrolment.toLocaleString(), icon: FileText, color: '#4B6DEB' },
+      { label: 'Total Schools', value: totalSchools.toLocaleString(), icon: TrendingUp, color: '#6DEBB9' },
       { label: 'Total Teachers', value: totalTeachers.toLocaleString(), icon: Users, color: '#0ea5e9' },
       { label: 'Avg Student-Teacher Ratio', value: avgSTR > 0 ? avgSTR.toFixed(1) : 'N/A', icon: Scale, color: '#0f766e' },
     ],
     1: [
-      { label: 'Total Enrolment', value: totalEnrolment.toLocaleString(), icon: FileText, color: '#0d9488' },
+      { label: 'Total Enrolment', value: totalEnrolment.toLocaleString(), icon: FileText, color: '#4B6DEB' },
       {
         label: 'Enrolment Change (YoY)',
         value:
@@ -136,13 +136,13 @@ export function PageIndicators({ data, activeTab, compareMode = false, selectedY
         icon: enrolmentYoY?.netChange != null && enrolmentYoY.netChange >= 0 ? TrendingUp : TrendingDown,
         color: '#0ea5e9',
       },
-      { label: 'Total Schools', value: totalSchools.toLocaleString(), icon: Layers, color: '#059669' },
+      { label: 'Total Schools', value: totalSchools.toLocaleString(), icon: Layers, color: '#6DEBB9' },
       { label: 'Total Teachers', value: totalTeachers.toLocaleString(), icon: Users, color: '#0ea5e9' },
       { label: 'Avg Student-Teacher Ratio', value: avgSTR > 0 ? avgSTR.toFixed(1) : 'N/A', icon: Scale, color: '#0f766e' },
     ],
     2: [
-      { label: 'Total Schools', value: totalSchools.toLocaleString(), icon: Layers, color: '#0d9488' },
-      { label: 'Total Teachers', value: totalTeachers.toLocaleString(), icon: Users, color: '#059669' },
+      { label: 'Total Schools', value: totalSchools.toLocaleString(), icon: Layers, color: '#4B6DEB' },
+      { label: 'Total Teachers', value: totalTeachers.toLocaleString(), icon: Users, color: '#6DEBB9' },
       { label: 'Total Enrolment', value: totalEnrolment.toLocaleString(), icon: FileText, color: '#0ea5e9' },
       { label: 'Avg Student-Teacher Ratio', value: avgSTR > 0 ? avgSTR.toFixed(1) : 'N/A', icon: Scale, color: '#0f766e' },
     ],

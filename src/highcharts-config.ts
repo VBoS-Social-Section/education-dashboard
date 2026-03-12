@@ -15,10 +15,10 @@ Highcharts.setOptions({
     }
   },
   colors: [
-    '#FF6B35', // Vanuatu red-orange
-    '#0047AB', // Deep blue
-    '#FFD700', // Golden yellow
-    '#228B22', // Rich green
+    '#4B6DEB', // vibrant blue
+    '#6DEBB9', // mint green
+    '#3D6D70', // dark teal
+    '#9CA5B7', // muted lavender
     '#2C3E50', // Deep charcoal
     '#8B4513', // Warm brown
   ],

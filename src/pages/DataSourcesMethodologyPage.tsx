@@ -31,10 +31,10 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
       </p>
 
       <div className="space-y-6">
-        <Card className="border-teal-500/30 bg-gradient-to-br from-teal-500/5 to-transparent">
+        <Card className="border-[#4B6DEB]/30 bg-gradient-to-br from-[#4B6DEB]/5 to-transparent">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sparkles className="size-5 text-teal-600" />
+              <Sparkles className="size-5 text-[#4B6DEB]" />
               What&apos;s New
             </CardTitle>
           </CardHeader>

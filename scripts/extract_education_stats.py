@@ -371,13 +371,26 @@ def extract_tables_simple(text: str, year: int) -> list[dict]:
     )
     if str_section:
         block = str_section.group(0)
-        # Find STR table - format varies, look for ECCE/Primary/Secondary with ratio
         for stype in ["ECCE", "Primary", "Secondary"]:
             m = re.search(rf"{re.escape(stype)}\s+([\d.]+)", block, re.IGNORECASE)
             if m:
                 val = parse_number(m.group(1))
-                if isinstance(val, (int, float)) and 1 < val < 200:  # Sanity check
+                if isinstance(val, (int, float)) and 1 < val < 200:
                     add(stype, "StudentTeacherRatio", val)
+
+    # Calculate STR from Enrolment/Teachers when not extracted (SDG 4 standard)
+    for stype in ["ECCE", "Primary", "Secondary"]:
+        if any(r["Institution"] == stype and r["Metric"] == "StudentTeacherRatio" for r in records):
+            continue
+        e = next((r["Value"] for r in records if r["Institution"] == stype and r["Metric"] == "Enrolment"), None)
+        te = next((r["Value"] for r in records if r["Institution"] == stype and r["Metric"] == "Teachers"), None)
+        if e is not None and te is not None:
+            estr = parse_number(str(e))
+            tstr = parse_number(str(te))
+            if isinstance(estr, (int, float)) and isinstance(tstr, (int, float)) and tstr > 0:
+                ratio = round(estr / tstr, 1)
+                if 1 < ratio < 200:
+                    add(stype, "StudentTeacherRatio", ratio)
 
     return records
 
@@ -495,6 +508,42 @@ def main():
             w.writerow([r["Institution"], r["Year"], r["Metric"], r["Value"], r["Unit"]])
     print(f"Wrote compat format to {compat_path}")
 
+    # Merge SDG 4 seed data (STR) and write province/authority meta for dashboard
+    seed_path = PUBLIC_DATA / "seed_sdg4.json"
+    if seed_path.exists():
+        try:
+            seed = json.loads(seed_path.read_text(encoding="utf-8"))
+            # STR from seed when not in extracted data
+            str_seed = seed.get("strByLevel", {})
+            for yr, levels in str_seed.items():
+                y = int(yr)
+                for level, val in levels.items():
+                    if not any(r.get("Institution") == level and r.get("Year") == y and r.get("Metric") == "StudentTeacherRatio" for r in all_records):
+                        all_records.append({
+                            "Institution": level,
+                            "Year": y,
+                            "Metric": "StudentTeacherRatio",
+                            "Value": val,
+                            "Unit": "",
+                        })
+            all_records = deduplicate(all_records)
+            # Write province/authority/location breakdowns for dashboard
+            sdg4_meta = {
+                "provinces": seed.get("provinces", []),
+                "authorities": seed.get("authorities", []),
+                "locations": seed.get("locations", []),
+                "enrolmentByProvince2024": seed.get("enrolmentByProvince2024", {}),
+                "enrolmentByAuthority2024": seed.get("enrolmentByAuthority2024", {}),
+                "enrolmentByLocation2024": seed.get("enrolmentByLocation2024", {}),
+                "gerByProvince2024": seed.get("gerByProvince2024", {}),
+                "nerByProvince2024": seed.get("nerByProvince2024", {}),
+            }
+            with open(PUBLIC_DATA / "sdg4_meta.json", "w", encoding="utf-8") as f:
+                json.dump(sdg4_meta, f, indent=2)
+            print(f"  Wrote sdg4_meta.json (provinces, authorities, locations)")
+        except Exception as e:
+            print(f"  Seed merge skipped: {e}")
+
     # Generate yearly CSVs for dashboard
     PUBLIC_DATA.mkdir(parents=True, exist_ok=True)
     years = sorted(set(r["Year"] for r in all_records))
@@ -505,7 +554,7 @@ def main():
             w = csv.writer(f)
             w.writerow(["Court", "Year", "Metric", "Value", "Unit"])
             for r in rows:
-                w.writerow([r["Institution"], r["Year"], r["Metric"], r["Value"], r["Unit"]])
+                w.writerow([r["Institution"], r["Year"], r["Metric"], r["Value"], r.get("Unit", "")])
         print(f"  Wrote {out_path} ({len(rows)} rows)")
 
     # years.json

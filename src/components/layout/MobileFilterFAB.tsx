@@ -4,8 +4,7 @@ import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from '
 import { Slider } from '@/components/ui/slider'
 import { Switch } from '@/components/ui/switch'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Checkbox } from '@/components/ui/checkbox'
-import { getInstitutionColor, sortInstitutionsByOrder } from '@/lib/education-colors'
+import { MENU_LEVELS } from '@/lib/education-colors'
 import { cn } from '@/lib/utils'
 
 interface MobileFilterFABProps {
@@ -46,15 +45,10 @@ export function MobileFilterFAB({
   const yearA = selectedYears[0] ?? years[0]
   const yearB = selectedYears[1] ?? years[1] ?? years[0]
 
-  const toggleCourt = (court: string) => {
-    const set = new Set(selectedCourts)
-    if (set.has(court)) set.delete(court)
-    else set.add(court)
-    const next = [...set].filter((c) => courts.includes(c))
-    onCourtsChange?.(next.length > 0 ? next : [...courts])
-  }
-
-  const sortedCourts = sortInstitutionsByOrder([...courts])
+  const levelsValue =
+    selectedCourts.length === MENU_LEVELS.length && MENU_LEVELS.every((l) => selectedCourts.includes(l))
+      ? 'all'
+      : selectedCourts[0] ?? 'all'
 
   return (
     <>
@@ -63,7 +57,7 @@ export function MobileFilterFAB({
         onClick={() => setOpen(true)}
         className={cn(
           'fixed right-6 z-40 flex size-14 items-center justify-center rounded-full shadow-lg transition-all',
-          'bg-teal-600 text-white hover:bg-teal-700 active:scale-95 lg:hidden'
+          'bg-[#4B6DEB] text-white hover:bg-[#3d5bd4] active:scale-95 lg:hidden'
         )}
         style={{ bottom: 'max(1.5rem, env(safe-area-inset-bottom, 0px))' }}
         aria-label="Open filters"
@@ -82,28 +76,25 @@ export function MobileFilterFAB({
             <SheetDescription>Filter data by education levels and year range.</SheetDescription>
           </SheetHeader>
           <div className="flex flex-col gap-6 overflow-y-auto py-4">
-            {sortedCourts.length > 0 && onCourtsChange && (
+            {courts.length > 0 && onCourtsChange && (
               <div className="space-y-3">
                 <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">Education Levels</p>
-                <div className="flex flex-col gap-2">
-                  {sortedCourts.map((court) => (
-                    <label
-                      key={court}
-                      className="flex cursor-pointer items-center gap-3 rounded-xl border border-border/60 bg-muted/30 px-4 py-3 active:bg-muted/50"
-                    >
-                      <Checkbox
-                        checked={selectedCourts.includes(court)}
-                        onCheckedChange={() => toggleCourt(court)}
-                      />
-                      <span
-                        className="size-3 shrink-0 rounded-full"
-                        style={{ backgroundColor: getInstitutionColor(court) }}
-                        aria-hidden
-                      />
-                      <span className="text-sm font-medium">{court}</span>
-                    </label>
-                  ))}
-                </div>
+                <Select
+                  value={levelsValue}
+                  onValueChange={(v) => {
+                    onCourtsChange(v === 'all' ? [...MENU_LEVELS] : [v])
+                  }}
+                >
+                  <SelectTrigger className="w-full" size="sm">
+                    <SelectValue placeholder="All levels" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All levels</SelectItem>
+                    {MENU_LEVELS.map((l) => (
+                      <SelectItem key={l} value={l}>{l}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             )}
             <div className="space-y-3">

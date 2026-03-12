@@ -9,30 +9,30 @@
   font-family: var(--font-primary);
 }
 
-/* Vanuatu-inspired vibrant theme with cultural colors */
+/* Dashboard theme - slate/blue palette from design reference */
 @theme {
-  --color-background: oklch(0.99 0.008 180);
-  --color-foreground: oklch(0.15 0.02 180);
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.15 0.02 180);
-  --color-primary: oklch(0.55 0.18 25);    /* Vanuatu red-orange */
-  --color-primary-foreground: oklch(0.99 0 0);
-  --color-muted: oklch(0.97 0.015 180);
-  --color-muted-foreground: oklch(0.45 0.02 180);
-  --color-border: oklch(0.92 0.02 180);
-  --color-input: oklch(0.92 0.02 180);
-  --color-ring: oklch(0.55 0.18 25);
-  --color-accent: oklch(0.85 0.12 45);     /* Golden yellow accent */
-  --color-accent-foreground: oklch(0.25 0.04 180);
-  --color-popover: oklch(1 0 0);
-  --color-popover-foreground: oklch(0.15 0.02 180);
-  --color-sidebar: oklch(0.99 0.008 180);
-  --color-sidebar-foreground: oklch(0.25 0.02 180);
-  --color-brand: #FF6B35;                   /* Primary brand color */
-  --color-brand-light: oklch(0.95 0.05 25); /* Light brand variant */
-  --color-success: #228B22;                 /* Vanuatu green */
-  --color-warning: #FFD700;                 /* Vanuatu yellow */
-  --color-danger: #DC143C;                  /* Deep red */
+  --color-background: #F0F1F2;
+  --color-foreground: #262E3B;
+  --color-card: #ffffff;
+  --color-card-foreground: #262E3B;
+  --color-primary: #4B6DEB;
+  --color-primary-foreground: #ffffff;
+  --color-muted: #F0F1F2;
+  --color-muted-foreground: #3E4050;
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #4B6DEB;
+  --color-accent: #6DEBB9;
+  --color-accent-foreground: #262E3B;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #262E3B;
+  --color-sidebar: #3E4050;
+  --color-sidebar-foreground: #ffffff;
+  --color-brand: #4B6DEB;
+  --color-brand-light: #6DEBB9;
+  --color-success: #6DEBB9;
+  --color-warning: #9CA5B7;
+  --color-danger: #DC143C;
   --radius-card: 1rem;
   --radius-sidebar: 0.5rem;
 }

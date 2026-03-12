@@ -1,5 +1,4 @@
 import { ReactNode } from 'react'
-import { ChevronRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 interface CollapsibleChartProps {
@@ -71,7 +70,7 @@ interface CollapsibleKPICardProps {
   title: string
   value: string | number
   description?: string
-  children: ReactNode
+  children?: ReactNode
   className?: string
   color?: string
 }
@@ -82,7 +81,7 @@ export function CollapsibleKPICard({
   description, 
   children, 
   className = '',
-  color = '#FF6B35'
+  color = '#4B6DEB'
 }: CollapsibleKPICardProps) {
   return (
     <div className={cn('rounded-xl border border-border/60 bg-card shadow-sm hover:shadow-md transition-all duration-200', className)}>
@@ -104,14 +103,15 @@ export function CollapsibleKPICard({
             )}
           </div>
         </div>
-        <ChevronRight className="size-4 text-muted-foreground transition-transform duration-200 hover:text-foreground flex-shrink-0" />
       </div>
       
-      <div className="px-4 pb-4">
-        <div className="animate-in slide-in-from-top-2 duration-200 pt-2">
-          {children}
+      {children && (
+        <div className="px-4 pb-4">
+          <div className="animate-in slide-in-from-top-2 duration-200 pt-2">
+            {children}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

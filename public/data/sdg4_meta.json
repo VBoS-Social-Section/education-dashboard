@@ -1,0 +1,210 @@
+{
+  "provinces": [
+    "Torba",
+    "Sanma",
+    "Penama",
+    "Malampa",
+    "Shefa",
+    "Tafea"
+  ],
+  "authorities": [
+    "Government",
+    "Church Assisted",
+    "Church",
+    "Private"
+  ],
+  "locations": [
+    "Rural",
+    "Urban"
+  ],
+  "enrolmentByProvince2024": {
+    "Torba": {
+      "ECCE": 605,
+      "Primary": 2086,
+      "Junior Secondary": 776,
+      "Senior Secondary": 60,
+      "Total": 3527
+    },
+    "Sanma": {
+      "ECCE": 3316,
+      "Primary": 12228,
+      "Junior Secondary": 5631,
+      "Senior Secondary": 1753,
+      "Total": 22928
+    },
+    "Penama": {
+      "ECCE": 2042,
+      "Primary": 6758,
+      "Junior Secondary": 2500,
+      "Senior Secondary": 461,
+      "Total": 11761
+    },
+    "Malampa": {
+      "ECCE": 2050,
+      "Primary": 8318,
+      "Junior Secondary": 3965,
+      "Senior Secondary": 513,
+      "Total": 14846
+    },
+    "Shefa": {
+      "ECCE": 4717,
+      "Primary": 16356,
+      "Junior Secondary": 8141,
+      "Senior Secondary": 3940,
+      "Total": 33154
+    },
+    "Tafea": {
+      "ECCE": 3038,
+      "Primary": 10358,
+      "Junior Secondary": 3812,
+      "Senior Secondary": 767,
+      "Total": 17975
+    }
+  },
+  "enrolmentByAuthority2024": {
+    "Government": {
+      "ECCE": 6986,
+      "Primary": 35258,
+      "Junior Secondary": 14501,
+      "Senior Secondary": 4676,
+      "Total": 61421
+    },
+    "Church Assisted": {
+      "ECCE": 2742,
+      "Primary": 18224,
+      "Junior Secondary": 9346,
+      "Senior Secondary": 2601,
+      "Total": 32913
+    },
+    "Church": {
+      "ECCE": 102,
+      "Primary": 171,
+      "Junior Secondary": 43,
+      "Senior Secondary": 0,
+      "Total": 316
+    },
+    "Private": {
+      "ECCE": 5938,
+      "Primary": 2451,
+      "Junior Secondary": 935,
+      "Senior Secondary": 569,
+      "Total": 9893
+    }
+  },
+  "enrolmentByLocation2024": {
+    "Rural": {
+      "ECCE": 12676,
+      "Primary": 44644,
+      "Junior Secondary": 18453,
+      "Senior Secondary": 3891,
+      "Total": 79664
+    },
+    "Urban": {
+      "ECCE": 3092,
+      "Primary": 11460,
+      "Junior Secondary": 6372,
+      "Senior Secondary": 3955,
+      "Total": 24879
+    }
+  },
+  "gerByProvince2024": {
+    "Torba": {
+      "ECCE": 72.0,
+      "ECCE_GPI": 1.04,
+      "Primary": 114.0,
+      "Primary_GPI": 1.0,
+      "Secondary": 51.0,
+      "Secondary_GPI": 1.18
+    },
+    "Sanma": {
+      "ECCE": 85.2,
+      "ECCE_GPI": 1.16,
+      "Primary": 116.1,
+      "Primary_GPI": 1.01,
+      "Secondary": 72.0,
+      "Secondary_GPI": 1.21
+    },
+    "Penama": {
+      "ECCE": 89.2,
+      "ECCE_GPI": 1.11,
+      "Primary": 106.1,
+      "Primary_GPI": 0.98,
+      "Secondary": 46.1,
+      "Secondary_GPI": 1.14
+    },
+    "Malampa": {
+      "ECCE": 75.4,
+      "ECCE_GPI": 1.03,
+      "Primary": 109.8,
+      "Primary_GPI": 0.97,
+      "Secondary": 64.1,
+      "Secondary_GPI": 1.16
+    },
+    "Shefa": {
+      "ECCE": 84.9,
+      "ECCE_GPI": 1.04,
+      "Primary": 105.6,
+      "Primary_GPI": 0.97,
+      "Secondary": 71.1,
+      "Secondary_GPI": 1.18
+    },
+    "Tafea": {
+      "ECCE": 98.0,
+      "ECCE_GPI": 0.99,
+      "Primary": 120.3,
+      "Primary_GPI": 0.99,
+      "Secondary": 56.8,
+      "Secondary_GPI": 1.05
+    }
+  },
+  "nerByProvince2024": {
+    "Torba": {
+      "ECCE": 35.0,
+      "ECCE_GPI": 0.95,
+      "Primary": 76.1,
+      "Primary_GPI": 1.0,
+      "Secondary": 43.2,
+      "Secondary_GPI": 1.22
+    },
+    "Sanma": {
+      "ECCE": 37.9,
+      "ECCE_GPI": 1.12,
+      "Primary": 88.3,
+      "Primary_GPI": 1.04,
+      "Secondary": 64.7,
+      "Secondary_GPI": 1.21
+    },
+    "Penama": {
+      "ECCE": 41.2,
+      "ECCE_GPI": 1.12,
+      "Primary": 77.9,
+      "Primary_GPI": 1.03,
+      "Secondary": 40.4,
+      "Secondary_GPI": 1.14
+    },
+    "Malampa": {
+      "ECCE": 35.3,
+      "ECCE_GPI": 0.99,
+      "Primary": 86.5,
+      "Primary_GPI": 1.04,
+      "Secondary": 58.1,
+      "Secondary_GPI": 1.16
+    },
+    "Shefa": {
+      "ECCE": 37.7,
+      "ECCE_GPI": 1.1,
+      "Primary": 85.6,
+      "Primary_GPI": 1.0,
+      "Secondary": 61.6,
+      "Secondary_GPI": 1.18
+    },
+    "Tafea": {
+      "ECCE": 45.2,
+      "ECCE_GPI": 0.99,
+      "Primary": 90.0,
+      "Primary_GPI": 0.99,
+      "Secondary": 47.1,
+      "Secondary_GPI": 1.04
+    }
+  }
+}

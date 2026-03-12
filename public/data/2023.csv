@@ -1,2 +1,5 @@
 Court,Year,Metric,Value,Unit
 Tertiary,2023,Enrolment,827,
+ECCE,2023,StudentTeacherRatio,12.2,
+Primary,2023,StudentTeacherRatio,25.3,
+Secondary,2023,StudentTeacherRatio,24.8,

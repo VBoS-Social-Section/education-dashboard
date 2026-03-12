@@ -63,13 +63,13 @@ export const GenderHeatmapChart = memo(function GenderHeatmapChart({
     colorAxis: {
       min: 0,
       max: 100,
-      minColor: '#FF6B35', // Vanuatu red-orange for low female enrollment
-      maxColor: '#0047AB', // Deep blue for high female enrollment
+      minColor: '#9CA5B7', // lavender for low female enrollment
+      maxColor: '#4B6DEB', // vibrant blue for high female enrollment
       stops: [
-        [0, '#FF6B35'],
-        [0.3, '#FFD700'], // Golden yellow
-        [0.6, '#228B22'], // Rich green
-        [1, '#0047AB']   // Deep blue
+        [0, '#9CA5B7'],
+        [0.3, '#6DEBB9'], // mint
+        [0.6, '#3D6D70'], // teal
+        [1, '#4B6DEB']   // vibrant blue
       ],
       labels: {
         formatter: function() {
@@ -119,7 +119,7 @@ export const GenderHeatmapChart = memo(function GenderHeatmapChart({
         if (femalePercentage < 45) {
           contextInfo = '<br/><small style="color: #dc2626;">⚠️ Low female participation</small>'
         } else if (femalePercentage > 55) {
-          contextInfo = '<br/><small style="color: #059669;">✅ Good gender balance</small>'
+          contextInfo = '<br/><small style="color: #6DEBB9;">✅ Good gender balance</small>'
         }
         
         return `
@@ -155,7 +155,7 @@ export const GenderHeatmapChart = memo(function GenderHeatmapChart({
         <HighchartsReact highcharts={Highcharts} options={options} immutable />
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#FF6B35' }}></div>
+            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#9CA5B7' }}></div>
             <span>Low Female %</span>
           </div>
           <div className="flex items-center gap-1">
@@ -163,7 +163,7 @@ export const GenderHeatmapChart = memo(function GenderHeatmapChart({
             <span>Balanced</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#0047AB' }}></div>
+            <div className="w-3 h-3 rounded" style={{ backgroundColor: '#4B6DEB' }}></div>
             <span>High Female %</span>
           </div>
         </div>

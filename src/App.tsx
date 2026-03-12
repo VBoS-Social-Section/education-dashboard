@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import Papa from 'papaparse'
-import type { StatRow } from './types'
+import type { StatRow, Sdg4Seed } from './types'
 import { AppSidebar } from './components/layout/AppSidebar'
 import { AppSidebarSheet } from './components/layout/AppSidebarSheet'
 import { MobileFilterFAB } from './components/layout/MobileFilterFAB'
@@ -12,14 +12,13 @@ import { EnrolmentPage } from './pages/EnrolmentPage'
 import { SchoolsTeachersPage } from './pages/SchoolsTeachersPage'
 import { PerformancePage } from './pages/PerformancePage'
 import { TeachersDetailPage } from './pages/TeachersDetailPage'
-import { StatisticsOverview } from './pages/StatisticsOverviewPage'
 import { DataSourcesMethodologyPage } from './pages/DataSourcesMethodologyPage'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
 import { MENU_LEVELS } from '@/lib/education-colors'
 
-const DATA_ROUTES = ['Overview', 'Enrolment', 'Schools & Teachers', 'Performance', 'Teachers by Sex', 'Statistics'] as const
+const DATA_ROUTES = ['Overview', 'Enrolment', 'Schools & Teachers', 'Performance', 'Teachers by Sex'] as const
 
 export const INSTITUTIONS = [
   'ECCE',
@@ -59,6 +58,16 @@ async function loadAvailableYears(): Promise<{ years: number[]; lastUpdated?: st
   return { years: json.years ?? [], lastUpdated: json.lastUpdated }
 }
 
+async function loadSdg4Seed(): Promise<Sdg4Seed | null> {
+  try {
+    const res = await fetch(`${BASE}data/seed_sdg4.json`)
+    if (!res.ok) return null
+    return (await res.json()) as Sdg4Seed
+  } catch {
+    return null
+  }
+}
+
 export default function App() {
   const [years, setYears] = useState<number[]>([])
   const [lastUpdated, setLastUpdated] = useState<string | null>(null)
@@ -70,6 +79,10 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(0)
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [selectedLevels, setSelectedLevels] = useState<string[]>(['ECCE', 'Primary', 'Secondary', 'Senior Secondary'])
+  const [selectedProvince, setSelectedProvince] = useState<string>('')
+  const [selectedAuthority, setSelectedAuthority] = useState<string>('')
+  const [selectedLocation, setSelectedLocation] = useState<string>('')
+  const [sdg4Seed, setSdg4Seed] = useState<Sdg4Seed | null>(null)
 
   const loadYears = useCallback(async () => {
     try {
@@ -86,6 +99,10 @@ export default function App() {
   useEffect(() => {
     loadYears()
   }, [loadYears])
+
+  useEffect(() => {
+    loadSdg4Seed().then(setSdg4Seed)
+  }, [])
 
   useEffect(() => {
     if (selectedYears.length === 0) {
@@ -131,6 +148,12 @@ export default function App() {
         onYearsChange={setSelectedYears}
         selectedLevels={selectedLevels}
         onLevelsChange={setSelectedLevels}
+        selectedProvince={selectedProvince}
+        onProvinceChange={setSelectedProvince}
+        selectedAuthority={selectedAuthority}
+        onAuthorityChange={setSelectedAuthority}
+        selectedLocation={selectedLocation}
+        onLocationChange={setSelectedLocation}
         compareMode={compareMode}
         onCompareModeChange={setCompareMode}
         open={sidebarOpen}
@@ -140,7 +163,7 @@ export default function App() {
       <div
         className={`flex flex-1 flex-col transition-[padding] duration-200 ${sidebarOpen ? 'lg:pl-[260px]' : 'lg:pl-0'}`}
       >
-        <main className="flex-1 p-4 lg:p-6">
+        <main className="flex-1 bg-[#F0F1F2] p-4 lg:p-6">
           <div className="mb-6 flex flex-col gap-4">
             <div className="flex items-center gap-3">
               <div className="flex shrink-0 items-center gap-2">
@@ -187,7 +210,7 @@ export default function App() {
 
           {loading && (
             <div className="flex justify-center py-16">
-              <div className="size-10 animate-spin rounded-full border-2 border-teal-500 border-t-transparent" />
+              <div className="size-10 animate-spin rounded-full border-2 border-[#4B6DEB] border-t-transparent" />
             </div>
           )}
 
@@ -207,27 +230,38 @@ export default function App() {
                   selectedYears={selectedYears}
                   compareMode={compareMode}
                   getValue={getValue}
+                  sdg4Seed={sdg4Seed}
+                  selectedProvince={selectedProvince}
                   onNavigateToMethodology={() => setActiveTab(DATA_ROUTES.length)}
                 />
               )}
               {activeTab === 1 && (
-                <EnrolmentPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />
+                <EnrolmentPage
+                  data={filteredData}
+                  selectedYears={selectedYears}
+                  compareMode={compareMode}
+                  getValue={getValue}
+                  sdg4Seed={sdg4Seed}
+                  selectedProvince={selectedProvince}
+                  selectedAuthority={selectedAuthority}
+                  selectedLocation={selectedLocation}
+                />
               )}
               {activeTab === 2 && (
                 <SchoolsTeachersPage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />
               )}
               {activeTab === 3 && (
-                <PerformancePage data={filteredData} selectedYears={selectedYears} compareMode={compareMode} getValue={getValue} />
+                <PerformancePage
+                  data={filteredData}
+                  selectedYears={selectedYears}
+                  compareMode={compareMode}
+                  getValue={getValue}
+                  sdg4Seed={sdg4Seed}
+                  selectedProvince={selectedProvince}
+                />
               )}
               {activeTab === 4 && (
                 <TeachersDetailPage data={filteredData} selectedYears={selectedYears} getValue={getValue} />
-              )}
-              {activeTab === 5 && (
-                <StatisticsOverview 
-                  data={filteredData} 
-                  selectedYear={selectedYears[selectedYears.length - 1] || 2024}
-                  selectedLevels={selectedLevels}
-                />
               )}
             </>
           )}

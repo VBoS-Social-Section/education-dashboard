@@ -87,22 +87,26 @@ interface LevelPieChartProps {
 
 export function LevelPieChart({ title, data }: LevelPieChartProps) {
   const options: Highcharts.Options = {
-    chart: { type: 'pie', height: 280 },
-    title: { text: title, style: { fontSize: '14px' } },
+    chart: { type: 'pie', height: 300, backgroundColor: 'transparent' },
+    title: { text: title, style: { fontSize: '16px', fontWeight: '600', color: '#262E3B' } },
     plotOptions: {
       pie: {
-        dataLabels: { enabled: true, format: '{point.percentage:.1f}%' },
+        dataLabels: { enabled: true, format: '{point.percentage:.1f}%', style: { fontSize: '12px' } },
         showInLegend: true,
+        borderWidth: 2,
+        borderColor: '#fff',
       },
     },
     series: [{ type: 'pie', name: 'Enrolment', data }],
     tooltip: {
       pointFormat: '<b>{point.y:,.0f}</b> ({point.percentage:.1f}%)',
+      backgroundColor: 'rgba(255,255,255,0.96)',
+      borderRadius: 8,
     },
     credits: { enabled: false },
   }
   return (
-    <div className="rounded-2xl border border-border/60 bg-white p-5 shadow-sm">
+    <div className="rounded-2xl border border-border/80 bg-white p-6 shadow-sm transition-shadow hover:shadow-md">
       <HighchartsReact highcharts={Highcharts} options={options} immutable />
     </div>
   )

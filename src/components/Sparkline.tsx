@@ -8,7 +8,7 @@ interface SparklineProps {
 }
 
 /** Minimal sparkline - SVG polyline for tiny trend charts */
-export function Sparkline({ data, width = 64, height = 24, color = '#0d9488', strokeWidth = 1.5, className }: SparklineProps) {
+export function Sparkline({ data, width = 64, height = 24, color = '#4B6DEB', strokeWidth = 1.5, className }: SparklineProps) {
   if (data.length < 2) return null
 
   const min = Math.min(...data)

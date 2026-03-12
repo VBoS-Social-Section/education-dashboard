@@ -61,7 +61,7 @@ export function AppSidebarSheet({
         <SheetDescription className="sr-only">Choose a page to view. Use the filter button to change education levels and years.</SheetDescription>
         <div className="flex h-full flex-col bg-white">
           <div className="flex h-[70px] items-center border-b border-border/60 px-5">
-            <span className="text-xl font-bold tracking-tight text-teal-700">
+            <span className="text-xl font-bold tracking-tight text-[#262E3B]">
               Education Dashboard
             </span>
           </div>
@@ -71,7 +71,7 @@ export function AppSidebarSheet({
                 key={name}
                 onClick={() => handleSelect(i)}
                 className={`block w-full rounded-xl px-3 py-3 text-left text-sm font-medium transition-all ${
-                  activeTab === i ? 'bg-teal-500/10 text-teal-700' : 'hover:bg-muted/80'
+                  activeTab === i ? 'bg-[#4B6DEB]/10 text-[#4B6DEB]' : 'hover:bg-muted/80'
                 }`}
               >
                 {name}
@@ -94,7 +94,7 @@ export function AppSidebarSheet({
             <div
               className="flex flex-col gap-2 rounded-2xl p-4 text-white"
               style={{
-                background: 'linear-gradient(135deg, #0d9488 0%, #059669 50%, #0ea5e9 100%)',
+                background: 'linear-gradient(135deg, #4B6DEB 0%, #3D6D70 50%, #6DEBB9 100%)',
                 boxShadow: '0 4px 14px 0 rgba(13, 148, 136, 0.35)',
               }}
             >

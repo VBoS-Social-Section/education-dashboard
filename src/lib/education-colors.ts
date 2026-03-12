@@ -1,10 +1,11 @@
-/** Vanuatu-inspired vibrant color palette with cultural relevance */
+/** Chart palette from design reference: vibrant blue, mint, teal, lavender */
 export const INSTITUTION_COLORS: Record<string, string> = {
-  ECCE: '#FF6B35',      // Vibrant orange-red (inspired by Vanuatu red)
-  Primary: '#0047AB',    // Deep blue (ocean/trust)
-  Secondary: '#FFD700',  // Golden yellow (sunshine/prosperity)
-  'Senior Secondary': '#228B22', // Rich green (growth/nature)
-  Total: '#8B4513',      // Warm brown (earth/heritage)
+  ECCE: '#4B6DEB',       // vibrant blue
+  Primary: '#6DEBB9',    // mint green
+  Secondary: '#3D6D70',  // dark teal
+  'Junior Secondary': '#3D6D70',
+  'Senior Secondary': '#9CA5B7', // muted lavender
+  Total: '#262E3B',      // darkest blue
 }
 
 export const INSTITUTION_ORDER = ['ECCE', 'Primary', 'Secondary', 'Senior Secondary', 'Total'] as const
@@ -24,7 +25,7 @@ export function getInstitutionShortLabel(inst: string): string {
 }
 
 export function getInstitutionColor(inst: string): string {
-  return INSTITUTION_COLORS[inst] ?? '#64748b'
+  return INSTITUTION_COLORS[inst] ?? '#9CA5B7'
 }
 
 export function sortInstitutionsByOrder(insts: string[]): string[] {
