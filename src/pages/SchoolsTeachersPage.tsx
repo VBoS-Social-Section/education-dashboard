@@ -19,22 +19,20 @@ export function SchoolsTeachersPage({ data, selectedYears, compareMode = false, 
   return (
     <div className="space-y-6">
       <CollapsibleChart
-        title="Schools & Teachers Overview"
-        description="Educational institutions and teaching workforce by education level"
+        title="Schools & Teachers by Level and Year"
+        description="Number of schools and teachers across ECCE, Primary, and Secondary. Each level shows grouped bars."
         icon={<School className="size-5 text-[#4B6DEB]" />}
-        defaultOpen={true}
       >
         <LazyChart enabled={lazy}>
-          <SchoolsTeachersChart data={data} selectedYears={selectedYears} getValue={getValue} />
+          <SchoolsTeachersChart data={data} selectedYears={selectedYears} getValue={getValue} hideHeader />
         </LazyChart>
       </CollapsibleChart>
       
-      {/* Trend analysis for multi-year data */}
       {selectedYears.length > 1 && (
         <div className="space-y-6">
           <CollapsibleChart
-            title="Infrastructure Trends"
-            description="Track school infrastructure development over time"
+            title="Schools Trends Over Time"
+            description="Line chart showing the number of schools by education level across multiple years."
             icon={<TrendingUp className="size-5 text-[#4B6DEB]" />}
           >
             <LazyChart enabled={lazy}>
@@ -44,14 +42,15 @@ export function SchoolsTeachersPage({ data, selectedYears, compareMode = false, 
                 getValue={getValue}
                 metric="Schools"
                 title="Schools Trends Over Time"
-                description="Line chart showing the number of schools by education level across multiple years. Track infrastructure development and expansion patterns."
+                description="Line chart showing the number of schools by education level across multiple years."
+                hideHeader
               />
             </LazyChart>
           </CollapsibleChart>
           
           <CollapsibleChart
-            title="Workforce Trends"
-            description="Monitor teaching workforce growth and changes"
+            title="Teachers Trends Over Time"
+            description="Line chart showing teacher workforce trends by education level."
             icon={<Users className="size-5 text-[#4B6DEB]" />}
           >
             <LazyChart enabled={lazy}>
@@ -61,7 +60,8 @@ export function SchoolsTeachersPage({ data, selectedYears, compareMode = false, 
                 getValue={getValue}
                 metric="Teachers"
                 title="Teachers Trends Over Time"
-                description="Line chart showing teacher workforce trends by education level. Monitor staffing growth and identify potential capacity gaps."
+                description="Line chart showing teacher workforce trends by education level."
+                hideHeader
               />
             </LazyChart>
           </CollapsibleChart>

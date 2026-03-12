@@ -6,9 +6,10 @@ interface Props {
   data: StatRow[]
   selectedYears: number[]
   getValue: (court: string, metric: string, year?: number) => number | null
+  hideHeader?: boolean
 }
 
-export const EnrolmentChart = memo(function EnrolmentChart({ data, selectedYears, getValue }: Props) {
+export const EnrolmentChart = memo(function EnrolmentChart({ data, selectedYears, getValue, hideHeader }: Props) {
   return (
     <EnhancedBarChart
       data={data}
@@ -17,6 +18,8 @@ export const EnrolmentChart = memo(function EnrolmentChart({ data, selectedYears
       metric="Enrolment"
       title="Enrolment by Level and Year"
       description="Total student enrolment by education level (ECCE, Primary, Secondary, Senior Secondary). Primary typically has the highest enrolment, followed by Secondary. ECCE captures pre-primary enrolment."
+      levelOnYAxis
+      hideHeader={hideHeader}
     />
   )
 })

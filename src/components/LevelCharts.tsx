@@ -83,12 +83,13 @@ export function LevelStackedChart({ title, maleValues, femaleValues, years, colo
 interface LevelPieChartProps {
   title: string
   data: { name: string; y: number; color?: string }[]
+  hideHeader?: boolean
 }
 
-export function LevelPieChart({ title, data }: LevelPieChartProps) {
+export function LevelPieChart({ title, data, hideHeader }: LevelPieChartProps) {
   const options: Highcharts.Options = {
     chart: { type: 'pie', height: 300, backgroundColor: 'transparent' },
-    title: { text: title, style: { fontSize: '16px', fontWeight: '600', color: '#262E3B' } },
+    title: hideHeader ? { text: undefined } : { text: title, style: { fontSize: '16px', fontWeight: '600', color: '#262E3B' } },
     plotOptions: {
       pie: {
         dataLabels: { enabled: true, format: '{point.percentage:.1f}%', style: { fontSize: '12px' } },

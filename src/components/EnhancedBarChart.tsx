@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { sortInstitutionsByOrder, getInstitutionColor } from '@/lib/education-colors'
 import type { StatRow } from '../types'
 
+const YEAR_COLORS = ['#4B6DEB', '#6DEBB9', '#3D6D70', '#9CA5B7', '#262E3B', '#7C3AED']
+
 interface Props {
   data: StatRow[]
   selectedYears: number[]
@@ -16,6 +18,8 @@ interface Props {
   showPercentages?: boolean
   /** When true, omit Card header (use when parent provides the title) */
   hideHeader?: boolean
+  /** When true, level on Y-axis (horizontal bars) and year in legend */
+  levelOnYAxis?: boolean
 }
 
 export const EnhancedBarChart = memo(function EnhancedBarChart({ 
@@ -27,11 +31,13 @@ export const EnhancedBarChart = memo(function EnhancedBarChart({
   description,
   showStacked = false,
   showPercentages = false,
-  hideHeader = false
+  hideHeader = false,
+  levelOnYAxis = false
 }: Props) {
-  const institutions = sortInstitutionsByOrder([
+  const allInstitutions = sortInstitutionsByOrder([
     ...new Set(data.filter((r) => r.Metric === metric).map((r) => r.Court)),
   ])
+  const institutions = levelOnYAxis ? allInstitutions.filter((c) => c !== 'Total') : allInstitutions
   const sortedYears = [...selectedYears].sort((a, b) => a - b)
 
   const getYAxisTitle = (metric: string, showPercentages: boolean) => {
@@ -81,17 +87,99 @@ export const EnhancedBarChart = memo(function EnhancedBarChart({
     }
   }
 
-  const series: Highcharts.SeriesColumnOptions[] = institutions.map((inst) => ({
-    name: inst,
-    type: 'column',
-    data: sortedYears.map((year) => getValue(inst, metric, year) ?? 0),
-    color: getInstitutionColor(inst),
-    stacking: showStacked ? 'normal' : undefined,
-    borderWidth: 0,
-    borderRadius: 4
-  }))
+  const series: Highcharts.SeriesColumnOptions[] = levelOnYAxis
+    ? sortedYears.map((year, i) => ({
+        name: String(year),
+        type: 'column',
+        data: institutions.map((inst) => getValue(inst, metric, year) ?? 0),
+        color: YEAR_COLORS[i % YEAR_COLORS.length],
+        stacking: showStacked ? 'normal' : undefined,
+        borderWidth: 0,
+        borderRadius: 4
+      }))
+    : institutions.map((inst) => ({
+        name: inst,
+        type: 'column',
+        data: sortedYears.map((year) => getValue(inst, metric, year) ?? 0),
+        color: getInstitutionColor(inst),
+        stacking: showStacked ? 'normal' : undefined,
+        borderWidth: 0,
+        borderRadius: 4
+      }))
 
-  const options: Highcharts.Options = {
+  const options: Highcharts.Options = levelOnYAxis
+    ? {
+        chart: {
+          type: 'column',
+          height: 450,
+          backgroundColor: 'transparent',
+          style: { fontFamily: 'Inter, system-ui, sans-serif' }
+        },
+        xAxis: {
+          categories: institutions,
+          title: { text: 'Level', style: { fontSize: '14px', fontWeight: '600' } },
+          crosshair: true,
+          gridLineDashStyle: 'Dash',
+          gridLineWidth: 1
+        },
+        yAxis: {
+          title: {
+            text: getYAxisTitle(metric, showPercentages),
+            style: { fontSize: '14px', fontWeight: '600' }
+          },
+          gridLineDashStyle: 'Dash',
+          labels: {
+            formatter: showPercentages ? function() { return `${this.value}%` } : function() { return (this.value as number).toLocaleString() }
+          },
+          min: 0
+        },
+        plotOptions: {
+          column: {
+            borderWidth: 0,
+            borderRadius: 4,
+            dataLabels: {
+              enabled: sortedYears.length <= 2 || institutions.length <= 2,
+              formatter: function(this: Highcharts.Point) {
+                const value = this.y as number
+                if (showPercentages) return `${value}%`
+                return value >= 1000 ? `${(value / 1000).toFixed(1)}k` : value.toLocaleString()
+              },
+              style: { fontSize: '11px', fontWeight: '600' }
+            }
+          }
+        },
+        series,
+        legend: {
+          enabled: true,
+          layout: 'horizontal',
+          align: 'center',
+          verticalAlign: 'bottom',
+          itemStyle: { fontSize: '12px', fontWeight: '500' }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          borderColor: '#e2e8f0',
+          borderRadius: 8,
+          shared: true,
+          formatter: function(this: Highcharts.TooltipFormatterContextObject) {
+            const level = institutions[Number(this.x)] ?? ''
+            const lines: string[] = [`<b>Level: ${level}</b>`]
+            this.points?.forEach((p) => {
+              const v = (p.y as number) ?? 0
+              const fmt = showPercentages ? `${v}%` : v.toLocaleString()
+              lines.push(`<span style="color:${p.color}">●</span> <b>${p.series.name}:</b> ${fmt}`)
+            })
+            if (this.points && this.points.length > 1 && !showStacked) {
+              const total = this.points.reduce((s, p) => s + ((p.y as number) ?? 0), 0)
+              lines.push(`<hr style="margin: 4px 0; border: none; border-top: 1px solid #e5e7eb;">`)
+              lines.push(`<b>Total: ${total.toLocaleString()}</b>`)
+            }
+            return lines.join('<br/>')
+          }
+        },
+        credits: { enabled: false }
+      }
+    : {
     chart: { 
       type: 'column', 
       height: 450,

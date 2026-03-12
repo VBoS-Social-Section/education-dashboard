@@ -9,12 +9,14 @@ interface Props {
   data: StatRow[]
   selectedYears: number[]
   getValue: (court: string, metric: string, year?: number) => number | null
+  hideHeader?: boolean
 }
 
 export const GenderHeatmapChart = memo(function GenderHeatmapChart({ 
   data, 
   selectedYears, 
-  getValue 
+  getValue,
+  hideHeader = false
 }: Props) {
   const institutions = sortInstitutionsByOrder([
     ...new Set(data.filter((r) => r.Metric === 'Enrolment_Male').map((r) => r.Court)),
@@ -144,14 +146,16 @@ export const GenderHeatmapChart = memo(function GenderHeatmapChart({
 
   return (
     <Card className="hover:shadow-lg transition-shadow duration-300">
-      <CardHeader>
-        <CardTitle className="font-display text-lg">Gender Distribution Heatmap</CardTitle>
-        <p className="mt-2 text-sm font-normal leading-relaxed text-muted-foreground">
-          Heatmap showing female enrollment percentage by education level and year. 
-          Warmer colors (blue) indicate higher female enrollment, while cooler colors (orange) indicate lower female participation.
-        </p>
-      </CardHeader>
-      <CardContent className="space-y-4">
+      {!hideHeader && (
+        <CardHeader>
+          <CardTitle className="font-display text-lg">Gender Distribution Heatmap</CardTitle>
+          <p className="mt-2 text-sm font-normal leading-relaxed text-muted-foreground">
+            Heatmap showing female enrollment percentage by education level and year. 
+            Warmer colors (blue) indicate higher female enrollment, while cooler colors (orange) indicate lower female participation.
+          </p>
+        </CardHeader>
+      )}
+      <CardContent className={hideHeader ? 'pt-6' : 'space-y-4'}>
         <HighchartsReact highcharts={Highcharts} options={options} immutable />
         <div className="flex items-center gap-4 text-xs text-muted-foreground">
           <div className="flex items-center gap-1">

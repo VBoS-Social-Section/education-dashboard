@@ -1,10 +1,12 @@
 import { useMemo } from 'react'
+import { GraduationCap, TrendingUp, Users, PieChart, MapPin, Building2 } from 'lucide-react'
 import { LazyChart } from '../components/LazyChart'
 import { EnrolmentChart } from '../components/EnrolmentChart'
 import { TrendChart } from '../components/TrendChart'
 import { GenderHeatmapChart } from '../components/GenderHeatmapChart'
 import { LevelPieChart } from '../components/LevelCharts'
 import { Sdg4StackedBarChart, Sdg4BarByLevelChart, Sdg4PieChart } from '../components/Sdg4Charts'
+import { CollapsibleChart } from '../components/CollapsibleChart'
 import { MANY_YEARS_THRESHOLD } from '@/lib/constants'
 import { getInstitutionColor, sortInstitutionsByOrder } from '@/lib/education-colors'
 import type { StatRow, Sdg4Seed } from '../types'
@@ -92,101 +94,155 @@ export function EnrolmentPage({ data, selectedYears, compareMode = false, getVal
 
   return (
     <div className="space-y-8">
-      {/* SDG 4 breakdowns (2024) */}
+      {/* SDG 4 breakdowns (2024) - with card titles like other charts */}
       <section className="space-y-6">
         <h2 className="text-lg font-semibold text-slate-800 border-b border-slate-200 pb-2">2024 Enrolment Breakdowns</h2>
       {provinceChartData && (
-        <LazyChart enabled={true}>
-          <Sdg4StackedBarChart
-            title="Enrolment by Province and Level (2024)"
-            description="MoET/VEMIS data. Filter by province in sidebar to focus on one region."
-            categories={provinceChartData.categories}
-            dataByLevel={provinceChartData.dataByLevel}
-          />
-        </LazyChart>
-      )}
-
-      {/* Enrolment by Authority (2024) - stacked bar chart */}
-      {authorityChartData && (
-        <LazyChart enabled={true}>
-          <Sdg4StackedBarChart
-            title="Enrolment by Authority and Level (2024)"
-            description="Government, Church Assisted, Church, and Private schools."
-            categories={authorityChartData.categories}
-            dataByLevel={authorityChartData.dataByLevel}
-          />
-        </LazyChart>
-      )}
-
-      {/* Enrolment by Location (2024) - pie for Rural/Urban share, stacked bar for level breakdown */}
-      {locationPieData && locationPieData.length > 0 && (
-        <div className="grid gap-6 lg:grid-cols-2">
+        <CollapsibleChart
+          title="Enrolment by Province and Level (2024)"
+          description="MoET/VEMIS data. Filter by province in sidebar to focus on one region."
+          icon={<MapPin className="size-5 text-[#4B6DEB]" />}
+        >
           <LazyChart enabled={true}>
-            <Sdg4PieChart
-              title="Enrolment by Location (2024)"
-              data={locationPieData}
+            <Sdg4StackedBarChart
+              title="Enrolment by Province and Level (2024)"
+              description="MoET/VEMIS data. Filter by province in sidebar to focus on one region."
+              categories={provinceChartData.categories}
+              dataByLevel={provinceChartData.dataByLevel}
+              hideHeader
             />
           </LazyChart>
-          {locationChartData && (
+        </CollapsibleChart>
+      )}
+
+      {authorityChartData && (
+        <CollapsibleChart
+          title="Enrolment by Authority and Level (2024)"
+          description="Government, Church Assisted, Church, and Private schools."
+          icon={<Building2 className="size-5 text-[#4B6DEB]" />}
+        >
+          <LazyChart enabled={true}>
+            <Sdg4StackedBarChart
+              title="Enrolment by Authority and Level (2024)"
+              description="Government, Church Assisted, Church, and Private schools."
+              categories={authorityChartData.categories}
+              dataByLevel={authorityChartData.dataByLevel}
+              hideHeader
+            />
+          </LazyChart>
+        </CollapsibleChart>
+      )}
+
+      {locationPieData && locationPieData.length > 0 && (
+        <div className="grid gap-6 lg:grid-cols-2">
+          <CollapsibleChart
+            title="Enrolment by Location (2024)"
+            description="Rural vs Urban enrolment share."
+            icon={<MapPin className="size-5 text-[#4B6DEB]" />}
+          >
             <LazyChart enabled={true}>
-              <Sdg4StackedBarChart
-                title="Enrolment by Location and Level (2024)"
-                categories={locationChartData.categories}
-                dataByLevel={locationChartData.dataByLevel}
+              <Sdg4PieChart
+                title="Enrolment by Location (2024)"
+                data={locationPieData}
+                hideHeader
               />
             </LazyChart>
+          </CollapsibleChart>
+          {locationChartData && (
+            <CollapsibleChart
+              title="Enrolment by Location and Level (2024)"
+              description="Enrolment breakdown by level within Rural and Urban."
+              icon={<MapPin className="size-5 text-[#4B6DEB]" />}
+            >
+              <LazyChart enabled={true}>
+                <Sdg4StackedBarChart
+                  title="Enrolment by Location and Level (2024)"
+                  categories={locationChartData.categories}
+                  dataByLevel={locationChartData.dataByLevel}
+                  hideHeader
+                />
+              </LazyChart>
+            </CollapsibleChart>
           )}
         </div>
       )}
       {selectedLocation && sdg4Seed?.enrolmentByLocation2024?.[selectedLocation] && (
-        <LazyChart enabled={true}>
-          <Sdg4BarByLevelChart
-            title={`Enrolment by Level — ${selectedLocation} (2024)`}
-            levels={LEVEL_KEYS}
-            values={LEVEL_KEYS.map((l) => (sdg4Seed.enrolmentByLocation2024![selectedLocation] as Record<string, number>)[l] ?? 0)}
-          />
-        </LazyChart>
+        <CollapsibleChart
+          title={`Enrolment by Level — ${selectedLocation} (2024)`}
+          description="Enrolment breakdown by education level."
+          icon={<MapPin className="size-5 text-[#4B6DEB]" />}
+        >
+          <LazyChart enabled={true}>
+            <Sdg4BarByLevelChart
+              title={`Enrolment by Level — ${selectedLocation} (2024)`}
+              levels={LEVEL_KEYS}
+              values={LEVEL_KEYS.map((l) => (sdg4Seed.enrolmentByLocation2024![selectedLocation] as Record<string, number>)[l] ?? 0)}
+              hideHeader
+            />
+          </LazyChart>
+        </CollapsibleChart>
       )}
       </section>
 
-      {/* Main enrolment trends - always visible */}
+      {/* Main enrolment charts - with card titles like Schools & Teachers */}
       <section className="space-y-6">
-        <h2 className="text-lg font-semibold text-slate-800 border-b border-slate-200 pb-2">Enrolment Over Time</h2>
-      <LazyChart enabled={false}>
-        <EnrolmentChart data={data} selectedYears={selectedYears} getValue={getValue} />
-      </LazyChart>
+        <CollapsibleChart
+          title="Enrolment by Level and Year"
+          description="Total student enrolment by education level (ECCE, Primary, Secondary, Senior Secondary). Primary typically has the highest enrolment."
+          icon={<GraduationCap className="size-5 text-[#4B6DEB]" />}
+        >
+          <LazyChart enabled={false}>
+            <EnrolmentChart data={data} selectedYears={selectedYears} getValue={getValue} hideHeader />
+          </LazyChart>
+        </CollapsibleChart>
       
-      {/* Trend analysis for multi-year data */}
       {selectedYears.length > 1 && (
-        <LazyChart enabled={lazy}>
-          <TrendChart
-            data={data}
-            selectedYears={selectedYears}
-            getValue={getValue}
-            metric="Enrolment"
-            title="Enrolment Trends Over Time"
-            description="Line chart showing enrollment trends by education level across multiple years. Track growth patterns and identify changes in educational participation."
-          />
-        </LazyChart>
+        <CollapsibleChart
+          title="Enrolment Trends Over Time"
+          description="Line chart showing enrollment trends by education level across multiple years."
+          icon={<TrendingUp className="size-5 text-[#4B6DEB]" />}
+        >
+          <LazyChart enabled={lazy}>
+            <TrendChart
+              data={data}
+              selectedYears={selectedYears}
+              getValue={getValue}
+              metric="Enrolment"
+              title="Enrolment Trends Over Time"
+              description="Line chart showing enrollment trends by education level."
+              hideHeader
+            />
+          </LazyChart>
+        </CollapsibleChart>
       )}
       
-      {/* Gender breakdown heatmap */}
       {data.some(r => r.Metric === 'Enrolment_Male') && (
-        <LazyChart enabled={lazy}>
-          <GenderHeatmapChart
-            data={data}
-            selectedYears={selectedYears}
-            getValue={getValue}
-          />
-        </LazyChart>
+        <CollapsibleChart
+          title="Enrolment by Sex"
+          description="Female enrolment share by education level and year."
+          icon={<Users className="size-5 text-[#4B6DEB]" />}
+        >
+          <LazyChart enabled={lazy}>
+            <GenderHeatmapChart
+              data={data}
+              selectedYears={selectedYears}
+              getValue={getValue}
+              hideHeader
+            />
+          </LazyChart>
+        </CollapsibleChart>
       )}
       
       {pieData.length > 0 && (
-        <div className="grid gap-6 lg:grid-cols-2">
+        <CollapsibleChart
+          title="Enrolment share by level (latest year)"
+          description="Distribution of enrolment across education levels."
+          icon={<PieChart className="size-5 text-[#4B6DEB]" />}
+        >
           <LazyChart enabled={false}>
-            <LevelPieChart title="Enrolment share by level (latest year)" data={pieData} />
+            <LevelPieChart title="Enrolment share by level (latest year)" data={pieData} hideHeader />
           </LazyChart>
-        </div>
+        </CollapsibleChart>
       )}
       </section>
     </div>

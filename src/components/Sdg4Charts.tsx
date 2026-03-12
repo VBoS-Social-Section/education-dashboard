@@ -43,9 +43,11 @@ interface Sdg4StackedBarProps {
   categories: string[]
   dataByLevel: Record<string, number[]>
   className?: string
+  /** When true, omit chart title/subtitle (use when parent provides the title) */
+  hideHeader?: boolean
 }
 
-export function Sdg4StackedBarChart({ title, description, categories, dataByLevel, className = '' }: Sdg4StackedBarProps) {
+export function Sdg4StackedBarChart({ title, description, categories, dataByLevel, className = '', hideHeader }: Sdg4StackedBarProps) {
   const series = LEVEL_KEYS.map((level, i) => ({
     name: level,
     type: 'column' as const,
@@ -59,8 +61,8 @@ export function Sdg4StackedBarChart({ title, description, categories, dataByLeve
   const options: Highcharts.Options = {
     ...CHART_DEFAULTS,
     chart: { ...CHART_DEFAULTS.chart, type: 'column', height: 340 },
-    title: { ...CHART_DEFAULTS.title, text: title },
-    subtitle: description ? { ...CHART_DEFAULTS.subtitle, text: description } : undefined,
+    title: hideHeader ? { text: undefined } : { ...CHART_DEFAULTS.title, text: title },
+    subtitle: hideHeader ? undefined : (description ? { ...CHART_DEFAULTS.subtitle, text: description } : undefined),
     xAxis: { ...CHART_DEFAULTS.xAxis, categories, crosshair: true },
     yAxis: {
       ...CHART_DEFAULTS.yAxis,
@@ -106,9 +108,10 @@ interface Sdg4BarByLevelProps {
   values: number[]
   colors?: string[]
   className?: string
+  hideHeader?: boolean
 }
 
-export function Sdg4BarByLevelChart({ title, levels, values, colors, className = '' }: Sdg4BarByLevelProps) {
+export function Sdg4BarByLevelChart({ title, levels, values, colors, className = '', hideHeader }: Sdg4BarByLevelProps) {
   const seriesData = levels.map((name, i) => ({
     name,
     y: values[i] ?? 0,
@@ -118,7 +121,7 @@ export function Sdg4BarByLevelChart({ title, levels, values, colors, className =
   const options: Highcharts.Options = {
     ...CHART_DEFAULTS,
     chart: { ...CHART_DEFAULTS.chart, type: 'bar', height: 280 },
-    title: { ...CHART_DEFAULTS.title, text: title },
+    title: hideHeader ? { text: undefined } : { ...CHART_DEFAULTS.title, text: title },
     xAxis: { ...CHART_DEFAULTS.xAxis, categories: seriesData.map((d) => d.name) },
     yAxis: {
       ...CHART_DEFAULTS.yAxis,
@@ -146,13 +149,14 @@ interface Sdg4PieProps {
   title: string
   data: { name: string; y: number; color?: string }[]
   className?: string
+  hideHeader?: boolean
 }
 
-export function Sdg4PieChart({ title, data, className = '' }: Sdg4PieProps) {
+export function Sdg4PieChart({ title, data, className = '', hideHeader }: Sdg4PieProps) {
   const options: Highcharts.Options = {
     ...CHART_DEFAULTS,
     chart: { ...CHART_DEFAULTS.chart, type: 'pie', height: 300 },
-    title: { ...CHART_DEFAULTS.title, text: title },
+    title: hideHeader ? { text: undefined } : { ...CHART_DEFAULTS.title, text: title },
     plotOptions: {
       pie: {
         dataLabels: {

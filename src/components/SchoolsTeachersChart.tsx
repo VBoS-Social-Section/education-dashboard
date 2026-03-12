@@ -6,9 +6,10 @@ interface Props {
   data: StatRow[]
   selectedYears: number[]
   getValue: (court: string, metric: string, year?: number) => number | null
+  hideHeader?: boolean
 }
 
-export const SchoolsTeachersChart = memo(function SchoolsTeachersChart({ data, selectedYears, getValue }: Props) {
+export const SchoolsTeachersChart = memo(function SchoolsTeachersChart({ data, selectedYears, getValue, hideHeader }: Props) {
   return (
     <EnhancedBarChart
       data={data}
@@ -17,6 +18,7 @@ export const SchoolsTeachersChart = memo(function SchoolsTeachersChart({ data, s
       metric="Schools"
       title="Schools & Teachers by Level and Year"
       description="Number of schools and teachers across ECCE, Primary, and Secondary. Each level shows grouped bars. The student-teacher ratio can be inferred by comparing enrolment with teacher counts."
+      hideHeader={hideHeader}
     />
   )
 })
