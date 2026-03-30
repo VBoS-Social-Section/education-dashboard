@@ -8,7 +8,7 @@ import { LevelPieChart } from '../components/LevelCharts'
 import { Sdg4StackedBarChart, Sdg4BarByLevelChart, Sdg4PieChart } from '../components/Sdg4Charts'
 import { CollapsibleChart } from '../components/CollapsibleChart'
 import { MANY_YEARS_THRESHOLD } from '@/lib/constants'
-import { getInstitutionColor, sortInstitutionsByOrder } from '@/lib/education-colors'
+import { getInstitutionColor, chartInstitutionsFromRawCourts, secondaryEnrolmentFromSeedRow } from '@/lib/education-colors'
 import type { StatRow, Sdg4Seed } from '../types'
 
 interface Props {
@@ -22,7 +22,7 @@ interface Props {
   selectedLocation?: string
 }
 
-const LEVEL_KEYS = ['ECCE', 'Primary', 'Junior Secondary', 'Senior Secondary'] as const
+const LEVEL_KEYS = ['ECCE', 'Primary', 'Secondary'] as const
 
 interface DataByLevelResult {
   categories: string[]
@@ -36,8 +36,13 @@ function toDataByLevel(
 ): DataByLevelResult {
   const categories = keys
   const dataByLevel: Record<string, number[]> = {}
-  for (const l of levelKeys) {
-    dataByLevel[l] = categories.map((k) => (rows[k] as Record<string, number>)?.[l] ?? 0)
+  for (const l of levelKeys) dataByLevel[l] = []
+  for (const k of keys) {
+    const row = rows[k] as Record<string, number>
+    for (const l of levelKeys) {
+      const v = l === 'Secondary' ? secondaryEnrolmentFromSeedRow(row) : (row[l] ?? 0)
+      dataByLevel[l].push(v)
+    }
   }
   return { categories, dataByLevel }
 }
@@ -46,7 +51,7 @@ export function EnrolmentPage({ data, selectedYears, compareMode = false, getVal
   const lazy = selectedYears.length >= MANY_YEARS_THRESHOLD
 
   const institutions = useMemo(
-    () => sortInstitutionsByOrder([...new Set(data.filter((r) => r.Metric === 'Enrolment').map((r) => r.Court))]).filter((c) => c !== 'Total'),
+    () => chartInstitutionsFromRawCourts([...new Set(data.filter((r) => r.Metric === 'Enrolment').map((r) => r.Court))]).filter((c) => c !== 'Total'),
     [data]
   )
 
@@ -95,7 +100,7 @@ export function EnrolmentPage({ data, selectedYears, compareMode = false, getVal
   return (
     <div className="space-y-8">
       {/* SDG 4 breakdowns (2024) - with card titles like other charts */}
-      <section className="space-y-6">
+      <section className="space-y-6" data-tour="enrolment-breakdowns-2024">
         <h2 className="text-lg font-semibold text-slate-800 border-b border-slate-200 pb-2">2024 Enrolment Breakdowns</h2>
       {provinceChartData && (
         <CollapsibleChart
@@ -176,7 +181,10 @@ export function EnrolmentPage({ data, selectedYears, compareMode = false, getVal
             <Sdg4BarByLevelChart
               title={`Enrolment by Level — ${selectedLocation} (2024)`}
               levels={LEVEL_KEYS}
-              values={LEVEL_KEYS.map((l) => (sdg4Seed.enrolmentByLocation2024![selectedLocation] as Record<string, number>)[l] ?? 0)}
+              values={LEVEL_KEYS.map((l) => {
+                const row = sdg4Seed.enrolmentByLocation2024![selectedLocation] as Record<string, number>
+                return l === 'Secondary' ? secondaryEnrolmentFromSeedRow(row) : (row[l] ?? 0)
+              })}
               hideHeader
             />
           </LazyChart>
@@ -186,17 +194,20 @@ export function EnrolmentPage({ data, selectedYears, compareMode = false, getVal
 
       {/* Main enrolment charts - with card titles like Schools & Teachers */}
       <section className="space-y-6">
+        <div data-tour="enrolment-by-level-year" className="min-w-0">
         <CollapsibleChart
           title="Enrolment by Level and Year"
-          description="Total student enrolment by education level (ECCE, Primary, Secondary, Senior Secondary). Primary typically has the highest enrolment."
+          description="Total student enrolment by education level (ECCE, Primary, Secondary). Secondary combines junior and senior secondary. Primary typically has the highest enrolment."
           icon={<GraduationCap className="size-5 text-[#4B6DEB]" />}
         >
           <LazyChart enabled={false}>
             <EnrolmentChart data={data} selectedYears={selectedYears} getValue={getValue} hideHeader />
           </LazyChart>
         </CollapsibleChart>
+        </div>
       
       {selectedYears.length > 1 && (
+        <div data-tour="enrolment-trends" className="min-w-0">
         <CollapsibleChart
           title="Enrolment Trends Over Time"
           description="Line chart showing enrollment trends by education level across multiple years."
@@ -214,9 +225,11 @@ export function EnrolmentPage({ data, selectedYears, compareMode = false, getVal
             />
           </LazyChart>
         </CollapsibleChart>
+        </div>
       )}
       
       {data.some(r => r.Metric === 'Enrolment_Male') && (
+        <div data-tour="enrolment-by-sex" className="min-w-0">
         <CollapsibleChart
           title="Enrolment by Sex"
           description="Female enrolment share by education level and year."
@@ -231,9 +244,11 @@ export function EnrolmentPage({ data, selectedYears, compareMode = false, getVal
             />
           </LazyChart>
         </CollapsibleChart>
+        </div>
       )}
       
       {pieData.length > 0 && (
+        <div data-tour="enrolment-pie-share" className="min-w-0">
         <CollapsibleChart
           title="Enrolment share by level (latest year)"
           description="Distribution of enrolment across education levels."
@@ -243,6 +258,7 @@ export function EnrolmentPage({ data, selectedYears, compareMode = false, getVal
             <LevelPieChart title="Enrolment share by level (latest year)" data={pieData} hideHeader />
           </LazyChart>
         </CollapsibleChart>
+        </div>
       )}
       </section>
     </div>

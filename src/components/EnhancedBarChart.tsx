@@ -2,7 +2,7 @@ import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { sortInstitutionsByOrder, getInstitutionColor } from '@/lib/education-colors'
+import { chartInstitutionsFromRawCourts, getInstitutionColor } from '@/lib/education-colors'
 import type { StatRow } from '../types'
 
 const YEAR_COLORS = ['#4B6DEB', '#6DEBB9', '#3D6D70', '#9CA5B7', '#262E3B', '#7C3AED']
@@ -34,7 +34,7 @@ export const EnhancedBarChart = memo(function EnhancedBarChart({
   hideHeader = false,
   levelOnYAxis = false
 }: Props) {
-  const allInstitutions = sortInstitutionsByOrder([
+  const allInstitutions = chartInstitutionsFromRawCourts([
     ...new Set(data.filter((r) => r.Metric === metric).map((r) => r.Court)),
   ])
   const institutions = levelOnYAxis ? allInstitutions.filter((c) => c !== 'Total') : allInstitutions

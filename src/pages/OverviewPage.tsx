@@ -55,9 +55,9 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
   return (
     <div className="space-y-6">
       {/* Intro first */}
-      <div className="rounded-2xl border border-border/80 bg-white p-4 shadow-sm">
+      <div className="rounded-2xl border border-border/80 bg-white p-4 shadow-sm" data-tour="overview-intro">
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Key education statistics from MoET Annual Reports and VEMIS. SDG 4 aligned. Covers ECCE, Primary, Junior Secondary (Years 7–10), Senior Secondary (Years 11+). Tertiary from NUV.
+          Key education statistics from MoET Annual Reports and VEMIS. SDG 4 aligned. Covers ECCE, Primary, Secondary (junior and senior combined), and Tertiary from NUV where available.
         </p>
         {onNavigateToMethodology && (
           <button
@@ -73,7 +73,7 @@ export function OverviewPage({ data, selectedYears, compareMode = false, getValu
       </div>
 
       {/* KPI cards */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3" data-tour="overview-kpis">
         <CollapsibleKPICard 
           title="Total Enrolment" 
           value={totalEnrolment.toLocaleString()} 

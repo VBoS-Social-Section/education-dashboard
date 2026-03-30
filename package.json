@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:host": "vite --host",
     "build": "npm run generate-data && vite build",
     "generate-data": "python3 scripts/extract_education_stats.py"
   },

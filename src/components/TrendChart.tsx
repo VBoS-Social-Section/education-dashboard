@@ -2,7 +2,7 @@ import { memo } from 'react'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { sortInstitutionsByOrder, getInstitutionColor } from '@/lib/education-colors'
+import { chartInstitutionsFromRawCourts, getInstitutionColor } from '@/lib/education-colors'
 import type { StatRow } from '../types'
 
 interface Props {
@@ -27,7 +27,7 @@ export const TrendChart = memo(function TrendChart({
   showPercentages = false,
   hideHeader = false
 }: Props) {
-  const institutions = sortInstitutionsByOrder([
+  const institutions = chartInstitutionsFromRawCourts([
     ...new Set(data.filter((r) => r.Metric === metric).map((r) => r.Court)),
   ])
   const sortedYears = [...selectedYears].sort((a, b) => a - b)

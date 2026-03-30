@@ -26,12 +26,12 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
 
   return (
     <div className={embedded ? 'mx-auto max-w-3xl' : ''}>
-      <p className="mb-6 text-sm text-muted-foreground">
-        Data is extracted from Vanuatu Ministry of Education and Training (MoET) Annual Statistical Reports in the <code>./annual report</code> folder. Reports cover enrolment, schools, and teachers across ECCE, Primary, Secondary, and Senior Secondary levels.
+      <p className="mb-6 text-sm text-muted-foreground" data-tour="methodology-intro">
+        Data is extracted from Vanuatu Ministry of Education and Training (MoET) Annual Statistical Reports in the <code>./annual report</code> folder. Reports cover enrolment, schools, and teachers across ECCE, Primary, and Secondary levels (source tables may list junior and senior secondary separately; the dashboard combines them as Secondary).
       </p>
 
       <div className="space-y-6">
-        <Card className="border-[#4B6DEB]/30 bg-gradient-to-br from-[#4B6DEB]/5 to-transparent">
+        <Card className="border-[#4B6DEB]/30 bg-gradient-to-br from-[#4B6DEB]/5 to-transparent" data-tour="methodology-whats-new">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Sparkles className="size-5 text-[#4B6DEB]" />
@@ -45,7 +45,7 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
           </CardContent>
         </Card>
 
-        <Card>
+        <Card data-tour="methodology-reports">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <FileText className="size-5" />
@@ -70,6 +70,7 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
           </CardContent>
         </Card>
 
+        <div className="space-y-6" data-tour="methodology-extraction">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -79,10 +80,10 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              Data is extracted from MoET (Ministry of Education and Training) Annual Statistical Report PDFs using a Python script (pdftotext + regex parsing). Metrics include enrolment by level (ECCE, Primary, Secondary, Senior Secondary), number of schools by type, and number of teachers by type. Tables 1, 3, and 4 from each report are parsed to build the dashboard CSVs.
+              Data is extracted from MoET (Ministry of Education and Training) Annual Statistical Report PDFs using a Python script (pdftotext + regex parsing). Metrics include enrolment by level (ECCE, Primary, Secondary, and sometimes junior/senior secondary as separate rows), number of schools by type, and number of teachers by type. Tables 1, 3, and 4 from each report are parsed to build the dashboard CSVs.
             </p>
             <p className="text-sm text-muted-foreground">
-              Assumptions: Education levels are standardized (ECCE, Primary, Secondary, Senior Secondary, Total). Year columns in the PDFs may span multiple years (e.g. 2022–2024); the script selects the value for the report year. Percentages and counts are as published unless otherwise noted.
+              Assumptions: Education levels are standardized in the CSV (ECCE, Primary, Secondary, Senior Secondary as separate courts where published, Total). The app combines Secondary and Senior Secondary for display. Year columns in the PDFs may span multiple years (e.g. 2022–2024); the script selects the value for the report year. Percentages and counts are as published unless otherwise noted.
             </p>
           </CardContent>
         </Card>
@@ -102,6 +103,7 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
             <p><strong className="text-foreground">Student-teacher ratio:</strong> Extracted when available in the reports. Not all years or levels may have STR data.</p>
           </CardContent>
         </Card>
+        </div>
 
         <Card>
           <CardHeader>

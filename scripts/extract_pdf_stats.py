@@ -72,7 +72,6 @@ def parse_number(s: str) -> str | int | float:
     except ValueError:
         return s.strip()
 
-
 def extract_2025_style_metrics(text: str, year: int) -> list[dict]:
     """Parse narrative and tables from 2025-style annual report."""
     records: list[dict] = []

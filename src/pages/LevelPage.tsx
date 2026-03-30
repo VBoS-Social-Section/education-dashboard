@@ -124,8 +124,7 @@ export function LevelPage({ level, data, selectedYears, compareMode = false, get
   const levelDescriptions: Record<string, string> = {
     ECCE: 'Early Childhood Care and Education (pre-primary).',
     Primary: 'Primary education (Years 1–6).',
-    Secondary: 'Junior Secondary (Years 7–10).',
-    'Senior Secondary': 'Senior Secondary (Years 11+).',
+    Secondary: 'Secondary education (Years 7+), including junior and senior secondary.',
     Tertiary: 'National University of Vanuatu (NUV) and post-secondary education.',
   }
 

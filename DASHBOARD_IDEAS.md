@@ -9,7 +9,7 @@ From AI-generated dashboards (Gemini, ChatGPT), best practices, and MoET report 
 ### From AI Dashboards (Gemini, etc.) and Modern Education Dashboards
 
 1. **Hero / Overview Section**
-   - Large headline metric (e.g. total enrolment) with trend arrow
+   - Large headline metric (e.g. total enrolment) with tre4nd arrow
    - Quick summary cards in a row (4–6 KPIs)
    - Short narrative text explaining the data
 

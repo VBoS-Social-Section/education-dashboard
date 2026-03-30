@@ -6,7 +6,8 @@ import {
   UserCircle, 
   ClipboardList, 
   Baby, 
-  BookOpen 
+  BookOpen,
+  BarChart3,
 } from 'lucide-react'
 import { GRADIENT, GRADIENT_SHADOW } from '@/lib/theme'
 import { cn } from '@/lib/utils'
@@ -22,6 +23,7 @@ const DATA_ROUTES = [
   { name: 'Schools & Teachers', icon: School },
   { name: 'Performance', icon: TrendingUp },
   { name: 'Teachers by Sex', icon: UserCircle },
+  { name: 'VANSTA', icon: BarChart3 },
 ] as const
 
 const METHODOLOGY_ROUTE = { name: 'Methodology', icon: ClipboardList } as const
@@ -29,8 +31,7 @@ const METHODOLOGY_ROUTE = { name: 'Methodology', icon: ClipboardList } as const
 const LEVEL_ICONS: Record<string, typeof Baby> = {
   ECCE: Baby,
   Primary: BookOpen,
-  Secondary: School,
-  'Senior Secondary': GraduationCap,
+  Secondary: GraduationCap,
   Tertiary: School,
 }
 
@@ -90,6 +91,9 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
   }
   const compareYearA = selectedYears[0] ?? years[0]
   const compareYearB = selectedYears[1] ?? years[1] ?? years[0]
+  /** VANSTA uses its own filters on the page; MoET sidebar filters do not apply */
+  const isVanstaPage = activeTab === DATA_ROUTES.length - 1
+
   return (
     <aside
       className={cn(
@@ -104,161 +108,181 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
         </span>
       </div>
       <nav className="flex-1 space-y-0.5 overflow-y-auto p-4">
-        {DATA_ROUTES.map((route, i) => {
-          const Icon = route.icon
-          return (
-            <button
-              key={route.name}
-              onClick={() => onTabChange(i)}
-              className={cn(
-                'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
-                activeTab === i
-                  ? 'bg-white/15 text-white'
-                  : 'text-white/70 hover:bg-white/10 hover:text-white'
-              )}
-            >
-              <Icon className="size-5 shrink-0" strokeWidth={1.5} />
-              {route.name}
-            </button>
-          )
-        })}
-        <Separator className="my-5 bg-white/10" />
-        <button
-          onClick={() => onTabChange(DATA_ROUTES.length)}
-          className={cn(
-            'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
-            activeTab === DATA_ROUTES.length
-              ? 'bg-white/15 text-white'
-              : 'text-white/70 hover:bg-white/10 hover:text-white'
-          )}
-        >
-          <METHODOLOGY_ROUTE.icon className="size-5 shrink-0" strokeWidth={1.5} />
-          {METHODOLOGY_ROUTE.name}
-        </button>
-        <Separator className="my-5 bg-white/10" />
-        <div className="space-y-2 px-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Education Levels</p>
-          <Select
-            value={
-              selectedLevels.length === MENU_LEVELS.length && MENU_LEVELS.every((l) => selectedLevels.includes(l))
-                ? 'all'
-                : selectedLevels[0] ?? 'all'
-            }
-            onValueChange={(v) => {
-              onLevelsChange(v === 'all' ? [...MENU_LEVELS] : [v])
-            }}
+        <div data-tour="moet-sidebar-pages">
+          {DATA_ROUTES.map((route, i) => {
+            const Icon = route.icon
+            return (
+              <button
+                key={route.name}
+                onClick={() => onTabChange(i)}
+                className={cn(
+                  'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
+                  activeTab === i
+                    ? 'bg-white/15 text-white'
+                    : 'text-white/70 hover:bg-white/10 hover:text-white'
+                )}
+              >
+                <Icon className="size-5 shrink-0" strokeWidth={1.5} />
+                {route.name}
+              </button>
+            )
+          })}
+          <Separator className="my-5 bg-white/10" />
+          <button
+            onClick={() => onTabChange(DATA_ROUTES.length)}
+            className={cn(
+              'flex w-full items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-all',
+              activeTab === DATA_ROUTES.length
+                ? 'bg-white/15 text-white'
+                : 'text-white/70 hover:bg-white/10 hover:text-white'
+            )}
           >
-            <SelectTrigger size="sm" className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90">
-              <SelectValue placeholder="All levels" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All levels</SelectItem>
-              {MENU_LEVELS.map((l) => (
-                <SelectItem key={l} value={l}>{l}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            <METHODOLOGY_ROUTE.icon className="size-5 shrink-0" strokeWidth={1.5} />
+            {METHODOLOGY_ROUTE.name}
+          </button>
+          <Separator className="my-5 bg-white/10" />
         </div>
-        <div className="space-y-2 px-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Province</p>
-          <Select value={selectedProvince || 'all'} onValueChange={(v) => onProvinceChange(v === 'all' ? '' : v)}>
-            <SelectTrigger size="sm" className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90">
-              <SelectValue placeholder="All provinces" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All provinces</SelectItem>
-              {PROVINCES.map((p) => (
-                <SelectItem key={p} value={p}>{p}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-2 px-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Authority</p>
-          <Select value={selectedAuthority || 'all'} onValueChange={(v) => onAuthorityChange(v === 'all' ? '' : v)}>
-            <SelectTrigger size="sm" className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90">
-              <SelectValue placeholder="All authorities" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All authorities</SelectItem>
-              {AUTHORITIES.map((a) => (
-                <SelectItem key={a} value={a}>{a}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="space-y-2 px-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Location</p>
-          <Select value={selectedLocation || 'all'} onValueChange={(v) => onLocationChange(v === 'all' ? '' : v)}>
-            <SelectTrigger size="sm" className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90">
-              <SelectValue placeholder="All locations" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All locations</SelectItem>
-              {LOCATIONS.map((l) => (
-                <SelectItem key={l} value={l}>{l}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <Separator className="my-5 bg-white/10" />
-        <div className="space-y-3">
-          <p className="px-2 text-xs font-semibold uppercase tracking-wider text-white/60">Years</p>
-          <div className="space-y-3 px-2">
-            <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-white/90">Compare years</span>
-            <Switch
-              checked={compareMode}
-              onCheckedChange={handleCompareModeChange}
-              aria-label="Compare two years side by side"
-            />
+        {isVanstaPage ? (
+          <div className="mx-2 rounded-xl border border-white/15 bg-white/5 px-3 py-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-white/50">Filters</p>
+            <p className="mt-2 text-xs leading-relaxed text-white/75">
+              Education level, province, authority, location, and year range here apply to{' '}
+              <span className="text-white/95">MoET report</span> pages only. They do not change VANSTA data.
+            </p>
+            <p className="mt-2 text-xs leading-relaxed text-white/85">
+              Use <span className="font-medium text-white">Year</span>, <span className="font-medium text-white">Province</span>,{' '}
+              <span className="font-medium text-white">Domain</span>, <span className="font-medium text-white">VANSTA test</span>,{' '}
+              <span className="font-medium text-white">Learning area</span> (joined numeracy / literacy), and{' '}
+              <span className="font-medium text-white">Cohort</span> in the main area for VANSTA.
+            </p>
           </div>
-          {compareMode && years.length >= 2 && (
-            <div className="space-y-2">
-              <div>
-                <p className="mb-1 text-xs text-white/60">Year A</p>
-                <Select
-                  value={String(compareYearA)}
-                  onValueChange={(v) => {
-                    const a = Number(v)
-                    const b = a === compareYearB ? years.find((y) => y !== a) ?? years[0] : compareYearB
-                    onYearsChange(a <= b ? [a, b] : [b, a])
-                  }}
-                >
-                  <SelectTrigger className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90" size="sm">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {years.map((y) => (
-                      <SelectItem key={y} value={String(y)}>{y}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <div>
-                <p className="mb-1 text-xs text-white/60">Year B</p>
-                <Select
-                  value={String(compareYearB)}
-                  onValueChange={(v) => {
-                    const b = Number(v)
-                    const a = b === compareYearA ? years.find((y) => y !== b) ?? years[0] : compareYearA
-                    onYearsChange(a <= b ? [a, b] : [b, a])
-                  }}
-                >
-                  <SelectTrigger className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90" size="sm">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {years.map((y) => (
-                      <SelectItem key={y} value={String(y)}>{y}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+        ) : (
+          <div data-tour="moet-sidebar-filters" className="space-y-5">
+            <div className="space-y-2 px-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Education Levels</p>
+              <Select
+                value={
+                  selectedLevels.length === MENU_LEVELS.length && MENU_LEVELS.every((l) => selectedLevels.includes(l))
+                    ? 'all'
+                    : selectedLevels[0] ?? 'all'
+                }
+                onValueChange={(v) => {
+                  onLevelsChange(v === 'all' ? [...MENU_LEVELS] : [v])
+                }}
+              >
+                <SelectTrigger size="sm" className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90">
+                  <SelectValue placeholder="All levels" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All levels</SelectItem>
+                  {MENU_LEVELS.map((l) => (
+                    <SelectItem key={l} value={l}>{l}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2 px-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Province</p>
+              <Select value={selectedProvince || 'all'} onValueChange={(v) => onProvinceChange(v === 'all' ? '' : v)}>
+                <SelectTrigger size="sm" className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90">
+                  <SelectValue placeholder="All provinces" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All provinces</SelectItem>
+                  {PROVINCES.map((p) => (
+                    <SelectItem key={p} value={p}>{p}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2 px-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Authority</p>
+              <Select value={selectedAuthority || 'all'} onValueChange={(v) => onAuthorityChange(v === 'all' ? '' : v)}>
+                <SelectTrigger size="sm" className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90">
+                  <SelectValue placeholder="All authorities" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All authorities</SelectItem>
+                  {AUTHORITIES.map((a) => (
+                    <SelectItem key={a} value={a}>{a}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2 px-2">
+              <p className="text-xs font-semibold uppercase tracking-wider text-white/60">Location</p>
+              <Select value={selectedLocation || 'all'} onValueChange={(v) => onLocationChange(v === 'all' ? '' : v)}>
+                <SelectTrigger size="sm" className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90">
+                  <SelectValue placeholder="All locations" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All locations</SelectItem>
+                  {LOCATIONS.map((l) => (
+                    <SelectItem key={l} value={l}>{l}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <Separator className="my-5 bg-white/10" />
+            <div className="space-y-3">
+              <p className="px-2 text-xs font-semibold uppercase tracking-wider text-white/60">Years</p>
+              <div className="space-y-3 px-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium text-white/90">Compare years</span>
+                  <Switch
+                    checked={compareMode}
+                    onCheckedChange={handleCompareModeChange}
+                    aria-label="Compare two years side by side"
+                  />
+                </div>
+                {compareMode && years.length >= 2 && (
+                  <div className="space-y-2">
+                    <div>
+                      <p className="mb-1 text-xs text-white/60">Year A</p>
+                      <Select
+                        value={String(compareYearA)}
+                        onValueChange={(v) => {
+                          const a = Number(v)
+                          const b = a === compareYearB ? years.find((y) => y !== a) ?? years[0] : compareYearB
+                          onYearsChange(a <= b ? [a, b] : [b, a])
+                        }}
+                      >
+                        <SelectTrigger className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90" size="sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {years.map((y) => (
+                            <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div>
+                      <p className="mb-1 text-xs text-white/60">Year B</p>
+                      <Select
+                        value={String(compareYearB)}
+                        onValueChange={(v) => {
+                          const b = Number(v)
+                          const a = b === compareYearA ? years.find((y) => y !== b) ?? years[0] : compareYearA
+                          onYearsChange(a <= b ? [a, b] : [b, a])
+                        }}
+                      >
+                        <SelectTrigger className="w-full bg-white/10 border-white/20 text-white [&>span]:text-white/90" size="sm">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {years.map((y) => (
+                            <SelectItem key={y} value={String(y)}>{y}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          )}
           </div>
-        </div>
+        )}
       </nav>
       <div className="p-4">
         <div

@@ -16,6 +16,8 @@ interface MobileFilterFABProps {
   courts?: readonly string[]
   selectedCourts?: string[]
   onCourtsChange?: (courts: string[]) => void
+  /** When false (e.g. on VANSTA), MoET filters are hidden; use page-level filters instead */
+  showMoetFilters?: boolean
 }
 
 export function MobileFilterFAB({
@@ -27,8 +29,13 @@ export function MobileFilterFAB({
   courts = [],
   selectedCourts = [],
   onCourtsChange,
+  showMoetFilters = true,
 }: MobileFilterFABProps) {
   const [open, setOpen] = useState(false)
+
+  if (!showMoetFilters) {
+    return null
+  }
   const rawMin = years.indexOf(selectedYears[0] ?? years[0] ?? 0)
   const rawMax = years.indexOf(selectedYears[selectedYears.length - 1] ?? years[years.length - 1] ?? 0)
   const yearMinIdx = years.length > 0 ? Math.max(0, rawMin >= 0 ? rawMin : 0) : 0

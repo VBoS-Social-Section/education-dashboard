@@ -17,7 +17,7 @@ interface Props {
   selectedProvince?: string
 }
 
-const LEVELS = ['ECCE', 'Primary', 'Secondary', 'Senior Secondary', 'Tertiary'] as const
+const LEVELS = ['ECCE', 'Primary', 'Secondary', 'Tertiary'] as const
 const PERF_LEVELS = ['ECCE', 'Primary', 'Secondary'] as const
 
 export function PerformancePage({ data, selectedYears, compareMode = false, getValue, sdg4Seed, selectedProvince }: Props) {
@@ -65,7 +65,7 @@ export function PerformancePage({ data, selectedYears, compareMode = false, getV
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-border/60 bg-white p-5 shadow-sm">
+      <div className="rounded-2xl border border-border/60 bg-white p-5 shadow-sm" data-tour="performance-intro">
         <p className="text-sm leading-relaxed text-muted-foreground">
           <strong>Gross Enrolment Rate (GER)</strong> — percentage of children of official age enrolled in school.{' '}
           <strong>Net Enrolment Rate (NER)</strong> — percentage enrolled at the official age for their level.{' '}
@@ -75,6 +75,7 @@ export function PerformancePage({ data, selectedYears, compareMode = false, getV
       </div>
 
       {/* Province-specific GER/NER (2024) when province filter is applied */}
+      <div data-tour="performance-sdg4-provinces" className="space-y-6">
       {selectedProvince && sdg4Seed?.gerByProvince2024?.[selectedProvince] && sdg4Seed?.nerByProvince2024?.[selectedProvince] && (
         <LazyChart enabled={true}>
           <Sdg4GerNerSingleChart
@@ -87,7 +88,6 @@ export function PerformancePage({ data, selectedYears, compareMode = false, getV
         </LazyChart>
       )}
 
-      {/* All provinces GER/NER (2024) when no province selected */}
       {!selectedProvince && sdg4Seed?.gerByProvince2024 && sdg4Seed?.nerByProvince2024 && (
         <div className="grid gap-6 lg:grid-cols-2">
           <LazyChart enabled={true}>
@@ -116,8 +116,10 @@ export function PerformancePage({ data, selectedYears, compareMode = false, getV
           </LazyChart>
         </div>
       )}
+      </div>
       
       {/* Performance Metrics Overview - Compact Grid */}
+      <div data-tour="performance-metrics-grid" className="min-w-0">
       <MasonryGrid columns={{ xs: 1, sm: 2, lg: 3 }}>
         {gerData.some((s) => s.data.some((v) => v > 0)) && (
           <CollapsibleChart
@@ -207,10 +209,11 @@ export function PerformancePage({ data, selectedYears, compareMode = false, getV
           </CollapsibleChart>
         )}
       </MasonryGrid>
+      </div>
       
       {/* Trend Analysis - Collapsible by Default */}
       {selectedYears.length > 1 && (
-        <div className="space-y-6">
+        <div className="space-y-6" data-tour="performance-trends">
           <CollapsibleChart
             title="Performance Trends Over Time"
             description="Track changes in education indicators across multiple years"

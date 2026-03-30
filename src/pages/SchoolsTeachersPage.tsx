@@ -18,6 +18,7 @@ export function SchoolsTeachersPage({ data, selectedYears, compareMode = false, 
 
   return (
     <div className="space-y-6">
+      <div data-tour="schools-teachers-main" className="min-w-0">
       <CollapsibleChart
         title="Schools & Teachers by Level and Year"
         description="Number of schools and teachers across ECCE, Primary, and Secondary. Each level shows grouped bars."
@@ -27,9 +28,10 @@ export function SchoolsTeachersPage({ data, selectedYears, compareMode = false, 
           <SchoolsTeachersChart data={data} selectedYears={selectedYears} getValue={getValue} hideHeader />
         </LazyChart>
       </CollapsibleChart>
+      </div>
       
       {selectedYears.length > 1 && (
-        <div className="space-y-6">
+        <div className="space-y-6" data-tour="schools-teachers-trends">
           <CollapsibleChart
             title="Schools Trends Over Time"
             description="Line chart showing the number of schools by education level across multiple years."

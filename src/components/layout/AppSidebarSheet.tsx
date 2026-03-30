@@ -4,7 +4,7 @@ import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from 
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 
-const DATA_ROUTES = ['Overview', 'Enrolment', 'Schools & Teachers', 'Performance', 'Teachers by Sex'] as const
+const DATA_ROUTES = ['Overview', 'Enrolment', 'Schools & Teachers', 'Performance', 'Teachers by Sex', 'VANSTA'] as const
 const METHODOLOGY_ROUTE = 'Methodology' as const
 
 function formatLastUpdated(iso: string | null): string {

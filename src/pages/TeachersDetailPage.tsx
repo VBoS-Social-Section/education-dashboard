@@ -13,7 +13,7 @@ interface Props {
   getValue: (court: string, metric: string, year?: number) => number | null
 }
 
-const LEVELS = ['ECCE', 'Primary', 'Secondary', 'Senior Secondary'] as const
+const LEVELS = ['ECCE', 'Primary', 'Secondary'] as const
 
 export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
   const hasSexData = useMemo(() => {
@@ -50,7 +50,7 @@ export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-2xl border border-border/60 bg-white p-5 shadow-sm">
+      <div className="rounded-2xl border border-border/60 bg-white p-5 shadow-sm" data-tour="teachers-sex-intro">
         <h2 className="text-base font-semibold">Teachers by Sex</h2>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Number of teachers by sex (Male/Female) in each school type. In Vanuatu, female teachers typically outnumber male, especially in ECCE and Primary. Source: MoET Annual Reports, Table 43.
@@ -58,6 +58,7 @@ export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
       </div>
       
       {/* Enhanced bar charts for teacher gender breakdown */}
+      <div data-tour="teachers-sex-bars-male" className="min-w-0">
       <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
         <EnhancedBarChart
           data={data}
@@ -68,7 +69,9 @@ export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
           description="Number of male teachers by education level across selected years. Track gender representation in the teaching workforce."
         />
       </LazyChart>
+      </div>
       
+      <div data-tour="teachers-sex-bars-female" className="min-w-0">
       <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
         <EnhancedBarChart
           data={data}
@@ -79,10 +82,11 @@ export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
           description="Number of female teachers by education level. Female teachers typically dominate ECCE and Primary levels in Vanuatu."
         />
       </LazyChart>
+      </div>
       
       {/* Trend analysis for multi-year data */}
       {selectedYears.length > 1 && (
-        <>
+        <div data-tour="teachers-sex-trends" className="min-w-0 space-y-6">
           <LazyChart enabled={selectedYears.length >= MANY_YEARS_THRESHOLD}>
             <TrendChart
               data={data}
@@ -104,11 +108,11 @@ export function TeachersDetailPage({ data, selectedYears, getValue }: Props) {
               description="Line chart showing female teacher workforce trends. Track growth patterns in female participation."
             />
           </LazyChart>
-        </>
+        </div>
       )}
       
       {/* Summary cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" data-tour="teachers-sex-summary">
         {levelStats.map(({ inst, maleTotal, femaleTotal, total }) => (
           <div key={inst} className="rounded-2xl border border-border/60 bg-white p-5 shadow-sm hover:shadow-lg transition-shadow duration-300">
             <h3 className="mb-4 text-sm font-semibold">{inst}</h3>

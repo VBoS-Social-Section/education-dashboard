@@ -2,8 +2,8 @@ import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
 import { getInstitutionColor } from '@/lib/education-colors'
 
-const LEVEL_KEYS = ['ECCE', 'Primary', 'Junior Secondary', 'Senior Secondary'] as const
-const LEVEL_COLORS = LEVEL_KEYS.map((l) => getInstitutionColor(l === 'Junior Secondary' ? 'Secondary' : l))
+/** Three display levels: Secondary combines junior + senior from source data */
+const DISPLAY_LEVEL_KEYS = ['ECCE', 'Primary', 'Secondary'] as const
 
 const CHART_DEFAULTS: Partial<Highcharts.Options> = {
   chart: {
@@ -48,11 +48,11 @@ interface Sdg4StackedBarProps {
 }
 
 export function Sdg4StackedBarChart({ title, description, categories, dataByLevel, className = '', hideHeader }: Sdg4StackedBarProps) {
-  const series = LEVEL_KEYS.map((level, i) => ({
+  const series = DISPLAY_LEVEL_KEYS.map((level) => ({
     name: level,
     type: 'column' as const,
     data: dataByLevel[level] ?? categories.map(() => 0),
-    color: LEVEL_COLORS[i],
+    color: getInstitutionColor(level),
     stacking: 'normal' as const,
     borderWidth: 0,
     borderRadius: 4,
@@ -115,7 +115,7 @@ export function Sdg4BarByLevelChart({ title, levels, values, colors, className =
   const seriesData = levels.map((name, i) => ({
     name,
     y: values[i] ?? 0,
-    color: colors?.[i] ?? getInstitutionColor(name === 'Junior Secondary' ? 'Secondary' : name),
+    color: colors?.[i] ?? getInstitutionColor(name),
   })).filter((d) => d.y > 0)
 
   const options: Highcharts.Options = {
@@ -191,11 +191,11 @@ interface Sdg4GerNerStackedProps {
 }
 
 export function Sdg4GerNerStackedChart({ title, provinces, dataByLevel, levels, className = '' }: Sdg4GerNerStackedProps) {
-  const series = levels.map((level, i) => ({
+  const series = levels.map((level) => ({
     name: level,
     type: 'column' as const,
     data: provinces.map((_, j) => dataByLevel[level]?.[j] ?? 0),
-    color: LEVEL_COLORS[i],
+    color: getInstitutionColor(level),
     stacking: 'normal' as const,
     borderWidth: 0,
     borderRadius: 4,

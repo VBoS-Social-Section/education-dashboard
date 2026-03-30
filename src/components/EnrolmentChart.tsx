@@ -17,7 +17,7 @@ export const EnrolmentChart = memo(function EnrolmentChart({ data, selectedYears
       getValue={getValue}
       metric="Enrolment"
       title="Enrolment by Level and Year"
-      description="Total student enrolment by education level (ECCE, Primary, Secondary, Senior Secondary). Primary typically has the highest enrolment, followed by Secondary. ECCE captures pre-primary enrolment."
+      description="Total student enrolment by education level (ECCE, Primary, Secondary). Secondary combines junior and senior secondary. Primary typically has the highest enrolment. ECCE captures pre-primary enrolment."
       levelOnYAxis
       hideHeader={hideHeader}
     />
