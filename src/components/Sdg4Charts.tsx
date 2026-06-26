@@ -83,7 +83,8 @@ export function Sdg4StackedBarChart({ title, description, categories, dataByLeve
       formatter: function (this: Highcharts.TooltipFormatterContextObject) {
         const pts = this.points ?? []
         const total = pts.reduce((s, p) => s + ((p.y as number) ?? 0), 0)
-        let html = `<b>${this.x}</b><br/>`
+        const categoryName = typeof this.x === 'number' ? (categories[this.x] ?? this.x) : (categories[Number(this.x)] ?? this.x)
+        let html = `<b>${categoryName}</b><br/>`
         pts.forEach((p) => {
           html += `<span style="color:${p.color}">●</span> ${p.series.name}: ${(p.y ?? 0).toLocaleString()}<br/>`
         })

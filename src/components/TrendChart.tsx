@@ -114,8 +114,8 @@ export const TrendChart = memo(function TrendChart({
       },
       formatter: function (this: any) {
         const lines: string[] = []
-        const year = this.x
-        lines.push(`<b>Year: ${year}</b>`)
+        const yearVal = typeof this.x === 'number' ? (sortedYears[this.x] ?? this.x) : (sortedYears[Number(this.x)] ?? this.x)
+        lines.push(`<b>Year: ${yearVal}</b>`)
         
         this.points?.forEach((point: any) => {
           const value = point.y as number
