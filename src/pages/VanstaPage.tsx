@@ -174,8 +174,8 @@ export function VanstaPage() {
       chart: { type: 'bar', height: Math.max(320, cats.length * 36), backgroundColor: 'transparent' },
       title: { text: undefined },
       xAxis: { categories: cats, title: { text: 'Achievement' } },
-      yAxis: { title: { text: 'Number of records' }, min: 0 },
-      series: [{ type: 'bar', name: 'Records', data, color: PALETTE[0] }],
+      yAxis: { title: { text: 'Number of Assessments' }, min: 0 },
+      series: [{ type: 'bar', name: 'Assessments', data, color: PALETTE[0] }],
       legend: { enabled: false },
       tooltip: { valueDecimals: 0 },
       credits: { enabled: false },
@@ -189,11 +189,11 @@ export function VanstaPage() {
       chart: { type: 'column', height: 380, backgroundColor: 'transparent' },
       title: { text: undefined },
       xAxis: { categories: top.map(([p]) => p), crosshair: true },
-      yAxis: { title: { text: 'Records' }, min: 0 },
+      yAxis: { title: { text: 'Number of Assessments' }, min: 0 },
       series: [
         {
           type: 'column',
-          name: 'Test records',
+          name: 'Assessments',
           data: top.map(([, v]) => v),
           color: PALETTE[1],
         },
@@ -210,11 +210,11 @@ export function VanstaPage() {
       chart: { type: 'line', height: 340, backgroundColor: 'transparent' },
       title: { text: undefined },
       xAxis: { categories: byYear.map(([y]) => y), title: { text: 'Year' } },
-      yAxis: { title: { text: 'Records' }, min: 0 },
+      yAxis: { title: { text: 'Number of Assessments' }, min: 0 },
       series: [
         {
           type: 'line',
-          name: 'Records',
+          name: 'Assessments',
           data: byYear.map(([, v]) => v),
           color: PALETTE[2],
           lineWidth: 3,
@@ -236,7 +236,7 @@ export function VanstaPage() {
     return {
       chart: { type: 'pie', height: 360, backgroundColor: 'transparent' },
       title: { text: undefined },
-      series: [{ type: 'pie', name: 'Records', data: pieData }],
+      series: [{ type: 'pie', name: 'Assessments', data: pieData }],
       plotOptions: {
         pie: {
           dataLabels: { enabled: true, format: '{point.percentage:.1f}%' },
@@ -255,14 +255,14 @@ export function VanstaPage() {
       chart: { type: 'bar', height: Math.max(300, cats.length * 40), backgroundColor: 'transparent' },
       title: { text: undefined },
       xAxis: { categories: cats, title: { text: 'VANSTA test' } },
-      yAxis: { title: { text: 'Records' }, min: 0 },
-      series: [{ type: 'bar', name: 'Records', data, color: PALETTE[3] }],
+      yAxis: { title: { text: 'Number of Assessments' }, min: 0 },
+      series: [{ type: 'bar', name: 'Assessments', data, color: PALETTE[3] }],
       legend: { enabled: false },
       tooltip: {
         formatter: function (this: Highcharts.TooltipFormatterContextObject) {
           const i = this.point?.index ?? 0
           const full = byVANSTATest[i]?.[0] ?? ''
-          return `<b>${full}</b><br/>Records: <b>${this.y?.toLocaleString?.() ?? this.y}</b>`
+          return `<b>${full}</b><br/>Assessments: <b>${this.y?.toLocaleString?.() ?? this.y}</b>`
         },
       },
       credits: { enabled: false },
@@ -277,14 +277,14 @@ export function VanstaPage() {
       chart: { type: 'bar', height: Math.max(300, cats.length * 40), backgroundColor: 'transparent' },
       title: { text: undefined },
       xAxis: { categories: cats, title: { text: 'Domain' } },
-      yAxis: { title: { text: 'Records' }, min: 0 },
-      series: [{ type: 'bar', name: 'Records', data, color: PALETTE[4] }],
+      yAxis: { title: { text: 'Number of Assessments' }, min: 0 },
+      series: [{ type: 'bar', name: 'Assessments', data, color: PALETTE[4] }],
       legend: { enabled: false },
       tooltip: {
         formatter: function (this: Highcharts.TooltipFormatterContextObject) {
           const i = this.point?.index ?? 0
           const full = byDomainName[i]?.[0] ?? ''
-          return `<b>${full}</b><br/>Records: <b>${this.y?.toLocaleString?.() ?? this.y}</b>`
+          return `<b>${full}</b><br/>Assessments: <b>${this.y?.toLocaleString?.() ?? this.y}</b>`
         },
       },
       credits: { enabled: false },
@@ -299,14 +299,14 @@ export function VanstaPage() {
       chart: { type: 'bar', height: Math.max(380, cats.length * 34), backgroundColor: 'transparent' },
       title: { text: undefined },
       xAxis: { categories: cats, title: { text: 'School' } },
-      yAxis: { title: { text: 'Records' }, min: 0 },
-      series: [{ type: 'bar', name: 'Records', data, color: PALETTE[5] }],
+      yAxis: { title: { text: 'Number of Assessments' }, min: 0 },
+      series: [{ type: 'bar', name: 'Assessments', data, color: PALETTE[5] }],
       legend: { enabled: false },
       tooltip: {
         formatter: function (this: Highcharts.TooltipFormatterContextObject) {
           const i = this.point?.index ?? 0
           const full = bySchoolTop[i]?.[0] ?? ''
-          return `<b>${full}</b><br/>Records: <b>${this.y?.toLocaleString?.() ?? this.y}</b>`
+          return `<b>${full}</b><br/>Assessments: <b>${this.y?.toLocaleString?.() ?? this.y}</b>`
         },
       },
       credits: { enabled: false },
@@ -323,8 +323,8 @@ export function VanstaPage() {
       chart: { type: 'column', height: 320, backgroundColor: 'transparent' },
       title: { text: undefined },
       xAxis: { categories: [...STRAND_LABELS], crosshair: true, title: { text: 'Learning area' } },
-      yAxis: { title: { text: 'Test records' }, min: 0 },
-      series: [{ type: 'column', name: 'Records', data, borderWidth: 0, borderRadius: 4 }],
+      yAxis: { title: { text: 'Number of Assessments' }, min: 0 },
+      series: [{ type: 'column', name: 'Assessments', data, borderWidth: 0, borderRadius: 4 }],
       legend: { enabled: false },
       tooltip: { valueDecimals: 0 },
       credits: { enabled: false },
@@ -339,8 +339,8 @@ export function VanstaPage() {
       chart: { type: 'column', height: 300, backgroundColor: 'transparent' },
       title: { text: undefined },
       xAxis: { categories: cats, crosshair: true, title: { text: 'Cohort (year level)' } },
-      yAxis: { title: { text: 'Records' }, min: 0 },
-      series: [{ type: 'column', name: 'Records', data, color: PALETTE[2], borderWidth: 0, borderRadius: 4 }],
+      yAxis: { title: { text: 'Number of Assessments' }, min: 0 },
+      series: [{ type: 'column', name: 'Assessments', data, color: PALETTE[2], borderWidth: 0, borderRadius: 4 }],
       legend: { enabled: false },
       tooltip: { valueDecimals: 0 },
       credits: { enabled: false },
@@ -360,7 +360,7 @@ export function VanstaPage() {
       title: { text: undefined },
       xAxis: { categories, crosshair: true },
       yAxis: {
-        title: { text: 'Share of records (%)' },
+        title: { text: 'Share of Assessments (%)' },
         min: 0,
         max: 100,
         reversedStacks: false,
@@ -388,7 +388,7 @@ export function VanstaPage() {
       chart: { type: 'column', height: Math.max(360, provinces.length * 28), backgroundColor: 'transparent' },
       title: { text: undefined },
       xAxis: { categories: provinces, crosshair: true },
-      yAxis: { title: { text: 'Records' }, min: 0 },
+      yAxis: { title: { text: 'Number of Assessments' }, min: 0 },
       plotOptions: { column: { grouping: true, borderWidth: 0, borderRadius: 3 } },
       series: [
         { type: 'column', name: 'Numeracy', data: numeracy, color: PALETTE[0] },
