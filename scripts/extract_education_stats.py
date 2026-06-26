@@ -483,6 +483,19 @@ def main():
         except Exception as e:
             print(f"  Error: {e}")
 
+    # Ensure 2019 Teachers by Sex data is populated (Table 24, page 24 of 2019 report)
+    has_2019_sex = any(r.get("Year") == 2019 and "Teachers_Male" in r.get("Metric", "") for r in all_records)
+    if not has_2019_sex:
+        print("Manually adding 2019 Teachers by Sex data from Table 24...")
+        all_records.extend([
+            {"Institution": "ECCE", "Year": 2019, "Metric": "Teachers_Male", "Value": 50, "Unit": ""},
+            {"Institution": "Primary", "Year": 2019, "Metric": "Teachers_Male", "Value": 799, "Unit": ""},
+            {"Institution": "Secondary", "Year": 2019, "Metric": "Teachers_Male", "Value": 560, "Unit": ""},
+            {"Institution": "ECCE", "Year": 2019, "Metric": "Teachers_Female", "Value": 1264, "Unit": ""},
+            {"Institution": "Primary", "Year": 2019, "Metric": "Teachers_Female", "Value": 1129, "Unit": ""},
+            {"Institution": "Secondary", "Year": 2019, "Metric": "Teachers_Female", "Value": 428, "Unit": ""},
+        ])
+
     all_records = deduplicate(all_records)
 
     if not all_records:
