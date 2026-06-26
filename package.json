@@ -20,6 +20,7 @@
     "highcharts-react-official": "^3.2.3",
     "lucide-react": "^0.574.0",
     "papaparse": "^5.4.1",
+    "pdf-parse": "^2.4.5",
     "radix-ui": "^1.4.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
