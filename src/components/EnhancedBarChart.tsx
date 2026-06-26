@@ -45,13 +45,20 @@ export const EnhancedBarChart = memo(function EnhancedBarChart({
     
     switch (metric) {
       case 'Enrolment': return 'Number of Students'
+      case 'Enrolment_Male': return 'Number of Male Students'
+      case 'Enrolment_Female': return 'Number of Female Students'
       case 'Schools': return 'Number of Schools'
       case 'Teachers': return 'Number of Teachers'
+      case 'Teachers_Male': return 'Number of Male Teachers'
+      case 'Teachers_Female': return 'Number of Female Teachers'
       case 'GER': return 'Gross Enrolment Rate (%)'
       case 'NER': return 'Net Enrolment Rate (%)'
       case 'GPI': return 'Gender Parity Index'
       case 'StudentTeacherRatio': return 'Student-Teacher Ratio'
-      default: return 'Count'
+      default: {
+        const formatted = metric.replace(/_/g, ' ')
+        return formatted.charAt(0).toUpperCase() + formatted.slice(1)
+      }
     }
   }
 
