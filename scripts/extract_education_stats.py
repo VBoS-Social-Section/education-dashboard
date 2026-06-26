@@ -282,7 +282,7 @@ def extract_tables_simple(text: str, year: int) -> list[dict]:
 
     # Net Enrolment Rate (NER) by school type - must match "by school type in" (not "for each province in")
     table28 = None
-    for m in re.finditer(r"Table \d+: Net Enrolment Rate \(NER\) and Gender Parity Index \(GPI\) by school type in \d{4} - \d{4}.*?(?=Table \d+:|Source:|\n\n\n)", t, re.DOTALL | re.IGNORECASE):
+    for m in re.finditer(r"Table \d+: Net Enrolment Rate \(NER\) and Gender Parity Index \(GPI\) by school type in \d{4}\s*[–\-]\s*\d{4}.*?(?=Table \d+:|Source:|\n\n\n)", t, re.DOTALL | re.IGNORECASE):
         if re.search(r"20\d{2}\s+[\d.]+%", m.group(0)):
             table28 = m
             break
