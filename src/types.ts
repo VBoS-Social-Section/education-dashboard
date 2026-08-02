@@ -84,4 +84,12 @@ export interface CensusMicsSeed {
     years: number[]
     bands: Record<string, number[]>
   }
+  /** Single year-of-age population projection (Census-derived), by sex. ages[i] pairs with male[i]/female[i], each an 11-value series aligned to years. */
+  singleAgePopulationProjection: {
+    sourceLabel: string
+    years: number[]
+    ages: string[]
+    male: number[][]
+    female: number[][]
+  }
 }

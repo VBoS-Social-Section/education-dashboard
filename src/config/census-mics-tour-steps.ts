@@ -44,4 +44,10 @@ export const CENSUS_MICS_TOUR_STEPS: TourStep[] = [
     description:
       'A Census-based population projection by education band. Useful as an independent denominator if you want to sanity-check NER/GER against a population estimate that is not tied to MoET\'s own figures.',
   },
+  {
+    targetId: 'censusmics-single-age',
+    title: 'Single year of age, not just bands',
+    description:
+      'The chart above groups ages into education bands. Here you can pick one exact age and see its own trend by sex, or scan the heatmap below to see every age at once — useful for spotting which single cohort is driving a change in a band.',
+  },
 ]

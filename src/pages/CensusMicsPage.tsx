@@ -5,6 +5,7 @@ import HighchartsReact from 'highcharts-react-official'
 import { Info, Landmark, ClipboardList, Users2, Baby, TrendingUp } from 'lucide-react'
 import { CollapsibleChart, CollapsibleKPICard, MasonryGrid } from '@/components/CollapsibleChart'
 import { Card, CardContent } from '@/components/ui/card'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import type { CensusMicsSeed, StatRow } from '@/types'
 
 const BASE = import.meta.env.BASE_URL
@@ -14,6 +15,8 @@ const PALETTE = {
   census: '#6DEBB9', // mint — 2020 Census
   mics: '#7C3AED', // violet — MICS 2023 household survey
   lfs: '#3D6D70', // dark teal — Labour Force Survey
+  male: '#4B6DEB',
+  female: '#EC4899',
 } as const
 
 const LEVEL_CATEGORIES = ['ECCE', 'Primary', 'Junior Secondary', 'Senior Secondary', 'Secondary (combined)'] as const
@@ -113,6 +116,8 @@ export function CensusMicsPage() {
   const [seed, setSeed] = useState<CensusMicsSeed | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [moet, setMoet] = useState<{ year: number | null; stats: MoetLevelStats }>({ year: null, stats: { NER: {}, GER: {}, GPI: {} } })
+  /** Age 6 (primary entry age) as a sensible default for the single-age trend chart */
+  const [selectedAge, setSelectedAge] = useState<string>('6')
 
   useEffect(() => {
     fetch(`${BASE}data/seed_census_mics.json`)
@@ -289,6 +294,75 @@ export function CensusMicsPage() {
       plotOptions: { column: { borderWidth: 0, borderRadius: 4 } },
       credits: { enabled: false },
       tooltip: { shared: true, valueSuffix: '%' },
+    }
+  }, [seed])
+
+  const singleAgeIndex = useMemo(() => {
+    if (!seed) return -1
+    return seed.singleAgePopulationProjection.ages.indexOf(selectedAge)
+  }, [seed, selectedAge])
+
+  const singleAgeTrendOptions: Highcharts.Options | null = useMemo(() => {
+    if (!seed || singleAgeIndex < 0) return null
+    const { years, ages, male, female } = seed.singleAgePopulationProjection
+    const label = ages[singleAgeIndex] === '85+' ? 'age 85+' : `age ${ages[singleAgeIndex]}`
+    return {
+      chart: { type: 'line', height: 360, backgroundColor: 'transparent', style: { fontFamily: 'Inter, system-ui, sans-serif' } },
+      xAxis: { categories: years.map(String), gridLineWidth: 0 },
+      yAxis: { title: { text: `Projected population, ${label}` }, min: 0, gridLineDashStyle: 'Dash' },
+      series: [
+        { type: 'line', name: 'Male', color: PALETTE.male, data: male[singleAgeIndex] },
+        { type: 'line', name: 'Female', color: PALETTE.female, data: female[singleAgeIndex] },
+      ],
+      legend: { enabled: true, itemStyle: { fontSize: '12px', fontWeight: '500' } },
+      credits: { enabled: false },
+      tooltip: { shared: true, valueSuffix: ' people' },
+    }
+  }, [seed, singleAgeIndex])
+
+  const singleAgeHeatmapOptions: Highcharts.Options | null = useMemo(() => {
+    if (!seed) return null
+    const { years, ages, male, female } = seed.singleAgePopulationProjection
+    const data: [number, number, number][] = []
+    let max = 0
+    ages.forEach((_, ageIdx) => {
+      years.forEach((_, yearIdx) => {
+        const v = (male[ageIdx][yearIdx] ?? 0) + (female[ageIdx][yearIdx] ?? 0)
+        if (v > max) max = v
+        data.push([yearIdx, ageIdx, v])
+      })
+    })
+    return {
+      chart: { type: 'heatmap', height: 900, backgroundColor: 'transparent', style: { fontFamily: 'Inter, system-ui, sans-serif' } },
+      xAxis: { categories: years.map(String), gridLineWidth: 0 },
+      yAxis: {
+        categories: ages,
+        title: { text: 'Age' },
+        reversed: false,
+        tickInterval: 5,
+        gridLineWidth: 0,
+      },
+      colorAxis: {
+        min: 0,
+        max,
+        minColor: '#f0f9ff',
+        maxColor: PALETTE.census,
+      },
+      legend: { align: 'right', layout: 'vertical', verticalAlign: 'middle', title: { text: 'Population' } },
+      series: [
+        {
+          type: 'heatmap',
+          name: 'Projected population (both sexes)',
+          data,
+          borderWidth: 0,
+        },
+      ],
+      credits: { enabled: false },
+      tooltip: {
+        formatter: function (this: any) {
+          return `<b>Age ${ages[this.point.y]}, ${years[this.point.x]}</b><br/>${this.point.value.toLocaleString()} people`
+        },
+      },
     }
   }, [seed])
 
@@ -489,6 +563,41 @@ export function CensusMicsPage() {
         >
           {populationChartOptions && <HighchartsReact highcharts={Highcharts} options={populationChartOptions} immutable />}
         </CollapsibleChart>
+      </div>
+
+      <div data-tour="censusmics-single-age">
+        <CollapsibleChart
+          title="Single-age population trend (Census 2020)"
+          description="Pick one age to see its projected population trend, 2020–2030, by sex. Unlike the education-band chart above, this uses no grouping — every single year of age from the Census projection."
+          icon={<Users2 className="size-5 text-[#4B6DEB]" />}
+        >
+          <div className="mb-4 flex items-center gap-3">
+            <span className="text-sm font-medium text-muted-foreground">Age</span>
+            <Select value={selectedAge} onValueChange={setSelectedAge}>
+              <SelectTrigger size="sm" className="w-32">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent className="max-h-72">
+                {seed.singleAgePopulationProjection.ages.map((age) => (
+                  <SelectItem key={age} value={age}>
+                    {age === '85+' ? '85+' : `Age ${age}`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+          {singleAgeTrendOptions && <HighchartsReact highcharts={Highcharts} options={singleAgeTrendOptions} immutable />}
+        </CollapsibleChart>
+
+        <div className="mt-6">
+          <CollapsibleChart
+            title="Every single age at once (Census 2020)"
+            description="Age (0–85+) by year, coloured by projected population (both sexes combined). Read a row for one age's trend across years, or watch the darker band shift upward over time as a cohort ages."
+            icon={<Users2 className="size-5 text-[#6DEBB9]" />}
+          >
+            {singleAgeHeatmapOptions && <HighchartsReact highcharts={Highcharts} options={singleAgeHeatmapOptions} immutable />}
+          </CollapsibleChart>
+        </div>
       </div>
     </div>
   )
