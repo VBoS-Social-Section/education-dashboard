@@ -97,7 +97,7 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
           </CardHeader>
           <CardContent className="space-y-3 text-sm text-muted-foreground">
             <p><strong className="text-foreground">Source:</strong> Figures are drawn from MoET Annual Statistical Reports (VEMIS/Open VEMIS). Data covers formal education: ECCE, Primary, and Secondary schools.</p>
-            <p><strong className="text-foreground">Years covered:</strong> 2019, 2020, 2021, 2022, 2024. Not all years may have reports available in the source folder.</p>
+            <p><strong className="text-foreground">Years covered:</strong> 2019, 2020, 2021, 2022, 2023, 2024. Not all years may have reports available in the source folder.</p>
             <p><strong className="text-foreground">School types:</strong> ECCE = Early Childhood Care and Education; Primary = Years 1–6; Secondary includes Junior (7–10) and Senior (11+). Some reports combine Junior and Senior Secondary.</p>
             <p><strong className="text-foreground">Private and church schools:</strong> MoET reports include both government and non-government schools. Some private schools may not submit data; these may appear as zero in source tables.</p>
             <p><strong className="text-foreground">Student-teacher ratio:</strong> Extracted when available in the reports. Not all years or levels may have STR data.</p>
