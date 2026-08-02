@@ -1,10 +1,12 @@
 import type { TourStep } from '@/components/GuidedSpotlightTour'
 import { MOET_SIDEBAR_TOUR_STEPS } from './moet-sidebar-tour-steps'
 import { VANSTA_TOUR_STEPS } from './vansta-tour-steps'
+import { CENSUS_MICS_TOUR_STEPS } from './census-mics-tour-steps'
 
-/** Route tabs: 0–4 = MoET pages, 5 = VANSTA, 6 = Methodology */
+/** Route tabs: 0–4 = MoET pages, 5 = VANSTA, 6 = Census & MICS, 7 = Methodology */
 export const VANSTA_TAB_INDEX = 5
-export const METHODOLOGY_TAB_INDEX = 6
+export const CENSUS_MICS_TAB_INDEX = 6
+export const METHODOLOGY_TAB_INDEX = 7
 
 const OVERVIEW_PAGE: TourStep[] = [
   {
@@ -154,6 +156,12 @@ const METHODOLOGY_PAGE: TourStep[] = [
     description:
       'Notes on how figures are obtained from reports, assumptions, and limitations—useful for interpreting charts elsewhere in the app.',
   },
+  {
+    targetId: 'methodology-census-mics',
+    title: 'Census, MICS & LFS',
+    description:
+      'Explains the Census & MICS tab: why those numbers differ from MoET admin data, and how the granularity mismatch (combined vs split Secondary) is handled.',
+  },
 ]
 
 const PAGE_STEPS: TourStep[][] = [
@@ -164,9 +172,10 @@ const PAGE_STEPS: TourStep[][] = [
   TEACHERS_SEX_PAGE,
 ]
 
-/** Full guided steps: sidebar + page content; VANSTA uses its own page-only steps. */
+/** Full guided steps: sidebar + page content; VANSTA and Census & MICS use their own page-only steps. */
 export function getMoetTourSteps(activeTab: number): TourStep[] {
   if (activeTab === VANSTA_TAB_INDEX) return VANSTA_TOUR_STEPS
+  if (activeTab === CENSUS_MICS_TAB_INDEX) return CENSUS_MICS_TOUR_STEPS
   if (activeTab >= 0 && activeTab < PAGE_STEPS.length) {
     return [...MOET_SIDEBAR_TOUR_STEPS, ...PAGE_STEPS[activeTab]]
   }

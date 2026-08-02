@@ -1,13 +1,14 @@
-import { 
-  LayoutDashboard, 
-  GraduationCap, 
-  School, 
-  TrendingUp, 
-  UserCircle, 
-  ClipboardList, 
-  Baby, 
+import {
+  LayoutDashboard,
+  GraduationCap,
+  School,
+  TrendingUp,
+  UserCircle,
+  ClipboardList,
+  Baby,
   BookOpen,
   BarChart3,
+  Landmark,
 } from 'lucide-react'
 import { GRADIENT, GRADIENT_SHADOW } from '@/lib/theme'
 import { cn } from '@/lib/utils'
@@ -24,7 +25,11 @@ const DATA_ROUTES = [
   { name: 'Performance', icon: TrendingUp },
   { name: 'Teachers by Sex', icon: UserCircle },
   { name: 'VANSTA', icon: BarChart3 },
+  { name: 'Census & MICS', icon: Landmark },
 ] as const
+
+/** VANSTA and Census & MICS use their own page-level filters; MoET sidebar filters do not apply */
+const SPECIAL_PAGE_INDICES = new Set([DATA_ROUTES.length - 2, DATA_ROUTES.length - 1])
 
 const METHODOLOGY_ROUTE = { name: 'Methodology', icon: ClipboardList } as const
 
@@ -91,8 +96,9 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
   }
   const compareYearA = selectedYears[0] ?? years[0]
   const compareYearB = selectedYears[1] ?? years[1] ?? years[0]
-  /** VANSTA uses its own filters on the page; MoET sidebar filters do not apply */
-  const isVanstaPage = activeTab === DATA_ROUTES.length - 1
+  const isVanstaPage = activeTab === DATA_ROUTES.length - 2
+  const isCensusMicsPage = activeTab === DATA_ROUTES.length - 1
+  const isSpecialPage = SPECIAL_PAGE_INDICES.has(activeTab)
 
   return (
     <aside
@@ -142,19 +148,29 @@ export function AppSidebar({ activeTab, onTabChange, years, selectedYears, onYea
           </button>
           <Separator className="my-5 bg-white/10" />
         </div>
-        {isVanstaPage ? (
+        {isSpecialPage ? (
           <div className="mx-2 rounded-xl border border-white/15 bg-white/5 px-3 py-4">
             <p className="text-xs font-semibold uppercase tracking-wider text-white/50">Filters</p>
-            <p className="mt-2 text-xs leading-relaxed text-white/75">
-              Education level, province, authority, location, and year range here apply to{' '}
-              <span className="text-white/95">MoET report</span> pages only. They do not change VANSTA data.
-            </p>
-            <p className="mt-2 text-xs leading-relaxed text-white/85">
-              Use <span className="font-medium text-white">Year</span>, <span className="font-medium text-white">Province</span>,{' '}
-              <span className="font-medium text-white">Domain</span>, <span className="font-medium text-white">VANSTA test</span>,{' '}
-              <span className="font-medium text-white">Learning area</span> (joined numeracy / literacy), and{' '}
-              <span className="font-medium text-white">Cohort</span> in the main area for VANSTA.
-            </p>
+            {isVanstaPage ? (
+              <>
+                <p className="mt-2 text-xs leading-relaxed text-white/75">
+                  Education level, province, authority, location, and year range here apply to{' '}
+                  <span className="text-white/95">MoET report</span> pages only. They do not change VANSTA data.
+                </p>
+                <p className="mt-2 text-xs leading-relaxed text-white/85">
+                  Use <span className="font-medium text-white">Year</span>, <span className="font-medium text-white">Province</span>,{' '}
+                  <span className="font-medium text-white">Domain</span>, <span className="font-medium text-white">VANSTA test</span>,{' '}
+                  <span className="font-medium text-white">Learning area</span> (joined numeracy / literacy), and{' '}
+                  <span className="font-medium text-white">Cohort</span> in the main area for VANSTA.
+                </p>
+              </>
+            ) : isCensusMicsPage ? (
+              <p className="mt-2 text-xs leading-relaxed text-white/75">
+                Education level, province, authority, location, and year range here apply to{' '}
+                <span className="text-white/95">MoET report</span> pages only. Census, MICS, and LFS are fixed
+                single-round snapshots (2020, 2023, 2024) shown as-is for comparison.
+              </p>
+            ) : null}
           </div>
         ) : (
           <div data-tour="moet-sidebar-filters" className="space-y-5">

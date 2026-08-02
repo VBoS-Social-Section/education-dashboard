@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { FileText, Database, Sparkles, AlertCircle } from 'lucide-react'
+import { FileText, Database, Sparkles, AlertCircle, Landmark } from 'lucide-react'
 import { GLOSSARY } from '@/glossary'
 
 interface Report {
@@ -104,6 +104,43 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
           </CardContent>
         </Card>
         </div>
+
+        <Card data-tour="methodology-census-mics">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Landmark className="size-5" />
+              Census, MICS &amp; LFS (Census &amp; MICS tab)
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm text-muted-foreground">
+            <p>
+              The <strong className="text-foreground">Census &amp; MICS</strong> tab shows three additional
+              sources, hand-curated (not auto-extracted) because each is a one-off survey release rather than a
+              recurring annual report:
+            </p>
+            <ul className="list-disc space-y-1 pl-5">
+              <li><strong className="text-foreground">2020 Population &amp; Housing Census</strong> (VBoS) — school attendance and adult educational attainment, counted by asking every household.</li>
+              <li><strong className="text-foreground">2023 Multiple Indicator Cluster Survey (MICS)</strong> (VBoS/UNICEF) — a household sample survey with adjusted net attendance rates, completion rates, and gender/wealth/area parity indices.</li>
+              <li><strong className="text-foreground">2024 Labour Force Survey</strong> (VBoS) — educational attainment cross-tabbed with labour force participation.</li>
+            </ul>
+            <p>
+              <strong className="text-foreground">Why the numbers differ from MoET:</strong> MoET/VEMIS counts who a
+              school reports as enrolled or attending. Census and MICS count who a household reports as attending —
+              including children no school ever registered, and excluding double-counting across schools. Disagreement
+              between the two is expected and is itself informative, not a data error to reconcile away.
+            </p>
+            <p>
+              <strong className="text-foreground">Granularity mismatch:</strong> MoET only publishes one combined
+              &quot;Secondary&quot; figure for GER/NER/GPI; Census and MICS separate Junior and Senior Secondary. Where
+              the dashboard shows a &quot;Secondary (combined)&quot; category for Census or MICS, it is a population-weighted
+              blend computed from the Junior and Senior Secondary figures, not a value published directly by that source.
+            </p>
+            <p>
+              <strong className="text-foreground">Reference years:</strong> Census 2020, MICS fieldwork Jul–Oct 2023
+              (published Jul 2024), LFS 2024 — these are single points in time, not annual series like the MoET data.
+            </p>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>

@@ -6,7 +6,7 @@ export const MOET_SIDEBAR_TOUR_STEPS: TourStep[] = [
     targetId: 'moet-sidebar-pages',
     title: 'Sidebar: pages',
     description:
-      'Use this list to switch between Overview, Enrolment, Schools & Teachers, Performance, Teachers by Sex, and VANSTA. The Methodology link opens data sources and notes. The current page is highlighted.',
+      'Use this list to switch between Overview, Enrolment, Schools & Teachers, Performance, Teachers by Sex, VANSTA, and Census & MICS. The Methodology link opens data sources and notes. The current page is highlighted.',
   },
   {
     targetId: 'moet-sidebar-filters',

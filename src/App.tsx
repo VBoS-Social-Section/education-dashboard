@@ -14,6 +14,7 @@ import { PerformancePage } from './pages/PerformancePage'
 import { TeachersDetailPage } from './pages/TeachersDetailPage'
 import { DataSourcesMethodologyPage } from './pages/DataSourcesMethodologyPage'
 import { VanstaPage } from './pages/VanstaPage'
+import { CensusMicsPage } from './pages/CensusMicsPage'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ChevronRight, CircleHelp, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
@@ -21,10 +22,12 @@ import { MENU_LEVELS, RAW_SECONDARY_COURTS } from '@/lib/education-colors'
 import { GuidedSpotlightTour } from '@/components/GuidedSpotlightTour'
 import { getMoetTourSteps, METHODOLOGY_TAB_INDEX } from '@/config/moet-guided-tours'
 
-const DATA_ROUTES = ['Overview', 'Enrolment', 'Schools & Teachers', 'Performance', 'Teachers by Sex', 'VANSTA'] as const
+const DATA_ROUTES = ['Overview', 'Enrolment', 'Schools & Teachers', 'Performance', 'Teachers by Sex', 'VANSTA', 'Census & MICS'] as const
 
 /** Index of VANSTA tab (separate from MoET annual data) */
-const VANSTA_TAB_INDEX = DATA_ROUTES.length - 1
+const VANSTA_TAB_INDEX = DATA_ROUTES.length - 2
+/** Index of Census & MICS tab (separate, self-contained snapshot data — not year-selectable like MoET annual data) */
+const CENSUS_MICS_TAB_INDEX = DATA_ROUTES.length - 1
 
 export const INSTITUTIONS = ['ECCE', 'Primary', 'Secondary', 'Tertiary', 'Total'] as const
 
@@ -101,6 +104,7 @@ export default function App() {
   const guidedTourSteps = useMemo(() => getMoetTourSteps(activeTab), [activeTab])
   const showGuidedHelp =
     activeTab === VANSTA_TAB_INDEX ||
+    activeTab === CENSUS_MICS_TAB_INDEX ||
     (!loading &&
       ((activeTab < VANSTA_TAB_INDEX && selectedYears.length > 0) || activeTab === METHODOLOGY_TAB_INDEX))
 
@@ -333,15 +337,16 @@ export default function App() {
             </Card>
           )}
 
-          {loading && activeTab !== VANSTA_TAB_INDEX && (
+          {loading && activeTab !== VANSTA_TAB_INDEX && activeTab !== CENSUS_MICS_TAB_INDEX && (
             <div className="flex justify-center py-16">
               <div className="size-10 animate-spin rounded-full border-2 border-[#4B6DEB] border-t-transparent" />
             </div>
           )}
 
           {activeTab === VANSTA_TAB_INDEX && <VanstaPage />}
+          {activeTab === CENSUS_MICS_TAB_INDEX && <CensusMicsPage />}
 
-          {!loading && activeTab < DATA_ROUTES.length && activeTab !== VANSTA_TAB_INDEX && selectedYears.length === 0 && (
+          {!loading && activeTab < DATA_ROUTES.length && activeTab !== VANSTA_TAB_INDEX && activeTab !== CENSUS_MICS_TAB_INDEX && selectedYears.length === 0 && (
             <Card className="shadow-sm">
               <CardContent className="pt-6">
                 <p className="text-muted-foreground">Select at least one year to view data.</p>
@@ -410,7 +415,7 @@ export default function App() {
         courts={[...MENU_LEVELS]}
         selectedCourts={selectedLevels}
         onCourtsChange={setSelectedLevels}
-        showMoetFilters={activeTab !== VANSTA_TAB_INDEX}
+        showMoetFilters={activeTab !== VANSTA_TAB_INDEX && activeTab !== CENSUS_MICS_TAB_INDEX}
       />
     </div>
   )

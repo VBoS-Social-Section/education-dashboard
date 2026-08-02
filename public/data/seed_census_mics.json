@@ -1,0 +1,123 @@
+{
+  "census2020": {
+    "sourceLabel": "2020 Population & Housing Census",
+    "surveyDate": "2020",
+    "attendanceBySexProvince": {
+      "Vanuatu": { "Total": 87054, "Male": 44651, "Female": 42403 },
+      "Urban": { "Total": 19634, "Male": 9864, "Female": 9771 },
+      "Rural": { "Total": 67419, "Male": 34787, "Female": 32632 },
+      "Torba": { "Total": 3063, "Male": 1551, "Female": 1512 },
+      "Sanma": { "Total": 12450, "Male": 6566, "Female": 5884 },
+      "Penama": { "Total": 9759, "Male": 5025, "Female": 4734 },
+      "Malampa": { "Total": 13033, "Male": 6650, "Female": 6383 },
+      "Shefa": { "Total": 15566, "Male": 7943, "Female": 7624 },
+      "Tafea": { "Total": 13549, "Male": 7054, "Female": 6495 }
+    },
+    "attendanceByLevel": {
+      "Vanuatu": { "Total": 87054, "Preschool": 1845, "ECCE": 12225, "Primary": 43029, "Junior Secondary": 16530, "Senior Secondary": 7756, "Post Secondary": 659, "Tertiary": 2146, "Other": 28, "Not stated": 2835 },
+      "Female": { "Total": 42403, "Preschool": 910, "ECCE": 5920, "Primary": 20793, "Junior Secondary": 8083, "Senior Secondary": 3929, "Post Secondary": 284, "Tertiary": 1112, "Other": 7, "Not stated": 1363 },
+      "Male": { "Total": 44651, "Preschool": 934, "ECCE": 6305, "Primary": 22236, "Junior Secondary": 8447, "Senior Secondary": 3827, "Post Secondary": 376, "Tertiary": 1033, "Other": 21, "Not stated": 1472 },
+      "Urban": { "Total": 19634, "Preschool": 282, "ECCE": 2331, "Primary": 8229, "Junior Secondary": 3574, "Senior Secondary": 2793, "Post Secondary": 345, "Tertiary": 1517, "Other": 8, "Not stated": 555 },
+      "Rural": { "Total": 67419, "Preschool": 1563, "ECCE": 9895, "Primary": 34799, "Junior Secondary": 12956, "Senior Secondary": 4963, "Post Secondary": 315, "Tertiary": 629, "Other": 20, "Not stated": 2279 },
+      "Torba": { "Total": 3063, "Preschool": 80, "ECCE": 509, "Primary": 1606, "Junior Secondary": 584, "Senior Secondary": 148, "Post Secondary": 4, "Tertiary": 8, "Other": 2, "Not stated": 122 },
+      "Sanma": { "Total": 12450, "Preschool": 288, "ECCE": 2005, "Primary": 6693, "Junior Secondary": 2216, "Senior Secondary": 862, "Post Secondary": 51, "Tertiary": 52, "Other": 2, "Not stated": 280 },
+      "Penama": { "Total": 9759, "Preschool": 226, "ECCE": 1547, "Primary": 5330, "Junior Secondary": 1710, "Senior Secondary": 509, "Post Secondary": 18, "Tertiary": 67, "Other": 0, "Not stated": 351 },
+      "Malampa": { "Total": 13033, "Preschool": 365, "ECCE": 1968, "Primary": 6684, "Junior Secondary": 2528, "Senior Secondary": 822, "Post Secondary": 50, "Tertiary": 69, "Other": 3, "Not stated": 543 },
+      "Shefa": { "Total": 15566, "Preschool": 304, "ECCE": 2223, "Primary": 7906, "Junior Secondary": 2979, "Senior Secondary": 1377, "Post Secondary": 162, "Tertiary": 354, "Other": 8, "Not stated": 254 },
+      "Tafea": { "Total": 13549, "Preschool": 300, "ECCE": 1642, "Primary": 6581, "Junior Secondary": 2938, "Senior Secondary": 1245, "Post Secondary": 30, "Tertiary": 79, "Other": 4, "Not stated": 730 }
+    },
+    "attendanceByLevelNote": "Penama and Shefa 'Total' figures corrected from the source spreadsheet (9,759 and 15,566), which had transcription errors (3,759 and 1,566) inconsistent with both the sex-breakdown table and the sum of that row's own level columns.",
+    "attainment15Plus": {
+      "Vanuatu": { "Total": 140373, "Preschool (ECCE)": 120, "Kindy": 435, "Primary": 13458, "Junior Secondary": 27047, "Senior Secondary": 21148, "Post Secondary": 5373, "Bachelor Degree": 2038, "Post Graduate Certificate": 519, "Post Graduate Diploma": 207, "Masters": 585, "Doctorate": 72, "Other": 65 },
+      "Torba": { "Total": 5243, "Preschool (ECCE)": 8, "Kindy": 32, "Primary": 3866, "Junior Secondary": 808, "Senior Secondary": 427, "Post Secondary": 72, "Bachelor Degree": 17, "Post Graduate Certificate": 2, "Post Graduate Diploma": 2, "Masters": 2, "Doctorate": 0, "Other": 7 },
+      "Sanma": { "Total": 20196, "Preschool (ECCE)": 39, "Kindy": 103, "Primary": 13735, "Junior Secondary": 3609, "Senior Secondary": 2057, "Post Secondary": 445, "Bachelor Degree": 65, "Post Graduate Certificate": 72, "Post Graduate Diploma": 35, "Masters": 25, "Doctorate": 3, "Other": 8 },
+      "Penama": { "Total": 15454, "Preschool (ECCE)": 12, "Kindy": 67, "Primary": 10936, "Junior Secondary": 2652, "Senior Secondary": 1500, "Post Secondary": 206, "Bachelor Degree": 53, "Post Graduate Certificate": 5, "Post Graduate Diploma": 8, "Masters": 4, "Doctorate": 2, "Other": 10 },
+      "Malampa": { "Total": 20680, "Preschool (ECCE)": 27, "Kindy": 72, "Primary": 14643, "Junior Secondary": 3437, "Senior Secondary": 1877, "Post Secondary": 510, "Bachelor Degree": 61, "Post Graduate Certificate": 38, "Post Graduate Diploma": 7, "Masters": 4, "Doctorate": 2, "Other": 2 },
+      "Shefa": { "Total": 28725, "Preschool (ECCE)": 9, "Kindy": 35, "Primary": 16340, "Junior Secondary": 5999, "Senior Secondary": 4370, "Post Secondary": 1107, "Bachelor Degree": 391, "Post Graduate Certificate": 193, "Post Graduate Diploma": 59, "Masters": 105, "Doctorate": 11, "Other": 18 },
+      "Tafea": { "Total": 14674, "Preschool (ECCE)": 9, "Kindy": 81, "Primary": 9696, "Junior Secondary": 2672, "Senior Secondary": 1805, "Post Secondary": 262, "Bachelor Degree": 55, "Post Graduate Certificate": 74, "Post Graduate Diploma": 10, "Masters": 8, "Doctorate": 2, "Other": 1 }
+    },
+    "languageOfInstruction": {
+      "Vanuatu": { "MaleEnglish": 27848, "FemaleEnglish": 26396, "MaleFrench": 11726, "FemaleFrench": 11286, "MaleBoth": 522, "FemaleBoth": 540 },
+      "Urban": { "MaleEnglish": 6913, "FemaleEnglish": 6824, "MaleFrench": 2707, "FemaleFrench": 2712, "MaleBoth": 93, "FemaleBoth": 116 },
+      "Rural": { "MaleEnglish": 20935, "FemaleEnglish": 19571, "MaleFrench": 9019, "FemaleFrench": 8573, "MaleBoth": 429, "FemaleBoth": 425 },
+      "Torba": { "MaleEnglish": 868, "FemaleEnglish": 854, "MaleFrench": 276, "FemaleFrench": 296, "MaleBoth": 55, "FemaleBoth": 49 },
+      "Sanma": { "MaleEnglish": 3837, "FemaleEnglish": 3450, "MaleFrench": 1732, "FemaleFrench": 1535, "MaleBoth": 80, "FemaleBoth": 62 },
+      "Penama": { "MaleEnglish": 3110, "FemaleEnglish": 2907, "MaleFrench": 1174, "FemaleFrench": 1194, "MaleBoth": 34, "FemaleBoth": 46 },
+      "Malampa": { "MaleEnglish": 3149, "FemaleEnglish": 2953, "MaleFrench": 2049, "FemaleFrench": 1993, "MaleBoth": 90, "FemaleBoth": 104 },
+      "Shefa": { "MaleEnglish": 5844, "FemaleEnglish": 5573, "MaleFrench": 1511, "FemaleFrench": 1496, "MaleBoth": 118, "FemaleBoth": 127 },
+      "Tafea": { "MaleEnglish": 4127, "FemaleEnglish": 3833, "MaleFrench": 2276, "FemaleFrench": 2059, "MaleBoth": 51, "FemaleBoth": 37 }
+    }
+  },
+  "mics2023": {
+    "sourceLabel": "Multiple Indicator Cluster Survey (MICS) 2023",
+    "surveyDate": "Fieldwork Jul–Oct 2023, published Jul 2024",
+    "netAttendanceRateAdjusted": {
+      "ECCE (36-59 months)": 39,
+      "1 year before primary entry": 87,
+      "Primary": 91,
+      "Junior Secondary": 52,
+      "Senior Secondary": 26
+    },
+    "eceAttendanceRate3to4": {
+      "National": 39,
+      "Male": 41,
+      "Female": 38,
+      "Urban": 38,
+      "Rural": 40,
+      "WealthLowest": 33,
+      "WealthHighest": 46
+    },
+    "participationRatePrePrimary": {
+      "National": 87,
+      "Male": 87,
+      "Female": 89,
+      "Urban": 95,
+      "Rural": 86,
+      "WealthLowest": 81,
+      "WealthHighest": 93
+    },
+    "completionRate": {
+      "Primary": 81,
+      "Junior Secondary": 45,
+      "Senior Secondary": 14
+    },
+    "genderParityIndex": {
+      "Primary": 1.01,
+      "Junior Secondary": 1.22,
+      "Senior Secondary": 1.50
+    },
+    "wealthParityIndex": {
+      "Primary": 0.87
+    },
+    "areaParityIndex": {
+      "Primary": 0.98
+    },
+    "notesUrl": "mics.unicef.org/surveys",
+    "indicatorRefs": "SDG 4.1.2 (LN.8a-c completion), 4.5.1 (LN.5a-c parity indices), 4.2.2 (LN.2 pre-primary participation)"
+  },
+  "lfs2024": {
+    "sourceLabel": "2024 Labour Force Survey (VBoS)",
+    "surveyDate": "2024",
+    "attainmentVsParticipationRatePercent": {
+      "Never attended school": { "Male": 40.5, "Female": 26.3, "Urban": 41.2, "Rural": 32.2, "Total": 32.6 },
+      "ECE & Kindergarten": { "Male": 61.0, "Female": 48.3, "Urban": 63.8, "Rural": 54.3, "Total": 54.8 },
+      "Primary": { "Male": 53.0, "Female": 45.4, "Urban": 60.5, "Rural": 47.5, "Total": 49.3 },
+      "Junior Secondary": { "Male": 51.2, "Female": 47.1, "Urban": 54.4, "Rural": 47.4, "Total": 49.1 },
+      "Senior Secondary": { "Male": 56.3, "Female": 50.3, "Urban": 54.8, "Rural": 52.3, "Total": 53.1 },
+      "Post Secondary Non-Tertiary": { "Male": 71.1, "Female": 60.3, "Urban": 62.3, "Rural": 68.4, "Total": 66.9 },
+      "Tertiary": { "Male": 78.0, "Female": 70.1, "Urban": 75.5, "Rural": 73.8, "Total": 74.7 }
+    },
+    "metricNote": "Labour-force participation rate (%) of people age 16+, cross-tabbed by their highest completed education level."
+  },
+  "schoolAgePopulationProjection": {
+    "sourceLabel": "2020 Census-based school-age population projection (both sexes)",
+    "years": [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028, 2029, 2030],
+    "bands": {
+      "Pre-school (age 2-3)": [15836, 15982, 16128, 16274, 16420, 16566, 16757, 16948, 17140, 17331, 17522],
+      "ECCE (age 4-5)": [15767, 15845, 15922, 16000, 16077, 16154, 16400, 16646, 16891, 17137, 17383],
+      "Primary (age 6-11)": [43872, 44611, 45351, 46090, 46830, 47569, 48130, 48690, 49250, 49810, 50370],
+      "Junior Secondary (age 12-15)": [24568, 25622, 26675, 27729, 28782, 29835, 30271, 30706, 31141, 31576, 32011],
+      "Senior Secondary (age 16-19)": [20847, 21774, 22701, 23628, 24555, 25482, 26469, 27455, 28442, 29428, 30415]
+    }
+  }
+}

@@ -48,3 +48,40 @@ export interface Sdg4Seed {
   gerByProvince2024?: Record<string, Record<string, number>>
   nerByProvince2024?: Record<string, Record<string, number>>
 }
+
+/** 2020 Census, MICS 2023 & LFS 2024 seed data — household survey/census sources shown alongside MoET admin data for comparison */
+export interface CensusMicsSeed {
+  census2020: {
+    sourceLabel: string
+    surveyDate: string
+    attendanceBySexProvince: Record<string, { Total: number; Male: number; Female: number }>
+    attendanceByLevel: Record<string, Record<string, number>>
+    attendanceByLevelNote?: string
+    attainment15Plus: Record<string, Record<string, number>>
+    languageOfInstruction: Record<string, { MaleEnglish: number; FemaleEnglish: number; MaleFrench: number; FemaleFrench: number; MaleBoth: number; FemaleBoth: number }>
+  }
+  mics2023: {
+    sourceLabel: string
+    surveyDate: string
+    netAttendanceRateAdjusted: Record<string, number>
+    eceAttendanceRate3to4: Record<string, number>
+    participationRatePrePrimary: Record<string, number>
+    completionRate: Record<string, number>
+    genderParityIndex: Record<string, number>
+    wealthParityIndex: Record<string, number>
+    areaParityIndex: Record<string, number>
+    notesUrl?: string
+    indicatorRefs?: string
+  }
+  lfs2024: {
+    sourceLabel: string
+    surveyDate: string
+    attainmentVsParticipationRatePercent: Record<string, { Male: number; Female: number; Urban: number; Rural: number; Total: number }>
+    metricNote?: string
+  }
+  schoolAgePopulationProjection: {
+    sourceLabel: string
+    years: number[]
+    bands: Record<string, number[]>
+  }
+}
