@@ -46,8 +46,8 @@ export const CENSUS_MICS_TOUR_STEPS: TourStep[] = [
   },
   {
     targetId: 'censusmics-single-age',
-    title: 'Single year of age, not just bands',
+    title: 'Population pyramid, compare years',
     description:
-      'The chart above groups ages into education bands. Here you can pick one exact age and see its own trend by sex, or scan the heatmap below to see every age at once — useful for spotting which single cohort is driving a change in a band.',
+      'Built from single years of age, not the fixed education bands above. Toggle on several years to compare them directly in one chart — Male on the left, Female on the right, shaded lightest for the earliest year and darkest for the latest so you can read the trend at a glance. Or scan the heatmap below to see every single age at once across all years.',
   },
 ]

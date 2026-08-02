@@ -5,7 +5,7 @@ import HighchartsReact from 'highcharts-react-official'
 import { Info, Landmark, ClipboardList, Users2, Baby, TrendingUp } from 'lucide-react'
 import { CollapsibleChart, CollapsibleKPICard, MasonryGrid } from '@/components/CollapsibleChart'
 import { Card, CardContent } from '@/components/ui/card'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { cn } from '@/lib/utils'
 import type { CensusMicsSeed, StatRow } from '@/types'
 
 const BASE = import.meta.env.BASE_URL
@@ -18,6 +18,17 @@ const PALETTE = {
   male: '#4B6DEB',
   female: '#EC4899',
 } as const
+
+/** N evenly spaced shades of one hue, lightest first — used so each selected year gets a distinct but same-family colour. */
+function shadeScale(hue: number, saturation: number, count: number): string[] {
+  if (count <= 1) return [`hsl(${hue}, ${saturation}%, 45%)`]
+  const lightest = 80
+  const darkest = 30
+  return Array.from({ length: count }, (_, i) => {
+    const l = lightest - (i * (lightest - darkest)) / (count - 1)
+    return `hsl(${hue}, ${saturation}%, ${l}%)`
+  })
+}
 
 const LEVEL_CATEGORIES = ['ECCE', 'Primary', 'Junior Secondary', 'Senior Secondary', 'Secondary (combined)'] as const
 
@@ -116,8 +127,9 @@ export function CensusMicsPage() {
   const [seed, setSeed] = useState<CensusMicsSeed | null>(null)
   const [loadError, setLoadError] = useState<string | null>(null)
   const [moet, setMoet] = useState<{ year: number | null; stats: MoetLevelStats }>({ year: null, stats: { NER: {}, GER: {}, GPI: {} } })
-  /** Age 6 (primary entry age) as a sensible default for the single-age trend chart */
-  const [selectedAge, setSelectedAge] = useState<string>('6')
+  /** 2020 (actual Census), 2025 (midpoint), 2030 (projection horizon) as a sensible default trend comparison */
+  const [pyramidYears, setPyramidYears] = useState<string[]>(['2020', '2025', '2030'])
+  const [heatmapSex, setHeatmapSex] = useState<'both' | 'male' | 'female'>('both')
 
   useEffect(() => {
     fetch(`${BASE}data/seed_census_mics.json`)
@@ -297,64 +309,112 @@ export function CensusMicsPage() {
     }
   }, [seed])
 
-  const singleAgeIndex = useMemo(() => {
-    if (!seed) return -1
-    return seed.singleAgePopulationProjection.ages.indexOf(selectedAge)
-  }, [seed, selectedAge])
+  const sortedPyramidYears = useMemo(() => [...pyramidYears].sort((a, b) => Number(a) - Number(b)), [pyramidYears])
 
-  const singleAgeTrendOptions: Highcharts.Options | null = useMemo(() => {
-    if (!seed || singleAgeIndex < 0) return null
+  /** Aggregates single ages into standard 5-year demographic bands (0-4, 5-9, ..., 80-84, 85+); one bar-pair per selected year, shaded lightest-to-darkest by year order */
+  const pyramidOptions: Highcharts.Options | null = useMemo(() => {
+    if (!seed || sortedPyramidYears.length === 0) return null
     const { years, ages, male, female } = seed.singleAgePopulationProjection
-    const label = ages[singleAgeIndex] === '85+' ? 'age 85+' : `age ${ages[singleAgeIndex]}`
-    return {
-      chart: { type: 'line', height: 360, backgroundColor: 'transparent', style: { fontFamily: 'Inter, system-ui, sans-serif' } },
-      xAxis: { categories: years.map(String), gridLineWidth: 0 },
-      yAxis: { title: { text: `Projected population, ${label}` }, min: 0, gridLineDashStyle: 'Dash' },
-      series: [
-        { type: 'line', name: 'Male', color: PALETTE.male, data: male[singleAgeIndex] },
-        { type: 'line', name: 'Female', color: PALETTE.female, data: female[singleAgeIndex] },
-      ],
-      legend: { enabled: true, itemStyle: { fontSize: '12px', fontWeight: '500' } },
-      credits: { enabled: false },
-      tooltip: { shared: true, valueSuffix: ' people' },
+
+    // Built oldest-to-youngest: Highcharts bar charts render array index 0 at the top,
+    // so listing '85+' first and '0-4' last puts 0-4 at the bottom, matching the usual pyramid shape.
+    const bandLabels: string[] = ['85+']
+    for (let start = 80; start >= 0; start -= 5) bandLabels.push(`${start}-${start + 4}`)
+
+    const bandFor = (arr: number[][], yearIdx: number): number[] => {
+      const plusIdx = ages.length - 1
+      const out: number[] = [arr[plusIdx]?.[yearIdx] ?? 0]
+      for (let start = 80; start >= 0; start -= 5) {
+        let sum = 0
+        for (let a = start; a <= start + 4; a++) sum += arr[a]?.[yearIdx] ?? 0
+        out.push(sum)
+      }
+      return out
     }
-  }, [seed, singleAgeIndex])
+
+    const blues = shadeScale(228, 75, sortedPyramidYears.length)
+    const pinks = shadeScale(330, 80, sortedPyramidYears.length)
+
+    const series: Highcharts.SeriesBarOptions[] = []
+    let maxAbs = 0
+    sortedPyramidYears.forEach((yr, i) => {
+      const yearIdx = years.findIndex((y) => String(y) === yr)
+      if (yearIdx < 0) return
+      const maleData = bandFor(male, yearIdx).map((v) => -v)
+      const femaleData = bandFor(female, yearIdx)
+      maxAbs = Math.max(maxAbs, ...maleData.map(Math.abs), ...femaleData)
+      series.push({ type: 'bar', name: `${yr} — Male`, color: blues[i], data: maleData })
+      series.push({ type: 'bar', name: `${yr} — Female`, color: pinks[i], data: femaleData })
+    })
+
+    return {
+      chart: { type: 'bar', height: 620, backgroundColor: 'transparent', style: { fontFamily: 'Inter, system-ui, sans-serif' } },
+      xAxis: { categories: bandLabels, title: { text: 'Age' }, gridLineWidth: 0, labels: { style: { fontSize: '11px' } } },
+      yAxis: {
+        title: { text: 'Population' },
+        min: -maxAbs * 1.05,
+        max: maxAbs * 1.05,
+        gridLineDashStyle: 'Dash',
+        labels: { formatter: function (this: any) { return Math.abs(this.value).toLocaleString() } },
+      },
+      plotOptions: { series: { stacking: undefined, borderWidth: 0, borderRadius: 2, groupPadding: 0.08, pointPadding: 0.03 } },
+      series,
+      legend: { enabled: true, itemStyle: { fontSize: '11px', fontWeight: '500' } },
+      credits: { enabled: false },
+      tooltip: {
+        formatter: function (this: any) {
+          return `<b>${this.series.name}, age ${this.point.category}</b><br/>${Math.abs(this.point.y).toLocaleString()} people`
+        },
+      },
+    }
+  }, [seed, sortedPyramidYears])
 
   const singleAgeHeatmapOptions: Highcharts.Options | null = useMemo(() => {
     if (!seed) return null
     const { years, ages, male, female } = seed.singleAgePopulationProjection
+    const valueFor = (ageIdx: number, yearIdx: number): number => {
+      const m = male[ageIdx][yearIdx] ?? 0
+      const f = female[ageIdx][yearIdx] ?? 0
+      if (heatmapSex === 'male') return m
+      if (heatmapSex === 'female') return f
+      return m + f
+    }
     const data: [number, number, number][] = []
     let max = 0
     ages.forEach((_, ageIdx) => {
       years.forEach((_, yearIdx) => {
-        const v = (male[ageIdx][yearIdx] ?? 0) + (female[ageIdx][yearIdx] ?? 0)
+        const v = valueFor(ageIdx, yearIdx)
         if (v > max) max = v
         data.push([yearIdx, ageIdx, v])
       })
     })
+    const seriesLabel = heatmapSex === 'both' ? 'Projected population (both sexes)' : heatmapSex === 'male' ? 'Projected male population' : 'Projected female population'
     return {
       chart: { type: 'heatmap', height: 900, backgroundColor: 'transparent', style: { fontFamily: 'Inter, system-ui, sans-serif' } },
-      xAxis: { categories: years.map(String), gridLineWidth: 0 },
+      xAxis: { categories: years.map(String), title: { text: 'Year' }, gridLineWidth: 0 },
       yAxis: {
         categories: ages,
         title: { text: 'Age' },
-        reversed: false,
         tickInterval: 5,
         gridLineWidth: 0,
       },
       colorAxis: {
         min: 0,
         max,
-        minColor: '#f0f9ff',
-        maxColor: PALETTE.census,
+        stops: [
+          [0, '#f0f9ff'],
+          [0.5, PALETTE.census],
+          [1, '#0f4c46'],
+        ],
       },
       legend: { align: 'right', layout: 'vertical', verticalAlign: 'middle', title: { text: 'Population' } },
       series: [
         {
           type: 'heatmap',
-          name: 'Projected population (both sexes)',
+          name: seriesLabel,
           data,
-          borderWidth: 0,
+          borderWidth: 0.5,
+          borderColor: 'rgba(255,255,255,0.7)',
         },
       ],
       credits: { enabled: false },
@@ -363,8 +423,18 @@ export function CensusMicsPage() {
           return `<b>Age ${ages[this.point.y]}, ${years[this.point.x]}</b><br/>${this.point.value.toLocaleString()} people`
         },
       },
+      responsive: {
+        rules: [
+          {
+            condition: { maxWidth: 600 },
+            chartOptions: {
+              legend: { align: 'center', verticalAlign: 'bottom', layout: 'horizontal', title: { text: undefined } },
+            },
+          },
+        ],
+      },
     }
-  }, [seed])
+  }, [seed, heatmapSex])
 
   const attainmentByProvinceOptions: Highcharts.Options | null = useMemo(() => {
     if (!seed) return null
@@ -567,34 +637,64 @@ export function CensusMicsPage() {
 
       <div data-tour="censusmics-single-age">
         <CollapsibleChart
-          title="Single-age population trend (Census 2020)"
-          description="Pick one age to see its projected population trend, 2020–2030, by sex. Unlike the education-band chart above, this uses no grouping — every single year of age from the Census projection."
+          title="Population pyramid, single years of age (Census 2020)"
+          description="Age structure by sex, in 5-year bands built from single-age Census data. Select multiple years to compare the trend directly — each year gets its own shade, lightest for the earliest year selected and darkest for the latest."
           icon={<Users2 className="size-5 text-[#4B6DEB]" />}
         >
-          <div className="mb-4 flex items-center gap-3">
-            <span className="text-sm font-medium text-muted-foreground">Age</span>
-            <Select value={selectedAge} onValueChange={setSelectedAge}>
-              <SelectTrigger size="sm" className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="max-h-72">
-                {seed.singleAgePopulationProjection.ages.map((age) => (
-                  <SelectItem key={age} value={age}>
-                    {age === '85+' ? '85+' : `Age ${age}`}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            <span className="text-sm font-medium text-muted-foreground">Years</span>
+            {seed.singleAgePopulationProjection.years.map((y) => {
+              const val = String(y)
+              const checked = pyramidYears.includes(val)
+              return (
+                <button
+                  key={y}
+                  type="button"
+                  onClick={() =>
+                    setPyramidYears((prev) => (checked ? prev.filter((p) => p !== val) : [...prev, val]))
+                  }
+                  className={cn(
+                    'rounded-full border px-3 py-1 text-xs font-medium transition-colors',
+                    checked
+                      ? 'border-[#4B6DEB] bg-[#4B6DEB]/10 text-[#4B6DEB]'
+                      : 'border-border/60 text-muted-foreground hover:bg-muted/60'
+                  )}
+                >
+                  {y}
+                </button>
+              )
+            })}
           </div>
-          {singleAgeTrendOptions && <HighchartsReact highcharts={Highcharts} options={singleAgeTrendOptions} immutable />}
+          {sortedPyramidYears.length === 0 && (
+            <p className="py-8 text-center text-sm text-muted-foreground">Select at least one year.</p>
+          )}
+          {pyramidOptions && <HighchartsReact highcharts={Highcharts} options={pyramidOptions} immutable />}
         </CollapsibleChart>
 
         <div className="mt-6">
           <CollapsibleChart
             title="Every single age at once (Census 2020)"
-            description="Age (0–85+) by year, coloured by projected population (both sexes combined). Read a row for one age's trend across years, or watch the darker band shift upward over time as a cohort ages."
+            description="Age (0–85+) by year, coloured by projected population. Read a row for one age's trend across years, or watch the darker band shift upward over time as a cohort ages."
             icon={<Users2 className="size-5 text-[#6DEBB9]" />}
           >
+            <div className="mb-4 flex items-center gap-2">
+              <span className="text-sm font-medium text-muted-foreground">Sex</span>
+              {(['both', 'male', 'female'] as const).map((s) => (
+                <button
+                  key={s}
+                  type="button"
+                  onClick={() => setHeatmapSex(s)}
+                  className={cn(
+                    'rounded-full border px-3 py-1 text-xs font-medium capitalize transition-colors',
+                    heatmapSex === s
+                      ? 'border-[#4B6DEB] bg-[#4B6DEB]/10 text-[#4B6DEB]'
+                      : 'border-border/60 text-muted-foreground hover:bg-muted/60'
+                  )}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
             {singleAgeHeatmapOptions && <HighchartsReact highcharts={Highcharts} options={singleAgeHeatmapOptions} immutable />}
           </CollapsibleChart>
         </div>
