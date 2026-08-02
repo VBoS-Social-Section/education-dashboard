@@ -39,10 +39,13 @@ export default defineConfig({
             },
           },
           {
+            // NetworkFirst (not CacheFirst): dashboard data changes with each report update.
+            // Always try the network so visitors see fresh data; fall back to cache only when offline.
             urlPattern: /\/data\/.*\.(csv|json)$/,
-            handler: 'CacheFirst',
+            handler: 'NetworkFirst',
             options: {
               cacheName: 'dashboard-data',
+              networkTimeoutSeconds: 5,
               expiration: { maxEntries: 30, maxAgeSeconds: 60 * 60 * 24 * 7 },
             },
           },
