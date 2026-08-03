@@ -70,6 +70,9 @@ export interface CensusMicsSeed {
     genderParityIndex: Record<string, number>
     wealthParityIndex: Record<string, number>
     areaParityIndex: Record<string, number>
+    /** UNICEF "Out-of-School Children" framework, dimensions 1-5 (not a literal dropout rate — MICS is cross-sectional) */
+    outOfSchoolDimensions: Record<string, { Total: number; Male: number; Female: number }>
+    outOfSchoolSourceTables?: string
     notesUrl?: string
     indicatorRefs?: string
   }

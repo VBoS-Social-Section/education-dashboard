@@ -27,6 +27,12 @@ export const CENSUS_MICS_TOUR_STEPS: TourStep[] = [
       'Gender, wealth, and area parity compared side by side — 1.0 means no disparity. Gender favours girls as children get older; wealth and area disparity move the other way, and both collapse sharply by senior secondary. Wealth and area parity have no MoET equivalent. Completion rate — the share of children who finish each level — is also unique to the household survey, which can follow children who left school.',
   },
   {
+    targetId: 'censusmics-outofschool',
+    title: 'Out-of-school, not "dropout rate"',
+    description:
+      'MICS can\'t measure a literal dropout rate — it only surveys households once. This uses UNICEF\'s standard framework instead: children never enrolled, plus children in school but badly over-age for their grade, a proxy for dropout risk. Both are split by sex.',
+  },
+  {
     targetId: 'censusmics-ece',
     title: 'Early childhood participation',
     description:
@@ -36,7 +42,7 @@ export const CENSUS_MICS_TOUR_STEPS: TourStep[] = [
     targetId: 'censusmics-attainment',
     title: 'What adults completed',
     description:
-      'Census tells you the stock of adult qualifications by province; the Labour Force Survey links education level to labour market participation. Both describe the working-age population, not current students.',
+      'The national bar shows the full spread of adult qualifications from the Census — including an honest "not categorized" bar for the roughly half of adults the source table doesn\'t assign a level to. Below that, the provincial comparison and the Labour Force Survey link education level to labour market participation. All three describe the working-age population, not current students.',
   },
   {
     targetId: 'censusmics-population',

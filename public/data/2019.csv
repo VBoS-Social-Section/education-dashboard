@@ -20,4 +20,16 @@ Secondary,2019,Teachers_Female,428,
 ECCE,2019,StudentTeacherRatio,12.5,
 Primary,2019,StudentTeacherRatio,28.4,
 Secondary,2019,StudentTeacherRatio,21.6,
+ECCE,2019,GER,111.8,%
+ECCE,2019,GPI,1.06,
+Primary,2019,GER,127.3,%
+Primary,2019,GPI,0.96,
+Secondary,2019,GER,47.0,%
+Secondary,2019,GPI,1.13,
+ECCE,2019,NER,86.6,%
+ECCE,2019,NER_GPI,1.06,
+Primary,2019,NER,96.1,%
+Primary,2019,NER_GPI,0.99,
+Secondary,2019,NER,43.2,%
+Secondary,2019,NER_GPI,1.17,
 

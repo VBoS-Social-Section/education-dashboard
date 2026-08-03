@@ -3,7 +3,7 @@ import { TrendingUp, Target, Scale, Activity, Users } from 'lucide-react'
 import { LazyChart } from '../components/LazyChart'
 import { TrendChart } from '../components/TrendChart'
 import { EnhancedBarChart } from '../components/EnhancedBarChart'
-import { Sdg4GerNerSingleChart, Sdg4GerNerStackedChart } from '../components/Sdg4Charts'
+import { Sdg4GerNerSingleChart, Sdg4GerNerGroupedChart } from '../components/Sdg4Charts'
 import { CollapsibleChart, MasonryGrid } from '../components/CollapsibleChart'
 import { MANY_YEARS_THRESHOLD } from '@/lib/constants'
 import type { StatRow, Sdg4Seed } from '../types'
@@ -91,7 +91,7 @@ export function PerformancePage({ data, selectedYears, compareMode = false, getV
       {!selectedProvince && sdg4Seed?.gerByProvince2024 && sdg4Seed?.nerByProvince2024 && (
         <div className="grid gap-6 lg:grid-cols-2">
           <LazyChart enabled={true}>
-            <Sdg4GerNerStackedChart
+            <Sdg4GerNerGroupedChart
               title="GER by Province and Level (2024)"
               provinces={Object.keys(sdg4Seed.gerByProvince2024)}
               dataByLevel={{
@@ -103,7 +103,7 @@ export function PerformancePage({ data, selectedYears, compareMode = false, getV
             />
           </LazyChart>
           <LazyChart enabled={true}>
-            <Sdg4GerNerStackedChart
+            <Sdg4GerNerGroupedChart
               title="NER by Province and Level (2024)"
               provinces={Object.keys(sdg4Seed.nerByProvince2024)}
               dataByLevel={{

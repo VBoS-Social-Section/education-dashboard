@@ -101,6 +101,7 @@ export function DataSourcesMethodologyPage({ embedded }: DataSourcesMethodologyP
             <p><strong className="text-foreground">School types:</strong> ECCE = Early Childhood Care and Education; Primary = Years 1–6; Secondary includes Junior (7–10) and Senior (11+). Some reports combine Junior and Senior Secondary.</p>
             <p><strong className="text-foreground">Private and church schools:</strong> MoET reports include both government and non-government schools. Some private schools may not submit data; these may appear as zero in source tables.</p>
             <p><strong className="text-foreground">Student-teacher ratio:</strong> Extracted when available in the reports. Not all years or levels may have STR data.</p>
+            <p><strong className="text-foreground">GER/NER/GPI gaps:</strong> Gross and Net Enrolment Rate tables aren't published consistently across years. 2019 is complete (own report). 2020 has ECCE only — the report covering that year presents Primary and Senior Secondary in a multi-year table whose column layout doesn't survive PDF text extraction reliably, so those figures are omitted rather than guessed at. 2021 and 2022 have no GER/NER at all: neither year's own report publishes the table, and the retrospective figures in later reports (2023, 2024) have the same extraction problem. 2023 is also affected for this reason. Where a figure is missing, it's because it can't be extracted reliably — not because it doesn't exist.</p>
           </CardContent>
         </Card>
         </div>

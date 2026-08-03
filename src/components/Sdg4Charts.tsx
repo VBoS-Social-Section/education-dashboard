@@ -182,8 +182,10 @@ export function Sdg4PieChart({ title, data, className = '', hideHeader }: Sdg4Pi
   )
 }
 
-/** Stacked bar for GER or NER by province and level */
-interface Sdg4GerNerStackedProps {
+/** Grouped bar for GER or NER by province and level. Not stacked — GER/NER at each level is independently
+ *  normalized to its own age cohort, so summing them (as a stacked chart would) produces a number with no
+ *  real-world meaning, and can exceed any fixed axis cap. */
+interface Sdg4GerNerGroupedProps {
   title: string
   provinces: string[]
   dataByLevel: Record<string, number[]>
@@ -191,13 +193,12 @@ interface Sdg4GerNerStackedProps {
   className?: string
 }
 
-export function Sdg4GerNerStackedChart({ title, provinces, dataByLevel, levels, className = '' }: Sdg4GerNerStackedProps) {
+export function Sdg4GerNerGroupedChart({ title, provinces, dataByLevel, levels, className = '' }: Sdg4GerNerGroupedProps) {
   const series = levels.map((level) => ({
     name: level,
     type: 'column' as const,
     data: provinces.map((_, j) => dataByLevel[level]?.[j] ?? 0),
     color: getInstitutionColor(level),
-    stacking: 'normal' as const,
     borderWidth: 0,
     borderRadius: 4,
   })).filter((s) => s.data.some((v) => v > 0))
@@ -210,12 +211,11 @@ export function Sdg4GerNerStackedChart({ title, provinces, dataByLevel, levels, 
     yAxis: {
       title: { text: 'Rate (%)' },
       min: 0,
-      max: 150,
       gridLineDashStyle: 'Dot',
       labels: { format: '{value}%' },
     },
     plotOptions: {
-      column: { borderWidth: 0, borderRadius: 4, stacking: 'normal', dataLabels: { enabled: false } },
+      column: { borderWidth: 0, borderRadius: 4, dataLabels: { enabled: false } },
     },
     series,
     legend: { enabled: true, layout: 'horizontal', align: 'center', verticalAlign: 'bottom' },

@@ -399,6 +399,14 @@
       "Junior Secondary": 45,
       "Senior Secondary": 14
     },
+    "outOfSchoolDimensions": {
+      "Not in ECE/Primary (age 1yr before entry)": { "Total": 12.6, "Male": 13.5, "Female": 11.5 },
+      "Primary-age, out of school entirely": { "Total": 6.8, "Male": 7.2, "Female": 6.3 },
+      "Junior Secondary-age, out of school entirely": { "Total": 16.0, "Male": 16.7, "Female": 15.3 },
+      "In Primary, 2+ years over-age": { "Total": 17.1, "Male": 19.6, "Female": 14.6 },
+      "In Junior Secondary, 2+ years over-age": { "Total": 31.4, "Male": 36.3, "Female": 26.7 }
+    },
+    "outOfSchoolSourceTables": "LN.1.2 (dim. 1), LN.2.3 (dim. 2), LN.2.4 (dim. 3), LN.2.5 (dim. 4-5) — MICS Survey Findings Report, not the Snapshot",
     "genderParityIndex": {
       "Primary": 1.01,
       "Junior Secondary": 1.22,

@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Papa from 'papaparse'
 import Highcharts from 'highcharts'
 import HighchartsReact from 'highcharts-react-official'
-import { Info, Landmark, ClipboardList, Users2, Baby, TrendingUp } from 'lucide-react'
+import { Info, Landmark, ClipboardList, Users2, Baby, TrendingUp, GraduationCap, UserMinus } from 'lucide-react'
 import { CollapsibleChart, CollapsibleKPICard, MasonryGrid } from '@/components/CollapsibleChart'
 import { Card, CardContent } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
@@ -480,6 +480,64 @@ export function CensusMicsPage() {
     }
   }, [seed])
 
+  /** National attainment distribution. The named categories in the source table don't sum to the population
+   *  total — roughly half of adults 15+ have no category recorded (no "no schooling" row exists in the
+   *  source workbook at all), so that gap is shown explicitly rather than silently rescaling percentages
+   *  to the smaller categorized sum. */
+  const attainmentByLevelOptions: Highcharts.Options | null = useMemo(() => {
+    if (!seed) return null
+    const row = seed.census2020.attainment15Plus.Vanuatu
+    if (!row || !row.Total) return null
+    const levelOrder = [
+      'Preschool (ECCE)',
+      'Kindy',
+      'Primary',
+      'Junior Secondary',
+      'Senior Secondary',
+      'Post Secondary',
+      'Bachelor Degree',
+      'Post Graduate Certificate',
+      'Post Graduate Diploma',
+      'Masters',
+      'Doctorate',
+      'Other',
+    ]
+    const categorizedSum = levelOrder.reduce((s, l) => s + (row[l] ?? 0), 0)
+    const uncategorized = Math.max(0, row.Total - categorizedSum)
+    const categories = [...levelOrder, 'Not categorized in source data']
+    const data = [...levelOrder.map((l) => Math.round(((row[l] ?? 0) / row.Total) * 1000) / 10), Math.round((uncategorized / row.Total) * 1000) / 10]
+    const colors = levelOrder.map(() => PALETTE.census).concat('#cbd5e1')
+    return {
+      chart: { type: 'bar', height: 420, backgroundColor: 'transparent', style: { fontFamily: 'Inter, system-ui, sans-serif' } },
+      xAxis: { categories, gridLineWidth: 0, labels: { style: { fontSize: '11px' } } },
+      yAxis: { title: { text: 'Share of adults 15+ (%)' }, min: 0, gridLineDashStyle: 'Dash' },
+      series: [{ type: 'bar', name: 'Highest level attained', data, colorByPoint: true, colors, borderRadius: 3 }],
+      legend: { enabled: false },
+      plotOptions: { bar: { borderWidth: 0 } },
+      credits: { enabled: false },
+      tooltip: { pointFormat: '<b>{point.y}%</b> of adults 15+' },
+    }
+  }, [seed])
+
+  const outOfSchoolChartOptions: Highcharts.Options | null = useMemo(() => {
+    if (!seed) return null
+    const dims = seed.mics2023.outOfSchoolDimensions
+    const categories = Object.keys(dims)
+    return {
+      chart: { type: 'bar', height: 340, backgroundColor: 'transparent', style: { fontFamily: 'Inter, system-ui, sans-serif' } },
+      xAxis: { categories, gridLineWidth: 0, labels: { style: { fontSize: '11px' } } },
+      yAxis: { title: { text: 'Percent (%)' }, min: 0, gridLineDashStyle: 'Dash' },
+      series: [
+        { type: 'bar', name: 'Male', color: PALETTE.male, data: categories.map((c) => dims[c].Male) },
+        { type: 'bar', name: 'Female', color: PALETTE.female, data: categories.map((c) => dims[c].Female) },
+      ],
+      legend: { enabled: true, itemStyle: { fontSize: '12px', fontWeight: '500' } },
+      plotOptions: { bar: { borderWidth: 0, borderRadius: 3 } },
+      credits: { enabled: false },
+      tooltip: { shared: true, valueSuffix: '%' },
+    }
+  }, [seed])
+
   const lfsChartOptions: Highcharts.Options | null = useMemo(() => {
     if (!seed) return null
     const rows = seed.lfs2024.attainmentVsParticipationRatePercent
@@ -613,6 +671,16 @@ export function CensusMicsPage() {
         </MasonryGrid>
       </div>
 
+      <div data-tour="censusmics-outofschool">
+        <CollapsibleChart
+          title="Out-of-school & dropout-risk dimensions (MICS 2023)"
+          description="MICS is a one-time household survey, so it can't measure a 'dropout rate' directly — this is UNICEF's standard Out-of-School Children framework instead: children never in school, plus children in school but dangerously over-age (a proxy for dropout risk). Sourced from the full MICS Survey Findings Report tables (LN.1.2, LN.2.3–2.5), not the ambiguous Snapshot infographic."
+          icon={<UserMinus className="size-5 text-[#7C3AED]" />}
+        >
+          {outOfSchoolChartOptions && <HighchartsReact highcharts={Highcharts} options={outOfSchoolChartOptions} immutable />}
+        </CollapsibleChart>
+      </div>
+
       <div data-tour="censusmics-ece">
         <CollapsibleChart
           title="Early childhood & pre-primary participation (MICS 2023)"
@@ -624,6 +692,15 @@ export function CensusMicsPage() {
       </div>
 
       <div data-tour="censusmics-attainment">
+        <CollapsibleChart
+          title="Adult educational attainment by level, national (Census 2020)"
+          description="Highest completed qualification among adults 15+, nationally. The source workbook's category list doesn't sum to the population total — about half of adults have no recorded category (there's no 'no schooling' row in the source at all) — shown honestly as its own bar rather than hidden by rescaling the other percentages."
+          icon={<GraduationCap className="size-5 text-[#6DEBB9]" />}
+        >
+          {attainmentByLevelOptions && <HighchartsReact highcharts={Highcharts} options={attainmentByLevelOptions} immutable />}
+        </CollapsibleChart>
+
+        <div className="mt-6">
         <MasonryGrid columns={{ xs: 1, lg: 2 }}>
           <CollapsibleChart
             title="Adult educational attainment by province (Census 2020)"
@@ -640,6 +717,7 @@ export function CensusMicsPage() {
             {lfsChartOptions && <HighchartsReact highcharts={Highcharts} options={lfsChartOptions} immutable />}
           </CollapsibleChart>
         </MasonryGrid>
+        </div>
       </div>
 
       <div data-tour="censusmics-population">
