@@ -22,9 +22,9 @@ export const CENSUS_MICS_TOUR_STEPS: TourStep[] = [
   },
   {
     targetId: 'censusmics-equity',
-    title: 'Gender parity & completion',
+    title: 'Equity gap widens with level',
     description:
-      'Gender Parity Index compares MoET and MICS side by side. Completion rate — the share of children who finish each level — has no MoET equivalent; it only comes from a household survey that can follow children who left school.',
+      'Gender, wealth, and area parity compared side by side — 1.0 means no disparity. Gender favours girls as children get older; wealth and area disparity move the other way, and both collapse sharply by senior secondary. Wealth and area parity have no MoET equivalent. Completion rate — the share of children who finish each level — is also unique to the household survey, which can follow children who left school.',
   },
   {
     targetId: 'censusmics-ece',

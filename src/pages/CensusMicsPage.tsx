@@ -170,8 +170,11 @@ export function CensusMicsPage() {
   const micsSecondaryCombined = useMemo(() => {
     if (!seed) return null
     const nar = seed.mics2023.netAttendanceRateAdjusted
-    const jrPop = seed.schoolAgePopulationProjection.bands['Junior Secondary (age 12-15)']?.[0] ?? 0
-    const srPop = seed.schoolAgePopulationProjection.bands['Senior Secondary (age 16-19)']?.[0] ?? 0
+    // Weight by 2023 population (MICS's own reference year), not 2020 — the two sources shouldn't be year-mismatched.
+    const yearIdx = seed.schoolAgePopulationProjection.years.indexOf(2023)
+    const idx = yearIdx >= 0 ? yearIdx : 0
+    const jrPop = seed.schoolAgePopulationProjection.bands['Junior Secondary (age 12-15)']?.[idx] ?? 0
+    const srPop = seed.schoolAgePopulationProjection.bands['Senior Secondary (age 16-19)']?.[idx] ?? 0
     return weightedAvg([
       [nar['Junior Secondary'], jrPop],
       [nar['Senior Secondary'], srPop],
@@ -218,9 +221,11 @@ export function CensusMicsPage() {
   const gpiChartOptions: Highcharts.Options | null = useMemo(() => {
     if (!seed) return null
     const gpi = seed.mics2023.genderParityIndex
+    const wealth = seed.mics2023.wealthParityIndex
+    const area = seed.mics2023.areaParityIndex
     const opts = baseChartOptions()
     opts.yAxis = {
-      title: { text: 'Gender Parity Index (1.0 = parity)', style: { fontSize: '13px', fontWeight: '600' } },
+      title: { text: 'Parity Index (1.0 = parity)', style: { fontSize: '13px', fontWeight: '600' } },
       gridLineDashStyle: 'Dash',
       plotLines: [{ value: 1, color: '#94a3b8', width: 1, dashStyle: 'Dash', zIndex: 3 }],
     }
@@ -248,9 +253,21 @@ export function CensusMicsPage() {
       },
       {
         type: 'column',
-        name: 'MICS 2023 — attendance Gender Parity Index',
+        name: 'MICS 2023 — Gender Parity (girls÷boys)',
         color: PALETTE.mics,
         data: buildLevelSeries({ Primary: gpi.Primary, 'Junior Secondary': gpi['Junior Secondary'], 'Senior Secondary': gpi['Senior Secondary'] }),
+      },
+      {
+        type: 'column',
+        name: 'MICS 2023 — Wealth Parity (lowest÷highest quintile)',
+        color: '#f59e0b',
+        data: buildLevelSeries({ Primary: wealth.Primary, 'Junior Secondary': wealth['Junior Secondary'], 'Senior Secondary': wealth['Senior Secondary'] }),
+      },
+      {
+        type: 'column',
+        name: 'MICS 2023 — Area Parity (rural÷urban)',
+        color: PALETTE.lfs,
+        data: buildLevelSeries({ Primary: area.Primary, 'Junior Secondary': area['Junior Secondary'], 'Senior Secondary': area['Senior Secondary'] }),
       },
     ]
     return opts
@@ -560,9 +577,9 @@ export function CensusMicsPage() {
           color={PALETTE.mics}
         />
         <CollapsibleKPICard
-          title="Wealth parity, Primary (MICS)"
-          value={seed.mics2023.wealthParityIndex.Primary.toFixed(2)}
-          description="Lowest ÷ highest wealth quintile attendance"
+          title="Wealth parity, Sr. Secondary (MICS)"
+          value={seed.mics2023.wealthParityIndex['Senior Secondary'].toFixed(2)}
+          description="Poorest households attend at 7% the rate of the richest — up from 0.87 at Primary"
           color={PALETTE.census}
         />
       </div>
@@ -580,8 +597,8 @@ export function CensusMicsPage() {
       <div data-tour="censusmics-equity">
         <MasonryGrid columns={{ xs: 1, lg: 2 }}>
           <CollapsibleChart
-            title="Gender Parity Index — MoET vs MICS"
-            description="1.0 = parity. MICS shows disparity widening in girls' favour at higher levels; MoET's combined Secondary figure hides that split."
+            title="Equity gap widens with level — MoET vs MICS"
+            description="1.0 = parity. Gender disparity favours girls as level rises; wealth and area disparity go the other way — richer, urban households pull further ahead. Wealth and area parity have no MoET equivalent; MoET's combined Secondary figure also hides the Junior/Senior split visible here."
             icon={<Users2 className="size-5 text-[#7C3AED]" />}
           >
             {gpiChartOptions && <HighchartsReact highcharts={Highcharts} options={gpiChartOptions} immutable />}

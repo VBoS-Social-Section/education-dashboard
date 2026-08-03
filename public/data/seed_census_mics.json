@@ -405,10 +405,14 @@
       "Senior Secondary": 1.5
     },
     "wealthParityIndex": {
-      "Primary": 0.87
+      "Primary": 0.87,
+      "Junior Secondary": 0.34,
+      "Senior Secondary": 0.07
     },
     "areaParityIndex": {
-      "Primary": 0.98
+      "Primary": 0.98,
+      "Junior Secondary": 0.66,
+      "Senior Secondary": 0.46
     },
     "notesUrl": "mics.unicef.org/surveys",
     "indicatorRefs": "SDG 4.1.2 (LN.8a-c completion), 4.5.1 (LN.5a-c parity indices), 4.2.2 (LN.2 pre-primary participation)"
